@@ -151,7 +151,7 @@ public class JGame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
+                if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 for (Consumer<KeyEvent> eventFunc : keyEvents){
                     eventFunc.accept(e);
                 }

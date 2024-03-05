@@ -10,7 +10,7 @@ import JGame.Types.*;
 
 public class Dev {
     public static void main(String[] args) {
-        JGame game = new JGame();
+        JGame game = new JGame(.00001);
 
         game.start().andThen((arg)->{
             System.out.println("Started");
@@ -23,8 +23,12 @@ public class Dev {
         y.setParent(game);
 
         game.onTick((dt)->{
-            if (game.isKeyDown(KeyEvent.VK_D)){ //a bit broken since keyPressed fires multiple times??????
-                y.Position.addTo(new Vector2(1, 0));
+            if (game.isKeyDown(KeyEvent.VK_D)){
+                y.Position.add(new Vector2(1, 0));
+            }
+
+            if (game.isKeyDown(KeyEvent.VK_A)){
+                y.Position.subtract(new Vector2(1, 0));
             }
         });
 

@@ -10,9 +10,14 @@ public class Vector2 {
     }
 
 
-    public void addTo(Vector2 other){
+    public void add(Vector2 other){
         X += other.X;
         Y += other.Y;
+    }
+
+    public void subtract(Vector2 other){
+        X -= other.X;
+        Y -= other.Y;
     }
 
     @Override
