@@ -51,5 +51,12 @@ public abstract class Instance extends JComponent {
     }
 
 
+    public boolean collidingLeft(){
+        Instance[] bl = {this};
+        RaycastResult r = Parent.RaycastX(Position, Position.X-1, bl);
+
+        return r != null ? true : false; 
+    }
+
     abstract public void render(Graphics g);
 }

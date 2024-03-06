@@ -39,6 +39,8 @@ public class JGame {
 
     public int TickCount = 0;
 
+    
+
     //--CONSTRUCTORS--//
 
     public JGame(){
@@ -156,7 +158,7 @@ public class JGame {
         return false;
     }
 
-    //--INSTANCE FUNCTIONS--//
+    //--RAYCASTING--//
     public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist){
         Box2D raycastBox = new Box2D();
         raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
@@ -164,9 +166,16 @@ public class JGame {
         raycastBox.FillColor = new Color(0,0,0,0);
         raycastBox.setParent(this);
 
+        int dir = startVector2.X<finishX ? 1 : -1;
+        
 
-        for (int x = startVector2.X; x <= finishX; x++){
-            raycastBox.Position.X++;
+        int startX = dir == 1 ? startVector2.X : finishX;
+        int endX = dir == 1 ? finishX : startVector2.X;
+
+        System.out.println(dir);
+
+        for (int x = startX; x <= endX; x+=dir){
+            raycastBox.Position.X+= dir;
             for (Instance inst : instances){
                 if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox)){
                     return new RaycastResult(inst, raycastBox.Position);
