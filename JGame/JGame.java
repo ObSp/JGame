@@ -4,11 +4,14 @@ import java.util.function.Consumer;
 
 import javax.swing.*;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import JGame.Instances.*;
-
+import JGame.Types.RaycastResult;
+import JGame.Types.Vector2;
 import lib.*;
 import lib.ArrayTable;
 
@@ -33,6 +36,8 @@ public class JGame {
     public String WindowTitle;
 
     private draw drawUtil;
+
+    public int TickCount = 0;
 
     //--CONSTRUCTORS--//
 
@@ -115,15 +120,19 @@ public class JGame {
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gameWindow.setUndecorated(false);
+            gameWindow.setUndecorated(true);
 
 
             new Thread(()->{
                 run();
             }).start();
+
+            //init input
             detectInput();
+            //pre-render, otherwise it won't show up??
             render();
 
+            
             gameWindow.setVisible(true);
 
             self.resolve();
@@ -140,6 +149,33 @@ public class JGame {
         throw new Error("Unable to find instance '"+name+"' in instance collection: "+instances);
     }
 
+    private boolean blacklistContains(Instance[] blacklist, Instance x){
+        for (Instance j : blacklist){
+            if (j.equals(x)) return true;
+        }
+        return false;
+    }
+
+    //--INSTANCE FUNCTIONS--//
+    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist){
+        Box2D raycastBox = new Box2D();
+        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.Size = new Vector2(10, 10);
+        raycastBox.FillColor = new Color(0,0,0,0);
+        raycastBox.setParent(this);
+
+
+        for (int x = startVector2.X; x <= finishX; x++){
+            raycastBox.Position.X++;
+            for (Instance inst : instances){
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox)){
+                    return new RaycastResult(inst, raycastBox.Position);
+                }
+            }
+        }
+        return null;
+    }
+
 
     //--INPUT--//
 
@@ -151,7 +187,9 @@ public class JGame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
+                if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
+                //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
+                heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 for (Consumer<KeyEvent> eventFunc : keyEvents){
                     eventFunc.accept(e);
                 }
@@ -165,18 +203,49 @@ public class JGame {
         });
     }
 
+    public void onKeyPress(Consumer<KeyEvent> onpressfunc){
+        keyEvents.add(onpressfunc);
+    }
+
     public boolean isKeyDown(int KeyCode){
         String keyText = KeyEvent.getKeyText(KeyCode);
 
         return heldKeys.indexOf(keyText)>-1 ? true : false;
     }
 
+    public Vector2 getTotalScreenSize(){
+        Dimension size = gameWindow.getContentPane().getSize();
+        return new Vector2((int) size.getWidth(),(int) size.getHeight());
+    }
+
 
 
 
     //--CHANGE FUNCTIONS--//
+    /**
+     * 
+     * @param newtick : The new tick rate
+     */
     public void setTickRate(double newtick){
         tickspeed = newtick;
+    }
+
+    /**BROKEN */
+    public void setFullscreen(){
+        gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        gameWindow.setUndecorated(true);
+        
+    }
+    /**BROKEN */
+    public void setBorderedFullScreen(){
+        gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        gameWindow.setUndecorated(false);
+    }
+
+
+    //--MISC FUNCTIONS--//
+    public void quit(){
+        gameWindow.dispose();
     }
 
 }
