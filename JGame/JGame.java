@@ -112,6 +112,10 @@ public class JGame {
         instances.add(x);
     }
 
+    public void removeInstance(Instance x){
+        instances.remove(x);
+    }
+
 
     //--START--//
     public Promise start(){
@@ -159,11 +163,12 @@ public class JGame {
     }
 
     //--RAYCASTING--//
-    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist){
+    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist, Vector2 raySize){
         Box2D raycastBox = new Box2D();
         raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
-        raycastBox.Size = new Vector2(10, 10);
-        raycastBox.FillColor = new Color(0,0,0,0);
+        raycastBox.Size = raySize;
+        raycastBox.Name = "raybox@Jgame";
+        raycastBox.FillColor = Color.blue;
         raycastBox.setParent(this);
 
         int dir = startVector2.X<finishX ? 1 : -1;
@@ -172,16 +177,49 @@ public class JGame {
         int startX = dir == 1 ? startVector2.X : finishX;
         int endX = dir == 1 ? finishX : startVector2.X;
 
-        System.out.println(dir);
 
-        for (int x = startX; x <= endX; x+=dir){
+        for (int x = startX; x <= endX; x++){
+            
             raycastBox.Position.X+= dir;
-            for (Instance inst : instances){
-                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox)){
+            for (int i = 0; i < instances.getLength(); i++){
+                Instance inst = instances.get(i);
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                    raycastBox.Destroy();
                     return new RaycastResult(inst, raycastBox.Position);
                 }
             }
         }
+        raycastBox.Destroy();
+        return null;
+    }
+
+    public RaycastResult RaycastY(Vector2 startVector2, int finishY, Instance[] blacklist, Vector2 raySize){
+        Box2D raycastBox = new Box2D();
+        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.Size = raySize;
+        raycastBox.FillColor = Color.green;
+        raycastBox.Name = "raybox@Jgame";
+        raycastBox.setParent(this);
+
+        int dir = startVector2.Y<finishY ? 1 : -1;
+        
+
+        int startY = dir == 1 ? startVector2.Y : finishY;
+        int endY = dir == 1 ? finishY : startVector2.Y;
+
+
+        for (int y = startY; y <= endY; y++){
+            
+            raycastBox.Position.Y+= dir;
+            for (int i = 0; i < instances.getLength(); i++){
+                Instance inst = instances.get(i);
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                    raycastBox.Destroy();
+                    return new RaycastResult(inst, raycastBox.Position);
+                }
+            }
+        }
+        raycastBox.Destroy();
         return null;
     }
 
@@ -206,11 +244,23 @@ public class JGame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                heldKeys.remove(KeyEvent.getKeyText(e.getKeyCode()));
+                String keyText = KeyEvent.getKeyText(e.getKeyCode());
+                heldKeys.remove(keyText);
             }
             
         });
     }
+
+    public int getInputHorizontal(){
+        if (isKeyDown(KeyEvent.VK_A)){
+            return -1;
+        }else if(isKeyDown(KeyEvent.VK_D)){
+            return 1;
+        }
+        return 0;
+    }
+
+
 
     public void onKeyPress(Consumer<KeyEvent> onpressfunc){
         keyEvents.add(onpressfunc);

@@ -233,6 +233,7 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
      */
     public E remove(E o){
         int index = indexOf(o);
+        if (index==-1) return null;
         return remove(index);
     }
 

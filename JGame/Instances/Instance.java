@@ -21,12 +21,27 @@ public abstract class Instance extends JComponent {
     public Color BorderColor = Color.black;
     public ArrayTable<String> Tags = new ArrayTable<>();
 
+    /**Sets the "Parent" property of Instance {@code this} to the JGame newparent and adds {@code this} into it's render hierarchy
+     * 
+     * @param newParent : The new JGame parent
+     */
     public void setParent(JGame newParent){
         Parent = newParent;
         Parent.addInstance(this);
     }
 
+    /**Removes Instance {@code this} from the parent's render hierarchy and sets the {@code Parent} property to {@code null}
+     * 
+     */
+    public void Destroy(){
+        Parent.removeInstance(this);
+        Parent = null;
+    }
 
+    /**Returns whether or not Instance {@code is touching the top border of the screen}
+     * 
+     * @return
+     */
     public boolean touchingBorderTop(){
         return (Position.Y+(Size.Y/2))<0;
     }
@@ -45,7 +60,7 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingRight(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(Position, Position.X+(Size.X), bl);
+        RaycastResult r = Parent.RaycastX(Position, Position.X+(Size.X), bl, new Vector2(2, Size.Y-3));
 
         return r != null ? true : false; 
     }
@@ -53,10 +68,42 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingLeft(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(Position, Position.X-1, bl);
+        RaycastResult r = Parent.RaycastX(Position, Position.X-4, bl, new Vector2(2, Size.Y-3));
 
         return r != null ? true : false; 
     }
+
+    public boolean collidingBottom(){
+        Instance[] bl = {this};
+        RaycastResult r = Parent.RaycastY(Position, Position.Y+Size.Y, bl, new Vector2(Size.X-3, 2));
+
+        return r != null ? true : false; 
+    }
+
+    public boolean collidingTop(){
+        Instance[] bl = {this};
+        RaycastResult r = Parent.RaycastY(Position, Position.Y-3, bl, new Vector2(Size.X-3, 2));
+
+        return r != null ? true : false; 
+    }
+
+
+    public boolean canMoveLeft(){
+        return !collidingLeft() && !touchingBorderLeft();
+    }
+
+    public boolean canMoveRight(){
+        return !collidingRight() && !touchingBorderRight();
+    }
+
+    public boolean canMoveUp(){
+        return !collidingTop() && !touchingBorderTop();
+    }
+
+    public boolean canMoveDown(){
+        return !collidingBottom() && !touchingBorderBottom();
+    }
+
 
     abstract public void render(Graphics g);
 }
