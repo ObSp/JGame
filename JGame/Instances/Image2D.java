@@ -9,6 +9,7 @@ public class Image2D extends Instance{
 
     public Image2D(){
         Path currentRelativePath = Paths.get("");
+        @SuppressWarnings("unused")
         Path s = currentRelativePath.toAbsolutePath();
     }
 
