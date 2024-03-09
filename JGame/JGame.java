@@ -17,7 +17,7 @@ import lib.ArrayTable;
 
 
 class JGAME_DEFAULTS{
-    static double TICK_SPEED = .05;
+    static double TICK_SPEED = .005;
 }
 
 public class JGame {
@@ -39,6 +39,7 @@ public class JGame {
 
     public int TickCount = 0;
 
+    public double Gravity = 9.8;
     
 
     //--CONSTRUCTORS--//
@@ -62,15 +63,18 @@ public class JGame {
     }
 
     //--TICK FUCNTIONS--//
-    private void tick(double deltaTimeSeconds){
-        render();
-        for (Consumer<Double> ontick : onTicks){
-            ontick.accept(deltaTimeSeconds);
-        }
-    }
 
     public void onTick(Consumer<Double> ontickfunc){
         onTicks.add(ontickfunc);
+    }
+
+    private void tick(double deltaTimeSeconds){
+        render();
+        simPhysics();
+        TickCount++;
+        for (Consumer<Double> ontick : onTicks){
+            ontick.accept(deltaTimeSeconds);
+        }
     }
 
 
@@ -108,6 +112,7 @@ public class JGame {
     }
 
 
+    //--INSTANCES--//
     public void addInstance(Instance x){
         instances.add(x);
     }
@@ -126,7 +131,7 @@ public class JGame {
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gameWindow.setUndecorated(true);
+            gameWindow.setUndecorated(false);
 
 
             new Thread(()->{
@@ -183,7 +188,7 @@ public class JGame {
             raycastBox.Position.X+= dir;
             for (int i = 0; i < instances.getLength(); i++){
                 Instance inst = instances.get(i);
-                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && inst.Solid && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
                     raycastBox.Destroy();
                     return new RaycastResult(inst, raycastBox.Position);
                 }
@@ -213,7 +218,7 @@ public class JGame {
             raycastBox.Position.Y+= dir;
             for (int i = 0; i < instances.getLength(); i++){
                 Instance inst = instances.get(i);
-                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && inst.Solid && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
                     raycastBox.Destroy();
                     return new RaycastResult(inst, raycastBox.Position);
                 }
@@ -256,6 +261,15 @@ public class JGame {
             return -1;
         }else if(isKeyDown(KeyEvent.VK_D)){
             return 1;
+        }
+        return 0;
+    }
+
+    public int getInputVertical(){
+        if (isKeyDown(KeyEvent.VK_W)){
+            return 1;
+        }else if(isKeyDown(KeyEvent.VK_S)){
+            return -1;
         }
         return 0;
     }
@@ -307,4 +321,19 @@ public class JGame {
         gameWindow.dispose();
     }
 
+
+
+
+
+
+
+        //--PHYSICS--//
+    private void simPhysics(){
+        for (int i = 0; i < instances.getLength(); i++){
+            Instance inst = instances.get(i);
+            if (inst.Velocity.isZero()) continue;
+
+            inst.Position.add(inst.Velocity);
+        }
+    }
 }

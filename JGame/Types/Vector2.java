@@ -20,6 +20,10 @@ public class Vector2 {
         Y -= other.Y;
     }
 
+    public boolean isZero(){
+        return X==0 && Y==0;
+    }
+
     public int Magnitude(){
         return (int) Math.sqrt(Math.pow(X, 2)+Math.pow(Y, 2));
     }

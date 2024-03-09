@@ -19,7 +19,9 @@ public abstract class Instance extends JComponent {
     public Color FillColor = Color.white;
     public int BorderSizePixel = 0;
     public Color BorderColor = Color.black;
-    public ArrayTable<String> Tags = new ArrayTable<>();
+    public boolean Solid = false;
+    public Vector2 Velocity = new Vector2(0, 0);
+    private ArrayTable<String> Tags = new ArrayTable<>();
 
     /**Sets the "Parent" property of Instance {@code this} to the JGame newparent and adds {@code this} into it's render hierarchy
      * 
@@ -36,6 +38,28 @@ public abstract class Instance extends JComponent {
     public void Destroy(){
         Parent.removeInstance(this);
         Parent = null;
+    }
+
+    /**Adds the tag {@code tag} to this Instance's tags
+     * 
+     * @param tag The tag to be added to this instance
+     */
+    public void addTag(String tag){
+        if (Tags.indexOf(tag)==-1) return; // already added tag
+
+        Tags.add(tag);
+    }
+
+    public void removeTag(String tag){
+        Tags.remove(tag);
+    }
+
+    public boolean hasTag(String tag){
+        return Tags.indexOf(tag) != -1 ? true : false;
+    }
+
+    public String[] getTags(){
+        return Tags.toArray();
     }
 
     /**Returns whether or not Instance {@code is touching the top border of the screen}
