@@ -1,6 +1,5 @@
 package JGame.Instances;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class Box2D extends Instance {
@@ -10,8 +9,7 @@ public class Box2D extends Instance {
     }
 
     
-    public void render(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+    public void render(Graphics2D g2) {
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
             g2.fillRect(Position.X+BorderSizePixel, Position.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);

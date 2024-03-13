@@ -17,7 +17,7 @@ import lib.ArrayTable;
 
 
 class JGAME_DEFAULTS{
-    static double TICK_SPEED = .005;
+    static double TICK_SPEED = .05;
 }
 
 public class JGame {
@@ -39,7 +39,6 @@ public class JGame {
 
     public int TickCount = 0;
 
-    public double Gravity = 9.8;
     
 
     //--CONSTRUCTORS--//
@@ -63,18 +62,17 @@ public class JGame {
     }
 
     //--TICK FUCNTIONS--//
-
-    public void onTick(Consumer<Double> ontickfunc){
-        onTicks.add(ontickfunc);
-    }
-
     private void tick(double deltaTimeSeconds){
-        render();
-        simPhysics();
         TickCount++;
+        simPhysics();
+        render();
         for (Consumer<Double> ontick : onTicks){
             ontick.accept(deltaTimeSeconds);
         }
+    }
+
+    public void onTick(Consumer<Double> ontickfunc){
+        onTicks.add(ontickfunc);
     }
 
 
@@ -112,7 +110,6 @@ public class JGame {
     }
 
 
-    //--INSTANCES--//
     public void addInstance(Instance x){
         instances.add(x);
     }
@@ -188,7 +185,7 @@ public class JGame {
             raycastBox.Position.X+= dir;
             for (int i = 0; i < instances.getLength(); i++){
                 Instance inst = instances.get(i);
-                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && inst.Solid && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
                     raycastBox.Destroy();
                     return new RaycastResult(inst, raycastBox.Position);
                 }
@@ -218,7 +215,7 @@ public class JGame {
             raycastBox.Position.Y+= dir;
             for (int i = 0; i < instances.getLength(); i++){
                 Instance inst = instances.get(i);
-                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && inst.Solid && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                if (raycastBox.overlaps((Box2D) inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
                     raycastBox.Destroy();
                     return new RaycastResult(inst, raycastBox.Position);
                 }
@@ -242,8 +239,8 @@ public class JGame {
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
                 //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
-                for (Consumer<KeyEvent> eventFunc : keyEvents){
-                    eventFunc.accept(e);
+                for (int i = 0; i<keyEvents.getLength(); i++){
+                    keyEvents.get(i).accept(e);
                 }
             }
 
@@ -265,15 +262,6 @@ public class JGame {
         return 0;
     }
 
-    public int getInputVertical(){
-        if (isKeyDown(KeyEvent.VK_W)){
-            return 1;
-        }else if(isKeyDown(KeyEvent.VK_S)){
-            return -1;
-        }
-        return 0;
-    }
-
 
 
     public void onKeyPress(Consumer<KeyEvent> onpressfunc){
@@ -289,6 +277,14 @@ public class JGame {
     public Vector2 getTotalScreenSize(){
         Dimension size = gameWindow.getContentPane().getSize();
         return new Vector2((int) size.getWidth(),(int) size.getHeight());
+    }
+
+    public int getScreenHeight(){
+        return gameWindow.getContentPane().getHeight();
+    }
+
+    public int getScreenWidth(){
+        return gameWindow.getContentPane().getWidth();
     }
 
 
@@ -315,6 +311,10 @@ public class JGame {
         gameWindow.setUndecorated(false);
     }
 
+    public void setWindowTitle(String newtitle){
+        gameWindow.setTitle(newtitle);
+    }
+
 
     //--MISC FUNCTIONS--//
     public void quit(){
@@ -323,11 +323,6 @@ public class JGame {
 
 
 
-
-
-
-
-        //--PHYSICS--//
     private void simPhysics(){
         for (int i = 0; i < instances.getLength(); i++){
             Instance inst = instances.get(i);
@@ -336,4 +331,5 @@ public class JGame {
             inst.Position.add(inst.Velocity);
         }
     }
+
 }

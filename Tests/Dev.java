@@ -30,7 +30,6 @@ public class Dev {
         wall.Size = new Vector2(100, 100);
         wall.FillColor = Color.red;
         wall.BorderSizePixel = 0;
-        wall.Solid = true;
         wall.setParent(game);
 
         
@@ -41,19 +40,19 @@ public class Dev {
         game.onTick((dt)->{
             
             if (game.isKeyDown(KeyEvent.VK_A) && y.canMoveLeft()){
-                y.Position.X-= (SPEED*(dt*1000));
+                y.Position.X-= SPEED*(dt*1000);
             }
 
             if (game.isKeyDown(KeyEvent.VK_D) && y.canMoveRight()){
-                y.Position.X+= (SPEED*(dt*1000));
+                y.Position.X+= SPEED*(dt*1000);
             }
 
             if (game.isKeyDown(KeyEvent.VK_W) && y.canMoveUp()){
-                y.Position.Y-= (SPEED*(dt*1000));
+                y.Position.Y-= SPEED*(dt*1000);
             }
 
             if (game.isKeyDown(KeyEvent.VK_S) && y.canMoveDown()){
-                y.Position.Y+= (SPEED*(dt*1000));
+                y.Position.Y+= SPEED*(dt*1000);
             }
         });
 

@@ -18,8 +18,8 @@ public class draw extends JComponent {
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
-        for (Instance inst : items){
-            inst.render(g2d);
+        for (int i = 0; i<items.getLength(); i++){
+            items.get(i).render(g2d);
         }
     }
 }

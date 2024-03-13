@@ -1,7 +1,6 @@
 package JGame.Instances;
 
-import java.awt.Graphics;
-
+import java.awt.Graphics2D;
 import java.nio.file.*;
 
 public class Image2D extends Instance{
@@ -15,7 +14,7 @@ public class Image2D extends Instance{
 
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'render'");
     }

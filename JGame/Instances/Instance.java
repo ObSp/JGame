@@ -1,7 +1,7 @@
 package JGame.Instances;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
@@ -19,9 +19,10 @@ public abstract class Instance extends JComponent {
     public Color FillColor = Color.white;
     public int BorderSizePixel = 0;
     public Color BorderColor = Color.black;
-    public boolean Solid = false;
+    public ArrayTable<String> Tags = new ArrayTable<>();
     public Vector2 Velocity = new Vector2(0, 0);
-    private ArrayTable<String> Tags = new ArrayTable<>();
+    public boolean Solid = false;
+    public boolean Anchored = true;
 
     /**Sets the "Parent" property of Instance {@code this} to the JGame newparent and adds {@code this} into it's render hierarchy
      * 
@@ -40,7 +41,7 @@ public abstract class Instance extends JComponent {
         Parent = null;
     }
 
-    /**Adds the tag {@code tag} to this Instance's tags
+        /**Adds the tag {@code tag} to this Instance's tags
      * 
      * @param tag The tag to be added to this instance
      */
@@ -129,5 +130,5 @@ public abstract class Instance extends JComponent {
     }
 
 
-    abstract public void render(Graphics g);
+    abstract public void render(Graphics2D g);
 }
