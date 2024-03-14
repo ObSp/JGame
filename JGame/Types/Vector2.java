@@ -10,14 +10,16 @@ public class Vector2 {
     }
 
 
-    public void add(Vector2 other){
+    public Vector2 add(Vector2 other){
         X += other.X;
         Y += other.Y;
+        return this;
     }
 
-    public void subtract(Vector2 other){
+    public Vector2 subtract(Vector2 other){
         X -= other.X;
         Y -= other.Y;
+        return this;
     }
 
     public boolean isZero(){
@@ -31,5 +33,10 @@ public class Vector2 {
     @Override
     public String toString(){
         return "("+X+", "+Y+")";
+    }
+
+    @Override
+    public Vector2 clone(){
+        return new Vector2(X, Y);
     }
 }

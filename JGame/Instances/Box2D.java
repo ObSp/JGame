@@ -2,10 +2,12 @@ package JGame.Instances;
 
 import java.awt.Graphics2D;
 
+import JGame.Types.Vector2;
+
 public class Box2D extends Instance {
 
     public Box2D(){
-        Name = "Paintable";
+        Name = "Box2D";
     }
 
     
@@ -23,5 +25,10 @@ public class Box2D extends Instance {
     public boolean overlaps(Box2D other){
         return Position.X < other.Position.X+ other.Size.X && Position.X + Size.X > other.Position.X && 
         Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
+    }
+
+    @Override
+    public void setPosition(Vector2 pos){
+        Position = pos;
     }
 }

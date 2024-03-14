@@ -131,4 +131,10 @@ public abstract class Instance extends JComponent {
 
 
     abstract public void render(Graphics2D g);
+    
+    /**An internal method used by the physics handler to move instances, letting them handle the new position on their own
+     * 
+     * @param velPos : The position to move to
+     */
+    abstract public void setPosition(Vector2 velPos);
 }

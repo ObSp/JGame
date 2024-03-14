@@ -8,7 +8,7 @@ import lib.*;
 public class Group2D extends Instance{
 
     private ArrayTable<Instance> Children;
-    Instance Primary;
+    public Instance Primary;
 
     public Group2D(){
         Children = new ArrayTable<>();
@@ -24,13 +24,25 @@ public class Group2D extends Instance{
             return;
         }
 
+        
+
         Vector2 primarypos = Primary.Position;
         Primary.Position = newpos;
 
         for (Instance inst : Children){
+            if (inst.equals(Primary)) continue;
             Vector2 diff = new Vector2(inst.Position.X-primarypos.X, inst.Position.Y-primarypos.Y);
-            inst.Position.add(diff);
+            Vector2 actual = new Vector2(Primary.Position.X+diff.X, Primary.Position.Y+diff.Y);
+            inst.Position = actual;
         }
+    }
+
+    public Vector2 getGroupPosition(){
+        if (Primary==null){
+            System.out.println("ERR: Group2D.getGroupPosition() can only be called on a Group2D with a valid Primary instance.");
+            return null;
+        }
+        return Primary.Position.clone();
     }
 
     public void AddChild(Instance newchild){
@@ -42,14 +54,22 @@ public class Group2D extends Instance{
     }
 
     public Instance[] GetChildren(){
-        return Children.toArray();
+        final Instance[] arr = Children.toArray();
+        return arr;
     }
 
     @Override
     public void render(Graphics2D g) {
-        for (Instance inst : Children){
-            inst.render(g);
+        return;
+    }
+
+    @Override
+    public void setPosition(Vector2 velpos){
+        if (Primary==null){
+            System.out.println("ERR: physics handler tried to move a Group2D without it having a valid Primary instance.");
+            return;
         }
+        MoveTo(velpos);
     }
     
 }

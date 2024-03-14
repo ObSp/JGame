@@ -262,6 +262,15 @@ public class JGame {
         return 0;
     }
 
+    public int getInputVertical(){
+        if (isKeyDown(KeyEvent.VK_S)){
+            return -1;
+        }else if(isKeyDown(KeyEvent.VK_W)){
+            return 1;
+        }
+        return 0;
+    }
+
 
 
     public void onKeyPress(Consumer<KeyEvent> onpressfunc){

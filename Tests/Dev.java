@@ -1,67 +1,42 @@
 package Tests;
 
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 
 import JGame.*;
 import JGame.Instances.*;
 import JGame.Types.*;
-import lib.Promise;
+import lib.*;
 
 
 public class Dev {
     public static void main(String[] args) {
-        int SPEED = 1;
 
         JGame game = new JGame(.005);//cannot be lower, otherwise and out of bounds error will throw???
 
         Promise.await(game.start());
+
+        Box2D thing = new Box2D();
+        thing.Position = new Vector2(100, 193);
+        thing.Size = new Vector2(100, 100);
+        thing.FillColor = Color.BLACK;
+        thing.setParent(game);
+
+        Box2D otha = new Box2D();
+        otha.Position = new Vector2(50, 193);
+        otha.Size = new Vector2(100, 100);
+        otha.FillColor = Color.blue;
+        otha.setParent(game);
+        otha.Name = "Ot";
         
-        Box2D y = new Box2D();
-        y.Name = "yy";
-        y.Position = new Vector2(300,250);
-        y.Size = new Vector2(100, 100);
-        y.FillColor = Color.black;
-        y.setParent(game);
+        Group2D test = new Group2D();
+        test.Name = "Group";
+        test.AddChild(thing);
+        test.AddChild(otha);
+        test.Primary = thing;
+        test.setParent(game);
 
-        Box2D wall = new Box2D();
-        wall.Name = "wall";
-        wall.Position = new Vector2(700, 400);
-        wall.Size = new Vector2(100, 100);
-        wall.FillColor = Color.red;
-        wall.BorderSizePixel = 0;
-        wall.setParent(game);
-
-        
-
-
-
-
-        game.onTick((dt)->{
-            
-            if (game.isKeyDown(KeyEvent.VK_A) && y.canMoveLeft()){
-                y.Position.X-= SPEED*(dt*1000);
-            }
-
-            if (game.isKeyDown(KeyEvent.VK_D) && y.canMoveRight()){
-                y.Position.X+= SPEED*(dt*1000);
-            }
-
-            if (game.isKeyDown(KeyEvent.VK_W) && y.canMoveUp()){
-                y.Position.Y-= SPEED*(dt*1000);
-            }
-
-            if (game.isKeyDown(KeyEvent.VK_S) && y.canMoveDown()){
-                y.Position.Y+= SPEED*(dt*1000);
-            }
-        });
-
-
-        game.onKeyPress((e)->{
-            if (e.getKeyCode() == KeyEvent.VK_Q){
-                game.quit();
-                System.exit(0);
-            }
+        game.onTick(dt -> {
+            test.MoveTo(test.getGroupPosition().add(new Vector2(game.getInputHorizontal()*3, game.getInputVertical()*3*-1)));
         });
 
     }
