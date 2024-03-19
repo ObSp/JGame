@@ -21,12 +21,6 @@ public class Box2D extends Instance {
         g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);
     }
 
-
-    public boolean overlaps(Box2D other){
-        return Position.X < other.Position.X+ other.Size.X && Position.X + Size.X > other.Position.X && 
-        Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
-    }
-
     @Override
     public void setPosition(Vector2 pos){
         Position = pos;

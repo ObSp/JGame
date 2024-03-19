@@ -1,24 +1,27 @@
 package JGame.Instances;
 
 import java.awt.Graphics2D;
-import java.nio.file.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import JGame.Types.Vector2;
 
 public class Image2D extends Instance{
-    String ImagePath;
+    public String ImagePath;
 
     public Image2D(){
-        Path currentRelativePath = Paths.get("");
-        @SuppressWarnings("unused")
-        Path s = currentRelativePath.toAbsolutePath();
+        Name = "Image";
     }
 
 
     @Override
     public void render(Graphics2D g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+        if (ImagePath==null) return;
+
+        ImageIcon image = new ImageIcon(ImagePath);
+
+        Parent.getContentPane().add(new JLabel(image));
     }
 
     

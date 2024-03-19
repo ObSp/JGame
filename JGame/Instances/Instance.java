@@ -87,7 +87,11 @@ public abstract class Instance extends JComponent {
         Instance[] bl = {this};
         RaycastResult r = Parent.RaycastX(Position, Position.X+(Size.X), bl, new Vector2(2, Size.Y-3));
 
-        return r != null ? true : false; 
+        if (r!= null && r.HitInstance.Solid && this.Solid){
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -95,21 +99,33 @@ public abstract class Instance extends JComponent {
         Instance[] bl = {this};
         RaycastResult r = Parent.RaycastX(Position, Position.X-4, bl, new Vector2(2, Size.Y-3));
 
-        return r != null ? true : false; 
+        if (r!= null && r.HitInstance.Solid && this.Solid){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean collidingBottom(){
         Instance[] bl = {this};
         RaycastResult r = Parent.RaycastY(Position, Position.Y+Size.Y, bl, new Vector2(Size.X-3, 2));
 
-        return r != null ? true : false; 
+        if (r!= null && r.HitInstance.Solid && this.Solid){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean collidingTop(){
         Instance[] bl = {this};
         RaycastResult r = Parent.RaycastY(Position, Position.Y-3, bl, new Vector2(Size.X-3, 2));
 
-        return r != null ? true : false; 
+        if (r!= null && r.HitInstance.Solid && this.Solid){
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -127,6 +143,11 @@ public abstract class Instance extends JComponent {
 
     public boolean canMoveDown(){
         return !collidingBottom() && !touchingBorderBottom();
+    }
+
+    public boolean overlaps(Instance other){
+        return Position.X < other.Position.X+ other.Size.X && Position.X + Size.X > other.Position.X && 
+        Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
     }
 
 

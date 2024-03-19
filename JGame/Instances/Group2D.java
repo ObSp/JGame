@@ -12,6 +12,7 @@ public class Group2D extends Instance{
 
     public Group2D(){
         Children = new ArrayTable<>();
+        Size = new Vector2(0, 0);
     }
 
     public Group2D(Instance ...children){
@@ -69,6 +70,7 @@ public class Group2D extends Instance{
             System.out.println("ERR: physics handler tried to move a Group2D without it having a valid Primary instance.");
             return;
         }
+        System.out.println(velpos);
         MoveTo(velpos);
     }
     

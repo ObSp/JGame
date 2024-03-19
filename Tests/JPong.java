@@ -107,10 +107,10 @@ public class JPong {
 
                 RightPaddle.Position = new Vector2(game.getScreenWidth()-30, (game.getScreenHeight()/2)-RightPaddle.Size.Y/2);
                 LeftPaddle.Position = new Vector2(10, (game.getScreenHeight()/2)-LeftPaddle.Size.Y/2);
-                Ball.FillColor = Color.black;
+                Ball.FillColor = Color.gray;
 
                 Task.Delay(2, ()->{
-                    Ball.FillColor = Color.white;
+                    Ball.FillColor = Color.black;
                 });
                 return;
             }
