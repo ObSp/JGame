@@ -21,7 +21,7 @@ public class DrawGroup extends JComponent {
                 inst.paint(g);
             }
         } catch (Exception e) {
-
+            
         }
     }
 }
