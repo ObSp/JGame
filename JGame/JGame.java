@@ -1,245 +1,191 @@
 package JGame;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import javax.swing.*;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import JGame.Instances.*;
-import JGame.Types.RaycastResult;
-import JGame.Types.Vector2;
+import JGame.Types.*;
 import lib.*;
-import lib.ArrayTable;
-
-
-class JGAME_DEFAULTS{
-    static double TICK_SPEED = .05;
-
-    //GRAVITY
-    static int GRAVITY = 1;
-    static int tickMult = 500;
-}
 
 class UTIL_VARS {
 }
 
-public class JGame {
-    private ArrayTable<Consumer<Double>> onTicks;
 
-    private ArrayTable<Instance> instances;
-
-    private ArrayTable<Consumer<KeyEvent>> keyEvents;
-
-    private ArrayTable<String> heldKeys;
-
-    private double tickspeed;
-
-    private JFrame gameWindow;
-
-    public String WindowTitle;
-
-    private draw drawUtil;
-
+public class JGame{
     public int TickCount = 0;
 
-    public int GlobalGravity = JGAME_DEFAULTS.GRAVITY;
+    public double TickSpeed = .005;
+    public double GlobalGravity = 1;
 
-    private int tickMult = JGAME_DEFAULTS.tickMult;
+    private double tickMult = 1000;
 
-    
 
-    //--CONSTRUCTORS--//
+    public String Title = "JGame Window";
+
+    private JFrame gameWindow;
+    private DrawGroup drawGroup;
+
+    private ArrayList<Consumer<Double>> onTicks;
+    public ArrayList<Instance> instances;
+    private ArrayList<Consumer<KeyEvent>> keyEvents;
+    private ArrayList<String> heldKeys;
+    private ArrayList<Runnable> clickEvents;
+
+    public ServiceContainer Services = new ServiceContainer(this);
+
+    //input vars
+    private boolean isMouse1Down = false;
+    @SuppressWarnings("unused")
+    private boolean isMouse2Down = false;
+
+    private void staticConstruct(){
+        onTicks = new ArrayList<>();
+        gameWindow = new JFrame(Title);
+        instances = new ArrayList<>();
+        keyEvents = new ArrayList<>();
+        heldKeys = new ArrayList<>();
+        drawGroup = new DrawGroup();
+        clickEvents = new ArrayList<>();
+    }
 
     public JGame(){
-        tickspeed = JGAME_DEFAULTS.TICK_SPEED;
-        StaticConstruct();
+        staticConstruct();
     }
 
-    public JGame(double tick_speed){
-        tickspeed = tick_speed;
-        StaticConstruct();
+    private void render(){
+        drawGroup.instances = instances;
+        gameWindow.repaint();
     }
 
-    private void StaticConstruct(){
-        onTicks = new ArrayTable<>();
-        instances = new ArrayTable<>();
-        keyEvents = new ArrayTable<>();
-        heldKeys = new ArrayTable<>();
-        drawUtil = new draw();
-    }
-
-    //--TICK FUCNTIONS--//
-    private void tick(double deltaTimeSeconds){
+    private void tick(double dtSeconds){
         TickCount++;
-        simPhysics(deltaTimeSeconds);
         render();
         for (Consumer<Double> ontick : onTicks){
-            ontick.accept(deltaTimeSeconds);
+            ontick.accept(dtSeconds);
         }
+        simPhysics(dtSeconds);
     }
 
-    public void onTick(Consumer<Double> ontickfunc){
-        onTicks.add(ontickfunc);
+    private double curSeconds(){
+        return ((double)System.currentTimeMillis())/1000;
     }
-
-
-    //--GAME LOOP FUNCTIONS--//
 
     private void run(){
-        double lastTick = getCurMillis();
+        detectInput();
+        render();
+        double lastTick = curSeconds();
 
         while (true) {
-            double curMillis = getCurMillis();
-            double dt = getDeltaTime(lastTick, curMillis)/1000;
-            if (dt>=tickspeed){
-                lastTick = curMillis;
-                tick(dt);
+            double curSecs = curSeconds();
+            if (curSecs-lastTick>=TickSpeed){
+                tick(curSecs-lastTick);
+                lastTick = curSecs;
             }
         }
     }
 
-    private double getDeltaTime(double t1, double t2){
-        return t2-t1;
-        
+
+    /**Initializes the {@code JGame} framework and returns a {@code Promise} that is resolved once
+     * initialization is complete.
+     * 
+     * <p>
+     * 
+     * <b>NOTE:</b> This method <i>must</i> be called before anything else related to JGame, as it constructs and initializes
+     * the {@code JFrame} window that is essential to many {@code JGame} functions.
+     * 
+     * <p>
+     * 
+     * <b>NOTE:</b> This should be called inside a {@code Promise.await(Promise)} function to ensure
+     * the framework has been initialized before running any code related to it.
+     * 
+     * @return : A promise that is resolved once initialization is complete
+     * 
+     * 
+     * @see Promise
+     * @see JFrame
+     */
+    public Promise start(){
+        return new Promise(self ->{
+            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+            gameWindow.getContentPane().setBackground(Color.white);
+
+            gameWindow.add(drawGroup);
+            gameWindow.setVisible(true);
+
+            task.wait(1);
+            self.resolve();
+
+            run();
+
+        });
     }
 
-    private double getCurMillis(){
-        return System.currentTimeMillis();
+    //adding a method to onTick
+    public void onTick(Consumer<Double> ontick){
+        onTicks.add(ontick);
     }
-
-
-    //--RENDERING--//
-    private void render(){
-        gameWindow.getContentPane().removeAll();
-        drawUtil.items = instances;
-        gameWindow.getContentPane().add(drawUtil);
-        gameWindow.getContentPane().repaint();
-    }
-
 
     public void addInstance(Instance x){
         instances.add(x);
+        x.Parent = this;
     }
 
     public void removeInstance(Instance x){
         instances.remove(x);
+        x.Parent = null;
+    }
+
+    public Instance[] getInstances(){
+        return utilFuncs.toInstArray(instances);
+    }
+
+    /**Returns the current JFrame window.<p>
+     * <b>NOTE:</b> This should only be used if root-level access to the window itself is needed. This should almost never be needed,
+     * so developer-implemented methods like addInstance are preferred.
+     * 
+     */
+    public JFrame getWindow(){
+        return gameWindow;
+    }
+
+    /**Returns a {@code Vector2} containing the {@code X} and {@code Y} size of the current {@code JFrame window}.
+     * 
+     * @return : The current size of the {@code JFrame window} as a {@code Vector2}
+     */
+    public Vector2 getTotalScreenSize(){
+        Dimension s = gameWindow.getSize();
+        return new Vector2((int)s.getWidth(), (int)s.getHeight());
+    }
+
+    public int getScreenHeight(){
+        return gameWindow.getContentPane().getHeight();
+    }
+
+    public int getScreenWidth(){
+        return gameWindow.getContentPane().getWidth();
+    }
+
+    public void setWindowTitle(String newTitle){
+        gameWindow.setTitle(newTitle);
+    }
+
+    public void setBackground(Color c){
+        gameWindow.getContentPane().setBackground(c);
     }
 
 
-    //--START--//
-    public Promise start(){
-        return new Promise((self)->{
-            
-            gameWindow = new JFrame(WindowTitle!=null ? WindowTitle : "JGame Window");
-
-            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gameWindow.setUndecorated(false);
-
-
-            new Thread(()->{
-                run();
-            }).start();
-
-            //init input
-            detectInput();
-            //pre-render, otherwise it won't show up??
-            render();
-
-            
-            gameWindow.setVisible(true);
-
-            self.resolve();
-        });
-    }
-
-
-    //--INSTANCE MANAGEMENT--//
-    public Instance getInstanceByName(String name){
-        for (Instance x : instances){
-            if (x.Name.equals(name)) return x;
-        }
-
-        throw new Error("Unable to find instance '"+name+"' in instance collection: "+instances);
-    }
-
-    private boolean blacklistContains(Instance[] blacklist, Instance x){
-        for (Instance j : blacklist){
-            if (j.equals(x)) return true;
-        }
-        return false;
-    }
-
-    //--RAYCASTING--//
-    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist, Vector2 raySize){
-        Box2D raycastBox = new Box2D();
-        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
-        raycastBox.Size = raySize;
-        raycastBox.Name = "raybox@Jgame";
-        raycastBox.FillColor = Color.blue;
-        raycastBox.setParent(this);
-
-        int dir = startVector2.X<finishX ? 1 : -1;
-        
-
-        int startX = dir == 1 ? startVector2.X : finishX;
-        int endX = dir == 1 ? finishX : startVector2.X;
-
-
-        for (int x = startX; x <= endX; x++){
-            
-            raycastBox.Position.X+= dir;
-            for (int i = 0; i < instances.getLength(); i++){
-                Instance inst = instances.get(i);
-                if (raycastBox.overlaps(inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
-                    raycastBox.Destroy();
-                    return new RaycastResult(inst, raycastBox.Position);
-                }
-            }
-        }
-        raycastBox.Destroy();
-        return null;
-    }
-
-    public RaycastResult RaycastY(Vector2 startVector2, int finishY, Instance[] blacklist, Vector2 raySize){
-        Box2D raycastBox = new Box2D();
-        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
-        raycastBox.Size = raySize;
-        raycastBox.FillColor = Color.green;
-        raycastBox.Name = "raybox@Jgame";
-        raycastBox.setParent(this);
-
-        int dir = startVector2.Y<finishY ? 1 : -1;
-        
-
-        int startY = dir == 1 ? startVector2.Y : finishY;
-        int endY = dir == 1 ? finishY : startVector2.Y;
-
-
-        for (int y = startY; y <= endY; y++){
-            
-            raycastBox.Position.Y+= dir;
-            for (int i = 0; i < instances.getLength(); i++){
-                Instance inst = instances.get(i);
-                if (raycastBox.overlaps(inst) && !blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
-                    raycastBox.Destroy();
-                    return new RaycastResult(inst, raycastBox.Position);
-                }
-            }
-        }
-        raycastBox.Destroy();
-        return null;
-    }
-
-
-    //--INPUT--//
-
+    //INPUT
     private void detectInput(){
         gameWindow.addKeyListener(new KeyListener() {
 
@@ -251,7 +197,7 @@ public class JGame {
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
                 //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
-                for (int i = 0; i<keyEvents.getLength(); i++){
+                for (int i = 0; i<keyEvents.size(); i++){
                     keyEvents.get(i).accept(e);
                 }
             }
@@ -263,8 +209,45 @@ public class JGame {
             }
             
         });
+
+        gameWindow.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                isMouse1Down = true;
+                for (Runnable r : clickEvents){
+                    r.run();
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                isMouse1Down = false;
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
     }
 
+    /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether
+     * keys that are typically associated with horizontal movement, such as the {@code A and D} keys
+     * are currently being pressed by the user, returning {@code 0} if no such keys are being pressed.
+     * 
+     * @return An int corresponding to the horizontal direction of keys currently pressed by the user
+     * 
+     * @see JGame#isKeyDown(int)
+     * @see JGame#getInputVertical()
+     */
     public int getInputHorizontal(){
         if (isKeyDown(KeyEvent.VK_A)){
             return -1;
@@ -274,6 +257,15 @@ public class JGame {
         return 0;
     }
 
+    /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether
+     * keys that are typically associated with vertical movement, such as the {@code W and S} keys
+     * are currently being pressed by the user, returning {@code 0} if no such keys are being pressed.
+     * 
+     * @return An int corresponding to the vertical direction of keys currently pressed by the user
+     * 
+     * @see JGame#isKeyDown(int)
+     * @see JGame#getInputHorizontal()
+     */
     public int getInputVertical(){
         if (isKeyDown(KeyEvent.VK_S)){
             return -1;
@@ -289,78 +281,140 @@ public class JGame {
         keyEvents.add(onpressfunc);
     }
 
+    public void onMouseClick(Runnable onclickfunc){
+        clickEvents.add(onclickfunc);
+    }
+
+
+    /**Returns whether or not the Key corresponding to the provided {@code KeyCode} is currently being pressed by the user.
+     * 
+     * @param KeyCode : The KeyCode of the Key to be checked
+     * @return Whether or not the Key is currently being pressed by the user
+     * 
+     * @see KeyEvent
+     */
     public boolean isKeyDown(int KeyCode){
         String keyText = KeyEvent.getKeyText(KeyCode);
 
         return heldKeys.indexOf(keyText)>-1 ? true : false;
     }
 
-    public Vector2 getTotalScreenSize(){
-        Dimension size = gameWindow.getContentPane().getSize();
-        return new Vector2((int) size.getWidth(),(int) size.getHeight());
+    public boolean isMouseDown(){
+        return isMouse1Down;
     }
 
-    public int getScreenHeight(){
-        return gameWindow.getContentPane().getHeight();
-    }
-
-    public int getScreenWidth(){
-        return gameWindow.getContentPane().getWidth();
-    }
-
-
-
-
-    //--CHANGE FUNCTIONS--//
-    /**
+        //--RAYCASTING--//
+    /**Shoots a ray from the {@code X} coordinate of Vector2 {@code startVector2} to finishX,
+     * checking for collisions each {@code Raystep} and returning a new {@code RaycastResult} if
+     * a collision is detected.
+     * <p>
+     * If no collision is detected on the specified path, this function simply returns {@code null}
      * 
-     * @param newtick : The new tick rate
+     * <p>
+     * <b>NOTE:</b> The "ray" is in reality a {@code Box2D} instance, hence the required {@code raySize} parameter.
+     * 
+     * @param startVector2 : The start position of the ray, as a {@code Vector2}
+     * @param finishX : The end X coordinate of the ray
+     * @param blacklist : The list of {@code Instances} to be ignored in the case that they collide with the ray
+     * @param raySize : The size of the ray box, as a Vector2
+     * @return A new RaycastResult or null, depending on whether a collision was detected or not
+     * 
+     * @see RaycastResult
+     * @see Vector2
+     * @see Instance
+     * @see Box2D
      */
-    public void setTickRate(double newtick){
-        tickspeed = newtick;
-    }
+    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist, Vector2 raySize){
+        Box2D raycastBox = new Box2D();
+        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.Size = raySize;
+        raycastBox.Name = "raybox@Jgame";
+        raycastBox.FillColor = Color.blue;
+        addInstance(raycastBox);
 
-    public Container getContentPane(){
-        return gameWindow.getContentPane();
-    }
-
-    public JFrame getWindow(){
-        return gameWindow;
-    }
-
-    /**BROKEN */
-    public void setFullscreen(){
-        gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        gameWindow.setUndecorated(true);
+        int dir = startVector2.X<finishX ? 1 : -1;
         
-    }
-    /**BROKEN */
-    public void setBorderedFullScreen(){
-        gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        gameWindow.setUndecorated(false);
-    }
 
-    public void setWindowTitle(String newtitle){
-        gameWindow.setTitle(newtitle);
-    }
+        int startX = dir == 1 ? startVector2.X : finishX;
+        int endX = dir == 1 ? finishX : startVector2.X;
 
 
-    //--MISC FUNCTIONS--//
-    public void quit(){
-        gameWindow.dispose();
+        for (int x = startX; x <= endX; x++){
+            
+            raycastBox.Position.X+= dir;
+            for (int i = 0; i < instances.size(); i++){
+                Instance inst = instances.get(i);
+                if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                    removeInstance(raycastBox);
+                    return new RaycastResult(inst, raycastBox.Position);
+                }
+            }
+        }
+        removeInstance(raycastBox);
+        return null;
+    }
+
+    /**Shoots a ray from the {@code Y} coordinate of Vector2 {@code startVector2} to finishY,
+     * checking for collisions each {@code Raystep} and returning a new {@code RaycastResult} if
+     * a collision is detected.
+     * <p>
+     * If no collision is detected on the specified path, this function simply returns {@code null}
+     * 
+     * <p>
+     * <b>NOTE:</b> The "ray" is in reality a {@code Box2D} instance, hence the required {@code raySize} parameter.
+     * 
+     * @param startVector2 : The start position of the ray, as a {@code Vector2}
+     * @param finishY : The end Y coordinate of the ray
+     * @param blacklist : The list of {@code Instances} to be ignored in the case that they collide with the ray
+     * @param raySize : The size of the ray box, as a Vector2
+     * @return A new RaycastResult or null, depending on whether a collision was detected or not
+     * 
+     * @see RaycastResult
+     * @see Vector2
+     * @see Instance
+     * @see Box2D
+     */
+    public RaycastResult RaycastY(Vector2 startVector2, int finishY, Instance[] blacklist, Vector2 raySize){
+        Box2D raycastBox = new Box2D();
+        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.Size = raySize;
+        raycastBox.FillColor = Color.green;
+        raycastBox.Name = "raybox@Jgame";
+        addInstance(raycastBox);
+        int dir = startVector2.Y<finishY ? 1 : -1;
+        
+
+        int startY = dir == 1 ? startVector2.Y : finishY;
+        int endY = dir == 1 ? finishY : startVector2.Y;
+
+
+        for (int y = startY; y <= endY; y++){
+            
+            raycastBox.Position.Y+= dir;
+            for (int i = 0; i < instances.size(); i++){
+                Instance inst = instances.get(i);
+                if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) && !inst.Name.equals("raybox@Jgame")){
+                    removeInstance(raycastBox);
+                    return new RaycastResult(inst, raycastBox.Position);
+                }
+            }
+        }
+        removeInstance(raycastBox);
+        return null;
     }
 
 
 
     private void simPhysics(double dt){
-        for (int i = 0; i < instances.getLength(); i++){
+        for (int i = 0; i < instances.size(); i++){
             Instance inst = instances.get(i);
 
-            if (inst.Anchored) continue;
+            if (inst==null || inst.Anchored) continue;
 
             Vector2 vel = inst.Velocity.clone();
+            vel.X *= dt*tickMult;
+            vel.Y *= dt*tickMult*-1;
             vel.Y += GlobalGravity*(dt*tickMult);
-
 
             //                   Right  Left
             int Xdir = vel.X > -1 ? 1 : -1;
@@ -375,4 +429,27 @@ public class JGame {
         }
     }
 
+}
+
+
+
+class utilFuncs{
+    static Instance[] toInstArray(ArrayList<Instance> x){
+        Instance[] arr = new Instance[x.size()];
+        for (int i = 0; i<x.size(); i++){
+            arr[i] = x.get(i);
+        }
+        return arr;
+    }
+
+    static boolean blacklistContains(Instance[] blacklist, Instance x){
+        for (Instance j : blacklist){
+            if (j.equals(x)) return true;
+        }
+        return false;
+    }
+
+    static void invertY(Vector2 v){
+        v.Y*=-1;
+    }
 }

@@ -4,7 +4,15 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Promise {
-    int state;
+
+    /**The current state of the promise, either 0,1 or 2. This is only used internally in the
+     * after(), andThen(), and onReject() methods to determine if the promise is still active.
+     * 
+     * @see Promise#andThen(varargExecutorParam)
+     * @see Promise#onReject(varargExecutorParam)
+     */
+    protected int state;
+
     private ArrayTable<varargExecutorParam> andThens;
     private ArrayTable<varargExecutorParam> catches;
     private ArrayTable<varargExecutorParam> finallies;
@@ -89,7 +97,7 @@ public class Promise {
     }
 
     /**Adds the function to a list of functions that will be run when the promise is resolved. 
-     * If the promise is already resolved, the onresolve function will be immediately executed.
+     * If the promise is already resolved, the onresolve function will be executed immediately.
      * 
      * @param onresolve : The function to be run on the resolve of the promise
      * @return A new promise
@@ -103,7 +111,7 @@ public class Promise {
 
 
     /**Adds the function to a list of functions that will be run when the promise is rejected. 
-     * If the promise is already rejected, the onreject function will be immediately executed.
+     * If the promise is already rejected, the onreject function will be executed immediately.
      * 
      * @param onreject : The function to be run on the resolve of the promise
      * @return A new promise
@@ -118,16 +126,16 @@ public class Promise {
     /**Adds the function to a list of functions that will be run when the promise the promise is either `resolved or rejected`. 
      * If the promise isn't active anymore, it will imeediately run the function.
      * 
-     * @param onreject : The function to be run on the resolve of the promise
+     * @param onfinally : The function to be run when the promise is no longer active
      * @return A new promise
      */
-    public Promise after(varargExecutorParam onfinnaly){
+    public Promise after(varargExecutorParam onfinally){
         if (state==1 | state==2) {
-            onfinnaly.run(state==2 ? "resolved" : "rejected", callArgs); 
+            onfinally.run(state==2 ? "resolved" : "rejected", callArgs); 
             return new Promise(null); 
         }
 
-        finallies.add(onfinnaly);
+        finallies.add(onfinally);
         return new Promise(null); 
     }
 

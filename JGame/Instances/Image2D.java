@@ -1,27 +1,39 @@
 package JGame.Instances;
 
-import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 
 import JGame.Types.Vector2;
 
-public class Image2D extends Instance{
-    public String ImagePath;
+import java.awt.*;
 
+public class Image2D extends Instance{
+    public String ImagePath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\JGame\\Files\\IMAGEDEFAULT.png";
     public Image2D(){
         Name = "Image";
     }
 
 
     @Override
-    public void render(Graphics2D g) {
+    public void paint(Graphics g) {
         if (ImagePath==null) return;
 
-        ImageIcon image = new ImageIcon(ImagePath);
+        BufferedImage img = null;
 
-        Parent.getContentPane().add(new JLabel(image));
+        try {
+            img = ImageIO.read(new File(ImagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (img == null) return;
+        
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.drawImage(img, Position.X, (Parent.getScreenHeight()-Position.Y)-Size.Y, Size.X, Size.Y, null);
     }
 
     

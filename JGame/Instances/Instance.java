@@ -1,7 +1,7 @@
 package JGame.Instances;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
@@ -10,38 +10,93 @@ import JGame.Types.*;
 import lib.ArrayTable;
 
 
-
+/**An abstract class that all {@code JGame} classes are a subclass of. <p>
+ * It contains basic methods, like Instance.Destroy() that are needed when working with basic rendering objects.
+ * There is currently only one constructor present, as the instance variables are intended to be set after creating the object.<p>
+ * 
+ * The {@code Parent} property should only be set once <b><i>all inital properties have been set</i></b>, as events and rendering will start as soon
+ * as this object has been added to a JGame's rendering list.<p>
+ * In addition, the {@code Parent} property should <b>never</b> be set by the user.
+ * Instead, the intended use is to call {@code JGame.addInstance(this)}.
+ * 
+ */
 public abstract class Instance extends JComponent {
-    public Vector2 Position;
-    public Vector2 Size;
-    public String Name;
+    /**The position of the object in 2D space.<p>
+     * <b>NOTE:</b> This is the position of the <b>top-left corner</b> of the object, <i> not</i> the middle.
+     * 
+     */
+    public Vector2 Position = new Vector2(0, 0);
+    public Vector2 Size = new Vector2(100, 100);
+
+    /**A non-unique identifier that can be used to access this object through the {@code Parent}.
+     * 
+     */
+    public String Name = "Instance";
     public JGame Parent;
+
+    /**What color this object will be drawn as
+     * 
+     */
     public Color FillColor = Color.white;
+
+    /**The number of pixels of border that will surround this instance.
+     * 
+     */
     public int BorderSizePixel = 0;
+
+    /**The color of this instance's outline. Will only be applied if {@code BorderSizePixel} is greater than 0.
+     * 
+     */
     public Color BorderColor = Color.black;
+
+    /**A list of non-unique strings that can be used to gather collections of objects
+     * 
+     */
     public ArrayTable<String> Tags = new ArrayTable<>();
+
+    /**By how much this object will be displaced every tick. <p>
+     * <b>NOTE:</b> This will only be applied on non-anchored instances.
+     * 
+     */
     public Vector2 Velocity = new Vector2(0, 0);
+
+    /**Controls whether or not other solid objects can pass through this object
+     * 
+     */
     public boolean Solid = false;
+
+    /**Controls whether this instance will be affected by physics
+     * 
+     */
     public boolean Anchored = true;
 
-    /**Sets the "Parent" property of Instance {@code this} to the JGame newparent and adds {@code this} into it's render hierarchy
+    /**Whether an instance will be repainted every frame. This is useful for background images that don't change and therefore shouldn't
+     * tank performance by being painted every frame but should still be shown
      * 
-     * @param newParent : The new JGame parent
      */
-    public void setParent(JGame newParent){
-        Parent = newParent;
-        Parent.addInstance(this);
-    }
+    public boolean Static = false;
+    public boolean wasDrawn = false;
 
-    /**Removes Instance {@code this} from the parent's render hierarchy and sets the {@code Parent} property to {@code null}
+    /**Sets {@code this.Parent} to null, removes itself from the rendering list of {@code this.Parent}, and sets all instance variables to null
      * 
      */
     public void Destroy(){
         Parent.removeInstance(this);
-        Parent = null;
+        Position = null;
+        Size = null;
+        Name = null;
+        FillColor = null;
+        BorderSizePixel = 0;
+        BorderColor = null;
+        Tags = null;
+        Velocity = null;
+        Solid = false;
+        Anchored = false;
     }
 
-        /**Adds the tag {@code tag} to this Instance's tags
+
+
+    /**Adds the tag {@code tag} to this Instance's tags
      * 
      * @param tag The tag to be added to this instance
      */
@@ -51,14 +106,27 @@ public abstract class Instance extends JComponent {
         Tags.add(tag);
     }
 
+    /**Removes the tag {@code tag} from this Instance's tags
+     * 
+     * @param tag The tag to be removed from this instance
+     */
     public void removeTag(String tag){
         Tags.remove(tag);
     }
-
+    /**Returns whether or not the Tag {@code tag} is present in the list of this instance's tags
+     * 
+     * @param tag : The tag to check for
+     * @return Whether or not the tag is present in this instance's list of tags
+     */
     public boolean hasTag(String tag){
         return Tags.indexOf(tag) != -1 ? true : false;
     }
 
+
+    /**Returns a shallow array copy of this instance's tags
+     * 
+     * @return A String[] array of this instance's tags
+     */
     public String[] getTags(){
         return Tags.toArray();
     }
@@ -151,11 +219,29 @@ public abstract class Instance extends JComponent {
     }
 
 
-    abstract public void render(Graphics2D g);
+    abstract public void paint(Graphics g);
     
     /**An internal method used by the physics handler to move instances, letting them handle the new position on their own
      * 
      * @param velPos : The position to move to
      */
-    abstract public void setPosition(Vector2 velPos);
+    public void setPosition(Vector2 velPos){
+        Position = velPos;
+    };
+
+    @Override
+    public String toString(){
+        return Name;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (other==this) return true;
+
+        if (!(other instanceof Instance)) return false;
+
+        Instance obj = (Instance) other;
+
+        return Name.equals(obj.Name) && Position.equals(obj.Position) && Size.equals(obj.Size) && FillColor.equals(obj.FillColor);
+    }
 }

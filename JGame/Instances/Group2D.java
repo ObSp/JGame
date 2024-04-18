@@ -1,6 +1,6 @@
 package JGame.Instances;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import JGame.Types.Vector2;
 import lib.*;
@@ -60,7 +60,7 @@ public class Group2D extends Instance{
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void paint(Graphics g) {
         return;
     }
 
