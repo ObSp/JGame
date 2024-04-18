@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.ArrayTable;
+import JGamePackage.lib.Signal;
 
 
 /**An abstract class that all {@code JGame} classes are a subclass of. <p>
@@ -76,6 +77,10 @@ public abstract class Instance extends JComponent {
      */
     public boolean Static = false;
     public boolean wasDrawn = false;
+
+    /**A signal fired when the user left-clicks on this Instance
+     */
+    public Signal<Integer, Integer> MouseButton1Click = new Signal<>();
 
     /**Sets {@code this.Parent} to null, removes itself from the rendering list of {@code this.Parent}, and sets all instance variables to null
      * 
@@ -216,6 +221,13 @@ public abstract class Instance extends JComponent {
     public boolean overlaps(Instance other){
         return Position.X < other.Position.X+ other.Size.X && Position.X + Size.X > other.Position.X && 
         Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
+    }
+
+    public boolean isCoordinateInBounds(Vector2 coord){
+        int x = coord.X;
+        int y = coord.Y;
+
+        return ((x >= Position.X) && (y >= Position.Y) && (x < Position.X + Size.X) && (y < Position.Y + Size.Y));
     }
 
 

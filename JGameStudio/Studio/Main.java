@@ -15,14 +15,17 @@ public class Main {
 
     static JGame game = new JGame();
     public static void main(String[] args) {
-        
+        Promise.await(game.start());
         
         controlDisplay.init(300,500);
-        Promise.await(game.start());
 
-        Box2D test = new Box2D();
-        test.Size = new Vector2(300,300);
-        test.Position = new Vector2(0, 0);
-        test.FillColor = Color.red;
+        controlDisplay.NewBox.Connect((___,__)->{
+            Box2D test = new Box2D();
+            test.Size = new Vector2(300,300);
+            test.Position = new Vector2(0, 0);
+            test.FillColor = Color.red;
+            test.Anchored = false;
+            game.addInstance(test);
+        });
     }
 }
