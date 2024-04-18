@@ -1,6 +1,6 @@
-package JGame.Types;
+package JGamePackage.JGame.Types;
 
-import JGame.Instances.*;
+import JGamePackage.JGame.Instances.*;
 
 public class RaycastResult {
     public Instance HitInstance;

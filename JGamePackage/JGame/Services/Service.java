@@ -1,6 +1,6 @@
-package JGame.Services;
+package JGamePackage.JGame.Services;
 
-import JGame.JGame;
+import JGamePackage.JGame.JGame;
 
 public class Service {
     protected JGame Parent;

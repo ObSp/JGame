@@ -1,13 +1,13 @@
-package JGame.Instances;
+package JGamePackage.JGame.Instances;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import JGame.*;
-import JGame.Types.*;
-import lib.ArrayTable;
+import JGamePackage.JGame.*;
+import JGamePackage.JGame.Types.*;
+import JGamePackage.lib.ArrayTable;
 
 
 /**An abstract class that all {@code JGame} classes are a subclass of. <p>

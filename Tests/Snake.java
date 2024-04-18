@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import JGame.*;
-import JGame.Instances.*;
-import JGame.Types.*;
-import lib.*;
+import JGamePackage.JGame.*;
+import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.*;
+import JGamePackage.lib.*;
 
 public class Snake {
     static JGame game = new JGame();

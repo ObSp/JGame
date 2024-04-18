@@ -1,9 +1,9 @@
-package JGame.Instances;
+package JGamePackage.JGame.Instances;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import JGame.Types.Vector2;
+import JGamePackage.JGame.Types.Vector2;
 
 public class Box2D extends Instance {
 

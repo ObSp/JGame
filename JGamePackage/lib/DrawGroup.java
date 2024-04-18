@@ -1,11 +1,11 @@
-package lib;
+package JGamePackage.lib;
 
 import java.util.ArrayList;
 import java.awt.*;
 
 import javax.swing.JComponent;
 
-import JGame.Instances.Instance;
+import JGamePackage.JGame.Instances.Instance;
 
 public class DrawGroup extends JComponent {
     public ArrayList<Instance> instances;

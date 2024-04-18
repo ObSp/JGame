@@ -1,8 +1,8 @@
-package lib;
+package JGamePackage.lib;
 
 import javax.swing.JFrame;
 
-import JGame.Instances.Instance;
+import JGamePackage.JGame.Instances.Instance;
 
 import java.awt.*;
 import java.util.ArrayList;

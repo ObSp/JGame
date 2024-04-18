@@ -1,8 +1,8 @@
-package JGame.Services;
+package JGamePackage.JGame.Services;
 
 import java.io.FileReader;
 
-import JGame.JGame;
+import JGamePackage.JGame.JGame;
 
 public class ParserService extends Service {
     

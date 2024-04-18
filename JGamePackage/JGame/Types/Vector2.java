@@ -1,4 +1,4 @@
-package JGame.Types;
+package JGamePackage.JGame.Types;
 
 
 /**An object representing a point in 2D space

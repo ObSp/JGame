@@ -1,7 +1,7 @@
-package JGame.Types;
+package JGamePackage.JGame.Types;
 
-import JGame.JGame;
-import JGame.Services.*;
+import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Services.*;
 
 public class ServiceContainer {
     @SuppressWarnings("unused")

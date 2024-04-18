@@ -1,9 +1,9 @@
-package JGame.Instances;
+package JGamePackage.JGame.Instances;
 
 import java.awt.Graphics;
 
-import JGame.Types.Vector2;
-import lib.*;
+import JGamePackage.JGame.Types.Vector2;
+import JGamePackage.lib.*;
 
 public class Group2D extends Instance{
 

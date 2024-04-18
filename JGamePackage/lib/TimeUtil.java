@@ -1,4 +1,4 @@
-package lib;
+package JGamePackage.lib;
 
 public class TimeUtil {
     public static void sleep(double seconds){

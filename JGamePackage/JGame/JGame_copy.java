@@ -1,20 +1,19 @@
-package JGame;
+package JGamePackage.JGame;
 
 import java.util.function.Consumer;
 
 import javax.swing.*;
+
+import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.RaycastResult;
+import JGamePackage.JGame.Types.Vector2;
+import JGamePackage.lib.*;
 
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import JGame.Instances.*;
-import JGame.Types.RaycastResult;
-import JGame.Types.Vector2;
-import lib.*;
-import lib.ArrayTable;
 
 
 class JGAME_DEFAULTS{

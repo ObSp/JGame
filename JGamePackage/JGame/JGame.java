@@ -1,9 +1,13 @@
-package JGame;
+package JGamePackage.JGame;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import javax.swing.*;
+
+import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.*;
+import JGamePackage.lib.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,10 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import JGame.Instances.*;
-import JGame.Types.*;
-import lib.*;
 
 class UTIL_VARS {
 }

@@ -1,4 +1,4 @@
-package lib;
+package JGamePackage.lib;
 
 /**A library of time manipulation functions
  * 

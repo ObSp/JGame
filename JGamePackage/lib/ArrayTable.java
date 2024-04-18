@@ -1,4 +1,4 @@
-package lib;
+package JGamePackage.lib;
 
 
 import java.util.Iterator;

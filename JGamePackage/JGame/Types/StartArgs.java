@@ -1,4 +1,4 @@
-package JGame.Types;
+package JGamePackage.JGame.Types;
 
 import java.awt.Color;
 
