@@ -55,7 +55,7 @@ public class Group2D extends Instance{
     }
 
     public Instance[] GetChildren(){
-        final Instance[] arr = Children.toArray();
+        Instance[] arr = Children.toArray();
         return arr;
     }
 

@@ -266,7 +266,7 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
      * @return
      */
     public E[] toArray(){
-        return SELF_TABLE.clone();
+        return (E[]) SELF_TABLE.clone();
     }
 
 

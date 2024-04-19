@@ -19,13 +19,16 @@ public class Main {
         
         controlDisplay.init(300,500);
 
-        controlDisplay.NewBox.Connect((___,__)->{
+        controlDisplay.Instantiate.Connect((N,A)->{
             Box2D test = new Box2D();
             test.Size = new Vector2(300,300);
             test.Position = new Vector2(0, 0);
             test.FillColor = Color.red;
-            test.Anchored = false;
             game.addInstance(test);
+        });
+
+        controlDisplay.updateProperties.Connect((instance, props)->{
+            System.out.println(instance);
         });
     }
 }
