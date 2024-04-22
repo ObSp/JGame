@@ -162,6 +162,13 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
         SELF_TABLE[i] = o;
     }
 
+    @SuppressWarnings("unchecked") 
+    public void add(E... items){
+        for (E o : items){
+            this.add(o);
+        }
+    }
+
     /**Returns the index of the first occurence of Object o in this ArrayTable
      * 
      * @param o

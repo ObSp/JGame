@@ -226,6 +226,14 @@ public class JGame{
                 for (Runnable r : clickEvents){
                     r.run();
                 }
+
+                //firing MouseButton1Click events in instances
+
+                Instance target = getMouseTarget();
+                if (target != null){
+                    Vector2 mouseLoc = getMouseLocation();
+                    target.MouseButton1Click.Fire(mouseLoc.X, mouseLoc.Y);
+                }
             }
 
             @Override
@@ -258,6 +266,11 @@ public class JGame{
         }
 
         return null;
+    }
+
+    public Vector2 getMouseLocation(){
+        Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+        return new Vector2(mouseLoc.getX(), mouseLoc.getY());
     }
 
     /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether

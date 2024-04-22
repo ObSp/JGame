@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -14,11 +17,13 @@ import javax.swing.*;
 import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.ArrayDictionary;
+import JGamePackage.lib.ArrayTable;
 
 public class Display extends JFrame {
     
     public Signal<Void, Void> Instantiate = new Signal<>();
     public Signal<Instance,Void> RequestDestroy = new Signal<>();
+    public Signal<Void, Void> ExportRequest = new Signal<>();
 
     public Instance currentSelected;
 
@@ -36,6 +41,10 @@ public class Display extends JFrame {
     public JTextField colorChoose;
     public JButton exportButton;
 
+    
+
+    private ArrayTable<JTextField> textInputs = new ArrayTable<>();
+
     public int width;
     public int height;
 
@@ -49,6 +58,22 @@ public class Display extends JFrame {
         this.setLayout(l);
 
         this.setIconImage(new ImageIcon("JGameStudio\\Assets\\icon.png").getImage());
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if (e.getID() != KeyEvent.KEY_PRESSED || e.getKeyCode() != KeyEvent.VK_ENTER) return false;
+
+                boolean focusedOnATextfield = false;
+                for (JTextField v : textInputs){
+                    if (v.hasFocus()) focusedOnATextfield = true;
+                }
+
+                if (focusedOnATextfield) updateProps();
+
+                return false;
+            }
+        });
 
         this.setAlwaysOnTop(true);
         this.setVisible(true);
@@ -124,6 +149,16 @@ public class Display extends JFrame {
             buttonPanel.add(newInstanceButton, bpGBC);
             bpGBC.gridx++;
             buttonPanel.add(destroy, bpGBC);
+            bpGBC.gridx++;
+
+            JButton export = new JButton("Export");
+            destroy.setFont(new Font("Arial", Font.BOLD, 15));
+            export.setHorizontalAlignment(SwingConstants.CENTER);
+            export.setFocusable(false);
+            buttonPanel.add(export);
+    
+            this.exportButton = export;
+    
 
             bpGBC.gridy += 50;
 
@@ -193,7 +228,10 @@ public class Display extends JFrame {
     
             components.add(propertiesContainer);
 
+            this.textInputs.add(size,pos,color);
+
         }
+
         showComponents();
     }
 
@@ -247,7 +285,6 @@ class Util {
 
         s = s.replace(" ", "").replace("(", "").replace(")", "");
 
-        System.out.println(s);
 
         String[] split = s.split(",");
 

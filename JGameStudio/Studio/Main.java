@@ -14,6 +14,8 @@ public class Main {
     static Display controlDisplay = new Display("Control");
 
     static JGame game = new JGame();
+
+    static Exporter export = new Exporter(game);
     public static void main(String[] args) {
         Promise.await(game.start());
         
@@ -43,6 +45,10 @@ public class Main {
 
         game.onMouseClick(()->{
             controlDisplay.setCurrentSelected(game.getMouseTarget());
+        });
+
+        controlDisplay.ExportRequest.Connect((d,k)->{
+            export.ExportInstancesAsJSON();
         });
     }
 }
