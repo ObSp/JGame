@@ -250,9 +250,10 @@ public abstract class Instance extends JComponent {
     public boolean equals(Object other){
         if (other==this) return true;
 
-        if (!(other instanceof Instance)) return false;
+        if (!(other instanceof Instance) || this.Name == null) return false;
 
         Instance obj = (Instance) other;
+
 
         return Name.equals(obj.Name) && Position.equals(obj.Position) && Size.equals(obj.Size) && FillColor.equals(obj.FillColor);
     }

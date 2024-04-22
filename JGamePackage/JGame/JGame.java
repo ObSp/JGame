@@ -11,6 +11,8 @@ import JGamePackage.lib.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -29,7 +31,7 @@ public class JGame{
     private double tickMult = 1000;
 
 
-    public String Title = "JGame Window";
+    public String Title = "JGame";
 
     private JFrame gameWindow;
     private DrawGroup drawGroup;
@@ -119,6 +121,8 @@ public class JGame{
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
             gameWindow.getContentPane().setBackground(Color.white);
+
+            gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Files\\icon.png").getImage());
 
             gameWindow.add(drawGroup);
             gameWindow.setVisible(true);
@@ -237,6 +241,23 @@ public class JGame{
             public void mouseExited(MouseEvent e) {
             }
         });
+    }
+
+
+    /**Returns the current {@code Instance} the mouse is hovering over,
+     * returning {@code null} if it's not hovering over anything.
+     * 
+     * @return The Instance the mouse is currently focused on
+     */
+    public Instance getMouseTarget(){
+        Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+        for (Instance i : instances){
+            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x, mouseLoc.y))){
+                return i;
+            }
+        }
+
+        return null;
     }
 
     /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether

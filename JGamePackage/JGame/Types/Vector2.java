@@ -22,6 +22,24 @@ public class Vector2 {
     /**Shorthand for writing Vector2(0,-1). */
     public static Vector2 down = new Vector2(0, -1);
 
+    /**Converts a {@code String} to a {@code Vector2}. The input string must follow this format:
+     * (X, Y). Note that whitespace doesn't matter.
+     * 
+     * @param str : The input string, following the format specified above
+     * @return A new Vector2
+     */
+    public static Vector2 fromString(String str){
+        String stripped = str.replace("(", "").replace(")", "").replace(" ", "");
+
+        String[] split = stripped.split(",");
+
+        int xCoord = Integer.parseInt(split[0]);
+        int yCoord = Integer.parseInt(split[1]);
+
+
+        return new Vector2(xCoord, yCoord);
+    }
+
 
     /**Creates a new Vector2 with the specified X and Y coordinate points as ints.
      * 

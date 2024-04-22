@@ -25,10 +25,24 @@ public class Main {
             test.Position = new Vector2(0, 0);
             test.FillColor = Color.red;
             game.addInstance(test);
+
+            controlDisplay.setCurrentSelected(test);
         });
 
         controlDisplay.updateProperties.Connect((instance, props)->{
-            System.out.println(instance);
+            instance.Position = (Vector2) props.get("Position");
+            instance.Size = (Vector2) props.get("Size");
+            instance.FillColor = (Color) props.get("Color");
+        });
+
+        controlDisplay.RequestDestroy.Connect((inst, __)->{
+            if (inst == null) return;
+            inst.Destroy(); 
+            controlDisplay.setCurrentSelected(null);
+        });
+
+        game.onMouseClick(()->{
+            controlDisplay.setCurrentSelected(game.getMouseTarget());
         });
     }
 }
