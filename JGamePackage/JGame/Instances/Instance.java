@@ -80,7 +80,23 @@ public abstract class Instance extends JComponent {
 
     /**A signal fired when the user left-clicks on this Instance
      */
-    public Signal<Integer, Integer> MouseButton1Click = new Signal<>();
+    public Signal<Integer, Integer> MouseButton1Down = new Signal<>();
+
+    /**A signal fired when the user left-clicks on this Instance
+     */
+    public Signal<Integer, Integer> MouseButton1Up = new Signal<>();
+
+    /**A signal fired when the mouse pointer enters this Instance
+     */
+    public Signal<Integer, Integer> MouseEntered = new Signal<>();
+
+    /**A signal fired when the mouse pointer exits this Instance
+     */
+    public Signal<Integer, Integer> MouseExited = new Signal<>();
+
+    public boolean inAir = false;
+    public double timeInAir = 0.0;
+
 
     /**Sets {@code this.Parent} to null, removes itself from the rendering list of {@code this.Parent}, and sets all instance variables to null
      * 

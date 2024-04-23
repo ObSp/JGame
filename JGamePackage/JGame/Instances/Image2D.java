@@ -33,7 +33,7 @@ public class Image2D extends Instance{
         
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.drawImage(img, Position.X, (Parent.getScreenHeight()-Position.Y)-Size.Y, Size.X, Size.Y, null);
+        g2.drawImage(img, Position.X, Parent.getScreenHeight()-Position.Y, Size.X, Size.Y, null);
     }
 
     

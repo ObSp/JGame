@@ -3,7 +3,7 @@ package JGamePackage.JGame.Instances;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class Circle2D extends Instance {
+public class Oval2D extends Instance {
 
     @Override
     public void paint(Graphics g) {

@@ -24,7 +24,7 @@ public class Box2D extends Instance {
 
         g2.setColor(FillColor);
         g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);
-        //g2.fillRect(Position.X, (Parent.getScreenHeight()-Position.Y)-Size.Y, Size.X, Size.Y);
+        //g2.fillRect(Position.X, Parent.getScreenHeight()-Position.Y, Size.X, Size.Y);
     }
 
     @Override

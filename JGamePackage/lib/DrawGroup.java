@@ -15,13 +15,18 @@ public class DrawGroup extends JComponent {
     }
 
     @Override
+    public void paintComponent(Graphics g){
+        System.out.println("drawin");
+    }
+
+    @Override
     public void paint(Graphics g){
-        try {
-            for (Instance inst : instances){
-                inst.paint(g);
+        //try {
+            for (int i = 0; i < instances.size(); i++){
+                ((JComponent) instances.get(i)).paint(g);
             }
-        } catch (Exception e) {
+        //} catch (Exception e) {
             
-        }
+        //}
     }
 }

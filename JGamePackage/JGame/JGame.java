@@ -25,10 +25,9 @@ class UTIL_VARS {
 public class JGame{
     public int TickCount = 0;
 
-    public double TickSpeed = .005;
-    public double GlobalGravity = 1;
+    public double TickSpeed = .016; //exactly 60 fps
 
-    private double tickMult = 1000;
+    public double tickMult = 1000;
 
 
     public String Title = "JGame";
@@ -74,7 +73,7 @@ public class JGame{
         for (Consumer<Double> ontick : onTicks){
             ontick.accept(dtSeconds);
         }
-        simPhysics(dtSeconds);
+        Services.PhysicsService.runPhysics(dtSeconds);
     }
 
     private double curSeconds(){
@@ -232,21 +231,41 @@ public class JGame{
                 Instance target = getMouseTarget();
                 if (target != null){
                     Vector2 mouseLoc = getMouseLocation();
-                    target.MouseButton1Click.Fire(mouseLoc.X, mouseLoc.Y);
+                    target.MouseButton1Down.Fire(mouseLoc.X, mouseLoc.Y);
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 isMouse1Down = false;
+
+                //firing MouseButton1Click events in instances
+
+                Instance target = getMouseTarget();
+                if (target != null){
+                    Vector2 mouseLoc = getMouseLocation();
+                    target.MouseButton1Up.Fire(mouseLoc.X, mouseLoc.Y);
+                }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                for (Instance inst : instances){
+                    if (e.getSource() == inst){
+                        Vector2 mouseLoc = getMouseLocation();
+                        inst.MouseEntered.Fire(mouseLoc.X, mouseLoc.Y);
+                    }
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
+                for (Instance inst : instances){
+                    if (e.getSource() == inst){
+                        Vector2 mouseLoc = getMouseLocation();
+                        inst.MouseExited.Fire(mouseLoc.X, mouseLoc.Y);
+                    }
+                }
             }
         });
     }
@@ -435,32 +454,6 @@ public class JGame{
         }
         removeInstance(raycastBox);
         return null;
-    }
-
-
-
-    private void simPhysics(double dt){
-        for (int i = 0; i < instances.size(); i++){
-            Instance inst = instances.get(i);
-
-            if (inst==null || inst.Anchored) continue;
-
-            Vector2 vel = inst.Velocity.clone();
-            vel.X *= dt*tickMult;
-            vel.Y *= dt*tickMult*-1;
-            vel.Y += GlobalGravity*(dt*tickMult);
-
-            //                   Right  Left
-            int Xdir = vel.X > -1 ? 1 : -1;
-            //                    Down  Up
-            int Ydir = vel.Y > -1 ? 1 : -1;
-
-            if ((Xdir == -1 && inst.collidingLeft()) || (Xdir == 1 && inst.collidingRight())) vel.X = 0;
-
-            if ((Ydir == -1 && inst.collidingTop()) || (Ydir == 1 && inst.collidingBottom())) vel.Y = 0;
-
-            inst.setPosition(vel.add(inst.Position));
-        }
     }
 
 }

@@ -8,9 +8,11 @@ public class ServiceContainer {
     private JGame parent;
     
     public ParserService ParserService;
+    public PhysicsService PhysicsService;
 
 
     public ServiceContainer(JGame parent){
         ParserService = new ParserService(parent);
+        PhysicsService = new PhysicsService(parent);
     }
 }
