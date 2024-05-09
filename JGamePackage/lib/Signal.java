@@ -59,7 +59,7 @@ class Connection<T,U> {
     private BiConsumer<T,U> callback;
     private Signal<T,U> parent;
 
-    /**A boolean representing whether or not this Connection is current connected to a Signal.
+    /**A boolean representing whether or not this Connection is currently connected to a Signal.
      * 
      */
     public boolean Connected = true;
@@ -75,8 +75,7 @@ class Connection<T,U> {
 
     public void _call(T arg1, U arg2){
         if (!Connected) {
-            System.err.println("Unable to call an already disconnected Connection");
-            return;
+            throw new Error("Unable to call an already disconnected Connection");
         }
         callback.accept(arg1, arg2);
     }

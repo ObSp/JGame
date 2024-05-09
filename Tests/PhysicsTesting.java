@@ -13,6 +13,7 @@ public class PhysicsTesting {
 
 
     public static void main(String[] args) {
+
         Promise.await(game.start());
 
         Box2D ground = new Box2D();
@@ -32,7 +33,9 @@ public class PhysicsTesting {
         task.wait(2);
 
         game.onTick(dt->{
-            test.Velocity.X = (int) (game.getInputHorizontal()*(dt*100));
+            if (test.Position.Y > 700){
+                test.Position.Y = 0;
+            }
         });
         test.Anchored = false;
 

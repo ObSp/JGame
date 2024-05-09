@@ -11,7 +11,7 @@ public class Exporter {
         this.parent = parent;
     }
 
-    public void ExportInstancesAsJSON(){
+    public void ExportInstancesAsJGI(){
         
     }
 }

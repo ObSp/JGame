@@ -31,7 +31,7 @@ public class Group2D extends Instance{
         Primary.Position = newpos;
 
         for (Instance inst : Children){
-            if (inst.equals(Primary)) continue;
+            if (inst == Primary) continue;
             Vector2 diff = new Vector2(inst.Position.X-primarypos.X, inst.Position.Y-primarypos.Y);
             Vector2 actual = new Vector2(Primary.Position.X+diff.X, Primary.Position.Y+diff.Y);
             inst.Position = actual;

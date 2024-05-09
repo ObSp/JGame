@@ -21,13 +21,27 @@ public class PhysicsService extends Service {
 
             if (inst==null || inst.Anchored) continue;
 
-            if (!inst.collidingBottom() && !inst.collidingTop()){
+            if (!inst.collidingBottom()){
                 inst.inAir = true;
-                inst.timeInAir += dt;
+                if (inst.Velocity.Y <= 0){
+                    inst.timeInAir += dt;
+                }
                 
             } else {
                 inst.inAir = false;
                 inst.timeInAir = 0;
+            }
+
+            if (!inst.getCollideDirection().isZero()){
+                for (int j = 0; j < instances.length; j++){
+                    Instance ji = instances[j];
+                    if (ji == inst) continue;
+    
+                    if (ji.overlaps(inst)){
+                        inst.Position.add(inst.getCollideDirection().multiply(3));
+                        break;
+                    }
+                }
             }
 
             Vector2 vel = inst.Velocity.clone();

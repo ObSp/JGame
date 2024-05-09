@@ -18,9 +18,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-class UTIL_VARS {
-}
-
 
 public class JGame{
     public int TickCount = 0;
@@ -279,7 +276,7 @@ public class JGame{
     public Instance getMouseTarget(){
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         for (Instance i : instances){
-            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x, mouseLoc.y))){
+            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x, mouseLoc.y-20))){ // weird offset when not subtracting 20 px????
                 return i;
             }
         }

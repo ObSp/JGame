@@ -21,8 +21,15 @@ public class Main {
         
         controlDisplay.init(300,500);
 
-        controlDisplay.Instantiate.Connect((N,A)->{
-            Box2D test = new Box2D();
+        controlDisplay.Instantiate.Connect((typeofObject,A)->{
+            Instance test = new Box2D();
+
+            if (typeofObject.equals("Oval2D")){
+                test = new Oval2D();
+            } else if (typeofObject.equals("Image2D")){
+                test = new Image2D();
+            }
+
             test.Size = new Vector2(300,300);
             test.Position = new Vector2(0, 0);
             test.FillColor = Color.red;
@@ -48,7 +55,7 @@ public class Main {
         });
 
         controlDisplay.ExportRequest.Connect((d,k)->{
-            export.ExportInstancesAsJSON();
+            export.ExportInstancesAsJGI();
         });
     }
 }

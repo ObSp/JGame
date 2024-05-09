@@ -12,18 +12,18 @@ public class Vector2 {
     //static stuff
 
     /**Shorthand for writing Vector2(0,0). */
-    public static Vector2 zero = new Vector2(0, 0);
+    public static final Vector2 zero = new Vector2(0, 0);
     /**Shorthand for writing Vector2(-1,0). */
-    public static Vector2 left = new Vector2(-1, 0);
+    public static final Vector2 left = new Vector2(-1, 0);
     /**Shorthand for writing Vector2(0,1). */
-    public static Vector2 up = new Vector2(0, 1);
+    public static final Vector2 up = new Vector2(0, 1);
     /**Shorthand for writing Vector2(1,0). */
-    public static Vector2 right = new Vector2(1, 0);
+    public static final Vector2 right = new Vector2(1, 0);
     /**Shorthand for writing Vector2(0,-1). */
-    public static Vector2 down = new Vector2(0, -1);
+    public static final Vector2 down = new Vector2(0, -1);
 
     /**Converts a {@code String} to a {@code Vector2}. The input string must follow this format:
-     * (X, Y). Note that whitespace doesn't matter.
+     * (X, Y). Note that whitespace doesn't matter and parantheses don't matter, only the comma is required.
      * 
      * @param str : The input string, following the format specified above
      * @return A new Vector2
@@ -51,9 +51,23 @@ public class Vector2 {
         Y=y;
     }
 
+    /**Creates a new Vector2 with the specified X and Y coordinate points as inst by casting from double to int.
+     * 
+     * @param x
+     * @param y
+     */
     public Vector2(double x, double y){
         X=(int) x;
         Y= (int) y;
+    }
+
+    /**Creates a new Vector2 and sets the Vector2's X and Y coordinates equal to the {@code n} parameter.
+     * 
+     * @param n : The number to set the X and Y coordinates to
+     */
+    public Vector2(int n){
+        X = n;
+        Y = n;
     }
 
 
@@ -66,6 +80,18 @@ public class Vector2 {
     public Vector2 subtract(Vector2 other){
         X -= other.X;
         Y -= other.Y;
+        return this;
+    }
+
+    public Vector2 multiply(Vector2 other){
+        X *= other.X;
+        Y *= other.Y;
+        return this;
+    }
+
+    public Vector2 multiply(int mult){
+        X *= mult;
+        Y *= mult;
         return this;
     }
 

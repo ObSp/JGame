@@ -21,7 +21,7 @@ import JGamePackage.lib.ArrayTable;
 
 public class Display extends JFrame {
     
-    public Signal<Void, Void> Instantiate = new Signal<>();
+    public Signal<String, Void> Instantiate = new Signal<>();
     public Signal<Instance,Void> RequestDestroy = new Signal<>();
     public Signal<Void, Void> ExportRequest = new Signal<>();
 
@@ -40,6 +40,7 @@ public class Display extends JFrame {
     public JButton applyButton;
     public JTextField colorChoose;
     public JButton exportButton;
+    public JComboBox<String> instanceDropdown;
 
     
 
@@ -113,25 +114,49 @@ public class Display extends JFrame {
     }
 
     private void initComponents(){
-
         {
-            JPanel buttonPanel = new JPanel(new GridBagLayout());
-            GridBagConstraints bpGBC = new GridBagConstraints();
-            bpGBC.gridx = 0;
-            bpGBC.gridy = 0;
+            JPanel container = new JPanel(new GridBagLayout());
+            GridBagConstraints gb = new GridBagConstraints();
+            gb.gridx = 0;
+            gb.gridy = 0;
+
+            instanceDropdown = new JComboBox<>();
+            instanceDropdown.addItem("Box2D");
+            instanceDropdown.addItem("Oval2D");
+            instanceDropdown.addItem("Image2D");
+
+            instanceDropdown.setSelectedIndex(0);
+            
+            container.add(instanceDropdown, gb);
+
+            gb.gridx++;
 
             JButton newInstanceButton = new JButton();
             newInstanceButton.setFocusable(false);
-            newInstanceButton.setText("Instantiate");
+            newInstanceButton.setText("Create");
             newInstanceButton.setFont(new Font("Arial", Font.BOLD, 15));
             this.newInstanceButton = newInstanceButton;
 
             newInstanceButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Instantiate.Fire(null, null);
+                    Instantiate.Fire((String) instanceDropdown.getSelectedItem(), null);
                 }
             });
+
+            container.add(newInstanceButton, gb);
+            gb.gridx++;
+
+            components.add(container);
+
+        }
+
+
+        {
+            JPanel buttonPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints bpGBC = new GridBagConstraints();
+            bpGBC.gridx = 0;
+            bpGBC.gridy = 0;
 
             JButton destroy = new JButton();
             destroy.setFocusable(false);
@@ -145,9 +170,6 @@ public class Display extends JFrame {
                     RequestDestroy.Fire(currentSelected, null);
                 }
             });
-
-            buttonPanel.add(newInstanceButton, bpGBC);
-            bpGBC.gridx++;
             buttonPanel.add(destroy, bpGBC);
             bpGBC.gridx++;
 

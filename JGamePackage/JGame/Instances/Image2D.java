@@ -11,7 +11,8 @@ import JGamePackage.JGame.Types.Vector2;
 import java.awt.*;
 
 public class Image2D extends Instance{
-    public String ImagePath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\JGame\\Files\\IMAGEDEFAULT.png";
+    public String ImagePath = "JGamePackage\\JGame\\Files\\IMAGEDEFAULT.png";
+    public boolean BackgroundTransparent = true;
     public Image2D(){
         Name = "Image";
     }
@@ -33,7 +34,12 @@ public class Image2D extends Instance{
         
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.drawImage(img, Position.X, Parent.getScreenHeight()-Position.Y, Size.X, Size.Y, null);
+        if (!BackgroundTransparent){
+            g2.setColor(this.FillColor);
+            g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);
+        }
+
+        g2.drawImage(img, Position.X, Position.Y, Size.X, Size.Y, null);
     }
 
     

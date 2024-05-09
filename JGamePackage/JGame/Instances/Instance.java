@@ -140,7 +140,7 @@ public abstract class Instance extends JComponent {
      * @return Whether or not the tag is present in this instance's list of tags
      */
     public boolean hasTag(String tag){
-        return Tags.indexOf(tag) != -1 ? true : false;
+        return Tags.indexOf(tag) != -1;
     }
 
 
@@ -157,24 +157,24 @@ public abstract class Instance extends JComponent {
      * @return
      */
     public boolean touchingBorderTop(){
-        return (Position.Y+(Size.Y/2))<0;
+        return (Position.Y)<0;
     }
 
     public boolean touchingBorderLeft(){
-        return (Position.X+(Size.X/2))<0;
+        return (Position.X)<0;
     }
 
     public boolean touchingBorderRight(){
-        return (Position.X+(Size.X/2))>Parent.getTotalScreenSize().X;
+        return (Position.X+Size.X)>Parent.getTotalScreenSize().X;
     }
 
     public boolean touchingBorderBottom(){
-        return Position.Y+(Size.Y/2)>Parent.getTotalScreenSize().Y;
+        return Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
     }
 
     public boolean collidingRight(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(Position, Position.X+(Size.X), bl, new Vector2(2, Size.Y-3));
+        RaycastResult r = Parent.RaycastX(Position, Position.X+Size.X, bl, new Vector2(2, Size.Y-3));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -239,11 +239,43 @@ public abstract class Instance extends JComponent {
         Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
     }
 
+    public Vector2 getCollideDirection(){
+        Vector2 vect = new Vector2(0, 0);
+
+        boolean bottom = this.collidingBottom();
+        boolean top = this.collidingTop();
+        boolean left = this.collidingLeft();
+        boolean right = this.collidingRight();
+
+        if (bottom) vect.Y = -1;
+
+        if (top) vect.Y = 1;
+
+        if (top && bottom) vect.Y = 0;
+
+        if (left) vect.X = 1;
+
+        if (right) vect.X = -1;
+
+        if (left && right) vect.X = 0;
+
+        return vect;
+    }
+
     public boolean isCoordinateInBounds(Vector2 coord){
+        if (this.Position == null) return false;
+
         int x = coord.X;
         int y = coord.Y;
 
-        return ((x >= Position.X) && (y >= Position.Y) && (x < Position.X + Size.X) && (y < Position.Y + Size.Y));
+        int leftCorner = this.Position.X;
+        int rightCorner = this.Position.X + this.Size.X;
+        int top = this.Position.Y;
+        int bottom = this.Position.Y + this.Size.Y;
+
+        boolean inBounds = (leftCorner<x && x <rightCorner && y<bottom && y>top);
+
+        return inBounds;
     }
 
 
@@ -257,9 +289,19 @@ public abstract class Instance extends JComponent {
         Position = velPos;
     };
 
+    public void setInstanceVariableByName(String variable, Object value){
+        if (variable == "Position") Position = (Vector2) value;
+        if (variable == "Size") Position = ((Vector2)value);
+        if (variable == "FillColor") FillColor = (Color) value;
+        if (variable == "Name") Name = (String) value;
+        if (variable == "Velocity") Velocity = (Vector2) value;
+        if (variable == "Solid") Solid = (boolean) value;
+        if (variable == "Anchored") Anchored = (boolean) value;
+    }
+
     @Override
     public String toString(){
-        return Name;
+        return Name != null ? Name : "";
     }
 
     @Override
