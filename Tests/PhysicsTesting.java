@@ -16,28 +16,8 @@ public class PhysicsTesting {
 
         Promise.await(game.start());
 
-        Box2D ground = new Box2D();
-        ground.FillColor = new Color(103, 245, 117);
-        ground.Size = new Vector2(game.getScreenWidth(), 500);
-        ground.Position = new Vector2(0, 850);
-        ground.Solid = true;
-
-        Oval2D test = new Oval2D();
-        test.FillColor = Color.red;
-        test.Position = new Vector2(300, 0);
-        test.Solid = true;
-
-        game.addInstance(ground);
-        game.addInstance(test);
-
-        task.wait(2);
-
-        game.onTick(dt->{
-            if (test.Position.Y > 700){
-                test.Position.Y = 0;
-            }
-        });
-        test.Anchored = false;
-
+        Box2D thing = new Box2D();
+        thing.FillColor = Color.red; 
+        game.addInstance(thing);
     }
 }

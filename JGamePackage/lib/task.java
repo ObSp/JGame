@@ -26,6 +26,10 @@ public class task {
         return true;
     }
 
+    public static boolean waitMinimum(){
+        return task.wait(0.00000000000000001);
+    }
+
 
     /**Runs the given {{@code task}} in a new, separate thread
      * 

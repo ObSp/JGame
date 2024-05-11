@@ -136,6 +136,13 @@ public class JGame{
         onTicks.add(ontick);
     }
 
+    public void waitForTick(){
+        int lastTick = this.TickCount;
+        while (this.TickCount == lastTick) {
+            System.out.print("");
+        }
+    }
+
     public void addInstance(Instance x){
         instances.add(x);
         x.Parent = this;
@@ -148,6 +155,15 @@ public class JGame{
 
     public Instance[] getInstances(){
         return utilFuncs.toInstArray(instances);
+    }
+
+    public Instance getInstanceByName(String name){
+        for (Instance x : instances){
+            if (x.Name.equals(name))
+                return x;
+        }
+
+        return null;
     }
 
     /**Returns the current JFrame window.<p>
@@ -178,6 +194,10 @@ public class JGame{
 
     public void setWindowTitle(String newTitle){
         gameWindow.setTitle(newTitle);
+    }
+
+    public void setWindowIcon(String path){
+        gameWindow.setIconImage(new ImageIcon(path).getImage());
     }
 
     public void setBackground(Color c){
@@ -460,7 +480,7 @@ public class JGame{
 class utilFuncs{
     static Instance[] toInstArray(ArrayList<Instance> x){
         Instance[] arr = new Instance[x.size()];
-        for (int i = 0; i<x.size(); i++){
+        for (int i = 0; i<arr.length; i++){
             arr[i] = x.get(i);
         }
         return arr;
