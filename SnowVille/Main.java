@@ -1,11 +1,7 @@
-import java.io.File;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 import java.awt.Color;
 
 import JGamePackage.JGame.*;
+import JGamePackage.JGame.GameObjects.Sound;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.*;
@@ -29,51 +25,47 @@ public class Main {
 
     static String AssetPath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\SnowVille\\Assets\\";
 
-    static Clip playSound(String path){
-        File f = new File(path);
-        Clip audioclip = null;
+    static Box2D player = new Box2D();
 
-        try{
-            audioclip = AudioSystem.getClip();
-            audioclip.open(AudioSystem.getAudioInputStream(f));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        if (audioclip==null) return null;
-
-        audioclip.start();
-
-        
-        return audioclip;
-    }
+    static final int LOADING_TIME_MULTIPLIER = 1;
 
     public static void main(String[] args) {
         Promise.await(game.start());
-        game.setWindowTitle("SnowVille");
-        game.setWindowIcon(AssetPath+"WindowIcon.png");
 
-        maximizedBoth = game.getTotalScreenSize().clone();
+        game.setWindowTitle("SnowVille");
+        game.setWindowIcon("SnowVille\\Assets\\WindowIcon.png");
+
+        maximizedBoth = game.getTotalScreenSize();
+        
+        player.Size = new Vector2(50,100);
+        //player.BackgroundTransparent = false;
+        player.FillColor = Color.black;
+        player.Solid = true;
+        player.Anchored = false;
 
         //title
         intro();
 
         backgroundSetup();
 
-        //firstSceneSetup();
+        
+        initPlayer();
+
+        firstSceneSetup();
     }
 
     static void intro(){
         //music
-        Clip clip = playSound(AssetPath+"Sounds\\BackgroundMusic.wav");
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        Sound music = new Sound("SnowVille\\Assets\\Sounds\\BackgroundMusic.wav");
+        music.Play();
+        music.setInfiniteLoop(true);
 
         //background
         Image2D title = new Image2D();
         // to make sure transparency works with the image
         title.BackgroundTransparent = false;
         title.Size = maximizedBoth;
-        title.ImagePath = AssetPath+"Title.png";
+        title.ImagePath = "SnowVille\\Assets\\Title.png";
         game.addInstance(title);
         
         //progress bars
@@ -90,8 +82,10 @@ public class Main {
         game.addInstance(progressBackground);
         game.addInstance(bar);
 
+        int sizeIncrement = ((maximizedBoth.X*2)*LOADING_TIME_MULTIPLIER)/maximizedBoth.X;
+
         while (bar.Size.X < progressBackground.Size.X) {
-            bar.Size.X += 1;
+            bar.Size.X += sizeIncrement;
             game.waitForTick();
         }
 
@@ -110,22 +104,36 @@ public class Main {
             bar.FillColor = new Color(orig.getRed(), orig.getGreen(), orig.getBlue(), orig.getAlpha()-alphaDecrement);
             game.waitForTick();
         }
-        task.wait(2);
+        task.wait(1);
+
+        //lower music volume
+        while (music.Volume > .85f) {
+            music.SetVolume(music.Volume-.05f);
+            task.wait(.1);
+        }
 
         game.removeInstance(title);
 
         
     }
 
+    static void initPlayer(){
+        game.addInstance(player);
+
+        game.onTick(dt->{
+            player.Velocity.X = (int) (game.getInputHorizontal()*(dt*100));
+        });
+    }
+
     static void backgroundSetup(){
         foreground = new Image2D();
         foreground.Size = maximizedBoth;
-        foreground.ImagePath = AssetPath + "Background\\Foreground.png";
+        foreground.ImagePath = "SnowVille\\Assets\\Background\\Foreground.png";
         game.addInstance(foreground);
     }
 
     static void firstSceneSetup(){
         sceneService.AddScene(startScene);
-        //sceneService.ShowScene(startScene);
+        sceneService.ShowScene(startScene);
     }
 }

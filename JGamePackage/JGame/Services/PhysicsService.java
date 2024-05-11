@@ -37,7 +37,7 @@ public class PhysicsService extends Service {
                     Instance ji = instances[j];
                     if (ji == inst) continue;
     
-                    if (ji.overlaps(inst)){
+                    if (ji.overlaps(inst) && ji.Solid){
                         inst.Position.add(inst.getCollideDirection().multiply(3));
                         break;
                     }
