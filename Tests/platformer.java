@@ -2,6 +2,7 @@ package Tests;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
+import JGamePackage.JGame.Services.InputService;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.*;
 
@@ -13,6 +14,8 @@ import java.awt.event.KeyEvent;
  */
 public class platformer {
     static JGame game = new JGame();
+
+    static InputService input = game.Services.InputService;
 
     public static void main(String[] args) {
         Promise.await(game.start());
@@ -42,11 +45,11 @@ public class platformer {
 
 
         game.onTick((dt)->{
-            player.Velocity.X = (int)(game.getInputHorizontal()*(dt*1000));
+            player.Velocity.X = (int)(input.GetInputHorizontal()*(dt*1000));
         });
 
 
-        game.onKeyPress(e ->{
+        input.OnKeyPress(e ->{
             if (e.getKeyCode()!= KeyEvent.VK_SPACE) return;
 
             player.Velocity.Y = -15;

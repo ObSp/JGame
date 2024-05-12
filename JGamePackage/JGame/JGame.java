@@ -11,12 +11,6 @@ import JGamePackage.lib.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 
 public class JGame{
@@ -29,30 +23,18 @@ public class JGame{
 
     public String Title = "JGame";
 
-    private JFrame gameWindow;
-    private DrawGroup drawGroup;
+    private JFrame gameWindow = new JFrame(Title);
+    private DrawGroup drawGroup = new DrawGroup();
 
-    private ArrayList<Consumer<Double>> onTicks;
-    public ArrayList<Instance> instances;
-    private ArrayList<Consumer<KeyEvent>> keyEvents;
-    private ArrayList<String> heldKeys;
-    private ArrayList<Runnable> clickEvents;
+    private ArrayList<Consumer<Double>> onTicks = new ArrayList<>();
+    public ArrayList<Instance> instances = new ArrayList<>();
 
-    public ServiceContainer Services = new ServiceContainer(this);
 
-    //input vars
-    private boolean isMouse1Down = false;
-    @SuppressWarnings("unused")
-    private boolean isMouse2Down = false;
+    public ServiceContainer Services;
 
     private void staticConstruct(){
-        onTicks = new ArrayList<>();
-        gameWindow = new JFrame(Title);
-        instances = new ArrayList<>();
-        keyEvents = new ArrayList<>();
-        heldKeys = new ArrayList<>();
-        drawGroup = new DrawGroup();
-        clickEvents = new ArrayList<>();
+        Promise.await(this.start());
+        Services = new ServiceContainer(this);
     }
 
     public JGame(){
@@ -78,7 +60,6 @@ public class JGame{
     }
 
     private void run(){
-        detectInput();
         render();
         double lastTick = curSeconds();
 
@@ -172,6 +153,11 @@ public class JGame{
      * 
      */
     public JFrame getWindow(){
+        if (this.gameWindow == null){
+            while (gameWindow == null){
+                System.out.print("");
+            }
+        }
         return gameWindow;
     }
 
@@ -202,175 +188,6 @@ public class JGame{
 
     public void setBackground(Color c){
         gameWindow.getContentPane().setBackground(c);
-    }
-
-
-    //INPUT
-    private void detectInput(){
-        gameWindow.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {}
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
-                //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
-                heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
-                for (int i = 0; i<keyEvents.size(); i++){
-                    keyEvents.get(i).accept(e);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String keyText = KeyEvent.getKeyText(e.getKeyCode());
-                heldKeys.remove(keyText);
-            }
-            
-        });
-
-        gameWindow.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e){
-                
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                isMouse1Down = true;
-                for (Runnable r : clickEvents){
-                    r.run();
-                }
-
-                //firing MouseButton1Click events in instances
-
-                Instance target = getMouseTarget();
-                if (target != null){
-                    Vector2 mouseLoc = getMouseLocation();
-                    target.MouseButton1Down.Fire(mouseLoc.X, mouseLoc.Y);
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                isMouse1Down = false;
-
-                //firing MouseButton1Click events in instances
-
-                Instance target = getMouseTarget();
-                if (target != null){
-                    Vector2 mouseLoc = getMouseLocation();
-                    target.MouseButton1Up.Fire(mouseLoc.X, mouseLoc.Y);
-                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                for (Instance inst : instances){
-                    if (e.getSource() == inst){
-                        Vector2 mouseLoc = getMouseLocation();
-                        inst.MouseEntered.Fire(mouseLoc.X, mouseLoc.Y);
-                    }
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                for (Instance inst : instances){
-                    if (e.getSource() == inst){
-                        Vector2 mouseLoc = getMouseLocation();
-                        inst.MouseExited.Fire(mouseLoc.X, mouseLoc.Y);
-                    }
-                }
-            }
-        });
-    }
-
-
-    /**Returns the current {@code Instance} the mouse is hovering over,
-     * returning {@code null} if it's not hovering over anything.
-     * 
-     * @return The Instance the mouse is currently focused on
-     */
-    public Instance getMouseTarget(){
-        Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-        for (Instance i : instances){
-            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x, mouseLoc.y-20))){ // weird offset when not subtracting 20 px????
-                return i;
-            }
-        }
-
-        return null;
-    }
-
-    public Vector2 getMouseLocation(){
-        Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-        return new Vector2(mouseLoc.getX(), mouseLoc.getY());
-    }
-
-    /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether
-     * keys that are typically associated with horizontal movement, such as the {@code A and D} keys
-     * are currently being pressed by the user, returning {@code 0} if no such keys are being pressed.
-     * 
-     * @return An int corresponding to the horizontal direction of keys currently pressed by the user
-     * 
-     * @see JGame#isKeyDown(int)
-     * @see JGame#getInputVertical()
-     */
-    public int getInputHorizontal(){
-        if (isKeyDown(KeyEvent.VK_A)){
-            return -1;
-        }else if(isKeyDown(KeyEvent.VK_D)){
-            return 1;
-        }
-        return 0;
-    }
-
-    /**Returns an {@code int} ranging from {@code -1} to {@code 1} based on whether
-     * keys that are typically associated with vertical movement, such as the {@code W and S} keys
-     * are currently being pressed by the user, returning {@code 0} if no such keys are being pressed.
-     * 
-     * @return An int corresponding to the vertical direction of keys currently pressed by the user
-     * 
-     * @see JGame#isKeyDown(int)
-     * @see JGame#getInputHorizontal()
-     */
-    public int getInputVertical(){
-        if (isKeyDown(KeyEvent.VK_S)){
-            return -1;
-        }else if(isKeyDown(KeyEvent.VK_W)){
-            return 1;
-        }
-        return 0;
-    }
-
-
-
-    public void onKeyPress(Consumer<KeyEvent> onpressfunc){
-        keyEvents.add(onpressfunc);
-    }
-
-    public void onMouseClick(Runnable onclickfunc){
-        clickEvents.add(onclickfunc);
-    }
-
-
-    /**Returns whether or not the Key corresponding to the provided {@code KeyCode} is currently being pressed by the user.
-     * 
-     * @param KeyCode : The KeyCode of the Key to be checked
-     * @return Whether or not the Key is currently being pressed by the user
-     * 
-     * @see KeyEvent
-     */
-    public boolean isKeyDown(int KeyCode){
-        String keyText = KeyEvent.getKeyText(KeyCode);
-
-        return heldKeys.indexOf(keyText)>-1 ? true : false;
-    }
-
-    public boolean isMouseDown(){
-        return isMouse1Down;
     }
 
         //--RAYCASTING--//

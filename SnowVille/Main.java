@@ -19,6 +19,7 @@ public class Main {
     //Services
     static ServiceContainer services = game.Services;
     static SceneService sceneService = services.SceneService;
+    static InputService input = services.InputService;
 
     static Image2D foreground;
 
@@ -31,8 +32,6 @@ public class Main {
     static final int LOADING_TIME_MULTIPLIER = 1;
 
     public static void main(String[] args) {
-        Promise.await(game.start());
-
         game.setWindowTitle("SnowVille");
         game.setWindowIcon("SnowVille\\Assets\\WindowIcon.png");
 
@@ -125,10 +124,10 @@ public class Main {
         game.addInstance(player);
 
         game.onTick(dt->{
-            player.Velocity.X = (int) (game.getInputHorizontal()*(dt*1000));
+            player.Velocity.X = (int) (input.GetInputHorizontal()*(dt*1000));
         });
 
-        game.onKeyPress(e->{
+        input.OnKeyPress(e->{
             if (e.getKeyCode()== KeyEvent.VK_SPACE){
                 player.Velocity.Y = -10;
             }

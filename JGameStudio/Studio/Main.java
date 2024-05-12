@@ -3,6 +3,7 @@ package Studio;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Services.InputService;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.*;
 import Classes.*;
@@ -14,6 +15,8 @@ public class Main {
     static Display controlDisplay = new Display("Control");
 
     static JGame game = new JGame();
+
+    static InputService input = game.Services.InputService;
 
     static Exporter export = new Exporter(game);
     public static void main(String[] args) {
@@ -50,8 +53,8 @@ public class Main {
             controlDisplay.setCurrentSelected(null);
         });
 
-        game.onMouseClick(()->{
-            controlDisplay.setCurrentSelected(game.getMouseTarget());
+        input.OnMouseClick(()->{
+            controlDisplay.setCurrentSelected(input.GetMouseTarget());
         });
 
         controlDisplay.ExportRequest.Connect((d,k)->{

@@ -11,6 +11,7 @@ public class ServiceContainer {
     public PhysicsService PhysicsService;
     public TweenService TweenService;
     public SceneService SceneService;
+    public InputService InputService;
 
 
     public ServiceContainer(JGame parent){
@@ -18,5 +19,6 @@ public class ServiceContainer {
         PhysicsService = new PhysicsService(parent);
         TweenService = new TweenService(parent);
         SceneService = new SceneService(parent);
+        InputService = new InputService(parent);
     }
 }

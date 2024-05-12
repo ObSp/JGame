@@ -2,8 +2,8 @@ package Tests.CityBuilder;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Services.InputService;
 import JGamePackage.JGame.Types.Vector2;
-import JGamePackage.lib.*;
 
 import java.awt.Color;
 import java.awt.event.WindowEvent;
@@ -28,9 +28,11 @@ public class CityBuilder {
         ColorContainer.black
     };
 
+    static InputService input = game.Services.InputService;
+
     static Color selectedColor = colors[1];
 
-    static String curSavePath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\Tests\\CityBuilder\\Saves\\save1.txt";
+    static String curSavePath = "Tests\\CityBuilder\\Saves\\save1.txt";
 
     static StoredBox[][] board = new StoredBox[boardWidth][boardHeight];
 
@@ -46,8 +48,6 @@ public class CityBuilder {
     }
 
     public static void main(String[] args) {
-        Promise.await(game.start());
-
         game.setWindowTitle("City Builder");
 
         game.getWindow().addWindowListener(new WindowListener() {
@@ -88,8 +88,8 @@ public class CityBuilder {
         });
 
         game.onTick(dt->{
-            if (!game.isMouseDown()) return;
-            Instance target = game.getMouseTarget();
+            if (!input.IsMouseDown()) return;
+            Instance target = input.GetMouseTarget();
             if (target == null || target.FillColor.equals(selectedColor) || !(target instanceof StoredBox)) return;
 
             target.FillColor = selectedColor;
