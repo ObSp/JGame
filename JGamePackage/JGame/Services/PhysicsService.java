@@ -23,15 +23,14 @@ public class PhysicsService extends Service {
 
             if (!inst.collidingBottom()){
                 inst.inAir = true;
-                if (inst.Velocity.Y <= 0){
-                    inst.timeInAir += dt;
-                }
+                inst.timeInAir += dt;
                 
             } else {
                 inst.inAir = false;
                 inst.timeInAir = 0;
             }
 
+            //making sure inst isnt inside of anything
             if (!inst.getCollideDirection().isZero()){
                 for (int j = 0; j < instances.length; j++){
                     Instance ji = instances[j];
@@ -44,6 +43,21 @@ public class PhysicsService extends Service {
                 }
             }
 
+            Vector2 vel = inst.Velocity;
+            vel.Y += getPositionShift(inst);
+
+            int xDir = vel.X > -1 ? 1 : -1;
+            int yDir = vel.Y > 0 ? 1 : -1;
+
+            if ((xDir == 1 && inst.collidingLeft()) || (xDir==-1 && inst.collidingRight())) vel.X = 0;
+            if ((yDir == 1 && inst.collidingBottom()) || (yDir == -1 && inst.collidingTop())){
+                System.out.println("no");
+                vel.Y = 0;
+            }
+
+            inst.setPosition(new Vector2(inst.Position.X + vel.X, inst.Position.Y + vel.Y));
+
+            /**
             Vector2 vel = inst.Velocity.clone();
             vel.X *= dt*Parent.tickMult;    
             vel.Y *= dt*Parent.tickMult*-1;
@@ -61,6 +75,8 @@ public class PhysicsService extends Service {
             inst.setPosition(vel.add(inst.Position));
 
             System.err.println(vel.Y);
+             */
+
         }
 
     }

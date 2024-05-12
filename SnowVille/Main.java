@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import JGamePackage.JGame.*;
-import JGamePackage.JGame.GameObjects.Sound;
+import JGamePackage.JGame.GameObjects.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.*;
@@ -122,12 +122,14 @@ public class Main {
         game.addInstance(player);
 
         game.onTick(dt->{
-            player.Velocity.X = (int) (game.getInputHorizontal()*(dt*100));
+            System.out.println(player.Velocity);
+            player.Velocity.X = (int) (game.getInputHorizontal()*(dt*1000));
         });
 
         game.onKeyPress(e->{
             if (e.getKeyCode()== KeyEvent.VK_SPACE){
-                player.Velocity.Y = 1;
+                System.out.println("j");
+                player.Velocity.Y = 10000;
             }
         });
     }
