@@ -197,7 +197,7 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingBottom(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastY(Position, Position.Y+Size.Y, bl, new Vector2(Size.X-3, 2));
+        RaycastResult r = Parent.RaycastY(Position, Position.Y+Size.Y, bl, new Vector2(Size.X-3, 1));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -251,7 +251,7 @@ public abstract class Instance extends JComponent {
 
         if (top) vect.Y = 1;
 
-        if (top && bottom) vect.Y = 0;
+        //if (top && bottom) vect.Y = 0;
 
         if (left) vect.X = 1;
 

@@ -2,7 +2,6 @@ package JGamePackage.JGame.Instances;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -11,8 +10,14 @@ import JGamePackage.JGame.Types.Vector2;
 import java.awt.*;
 
 public class Image2D extends Instance{
+    /**The path to the Image's file location. Note that changing this doesn't affect anything, to 
+     * chane the Image please call the SetImagePath function.
+     * 
+     */
     public String ImagePath = "JGamePackage\\JGame\\Files\\IMAGEDEFAULT.png";
     public boolean BackgroundTransparent = true;
+    private BufferedImage img;
+
     public Image2D(){
         Name = "Image";
     }
@@ -20,16 +25,6 @@ public class Image2D extends Instance{
 
     @Override
     public void paint(Graphics g) {
-        if (ImagePath==null) return;
-
-        BufferedImage img = null;
-
-        try {
-            img = ImageIO.read(new File(ImagePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         if (img == null) return;
         
         Graphics2D g2 = (Graphics2D) g;
@@ -40,6 +35,25 @@ public class Image2D extends Instance{
         }
 
         g2.drawImage(img, Position.X, Position.Y, Size.X, Size.Y, null);
+    }
+
+    public void SetImagePath(String path){
+        try {
+            this.img = ImageIO.read(new File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**Updates the image path to this file to the value of the {@code ImagePath} instance variable
+     * 
+     */
+    public void UpdateImagePath(){
+        try {
+            this.img = ImageIO.read(new File(ImagePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     

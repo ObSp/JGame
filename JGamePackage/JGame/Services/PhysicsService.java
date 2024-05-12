@@ -44,18 +44,26 @@ public class PhysicsService extends Service {
             }
 
             Vector2 vel = inst.Velocity;
-            vel.Y += getPositionShift(inst);
 
+            //directions
             int xDir = vel.X > -1 ? 1 : -1;
-            int yDir = vel.Y > 0 ? 1 : -1;
+            //                      up  down
+            int yDir = vel.Y > -1 ? -1 : 1;
 
             if ((xDir == 1 && inst.collidingLeft()) || (xDir==-1 && inst.collidingRight())) vel.X = 0;
-            if ((yDir == 1 && inst.collidingBottom()) || (yDir == -1 && inst.collidingTop())){
-                System.out.println("no");
+            if ((yDir == 1 && inst.collidingTop())) vel.Y = 0;
+
+            //touching ground
+            if (!inst.inAir && vel.Y > 0){
                 vel.Y = 0;
+            } else {
+                vel.Y += getPositionShift(inst);
             }
 
-            inst.setPosition(new Vector2(inst.Position.X + vel.X, inst.Position.Y + vel.Y));
+
+            //inst.setPosition(new Vector2(inst.Position.X + vel.X, inst.Position.Y + vel.Y));
+            inst.Position.X += vel.X;
+            inst.Position.Y += vel.Y;
 
             /**
             Vector2 vel = inst.Velocity.clone();

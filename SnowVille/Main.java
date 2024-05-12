@@ -26,9 +26,9 @@ public class Main {
 
     static String AssetPath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\SnowVille\\Assets\\";
 
-    static Box2D player = new Box2D();
+    static Image2D player = new Image2D();
 
-    static final int LOADING_TIME_MULTIPLIER = 3        ;
+    static final int LOADING_TIME_MULTIPLIER = 1;
 
     public static void main(String[] args) {
         Promise.await(game.start());
@@ -39,7 +39,8 @@ public class Main {
         maximizedBoth = game.getTotalScreenSize();
         
         player.Size = new Vector2(50,100);
-        //player.BackgroundTransparent = false;
+        player.BackgroundTransparent = false;
+        player.ImagePath = "SnowVille\\Assets\\Title.png";
         player.FillColor = Color.black;
         player.Solid = true;
         player.Anchored = false;
@@ -67,6 +68,7 @@ public class Main {
         title.BackgroundTransparent = false;
         title.Size = maximizedBoth;
         title.ImagePath = "SnowVille\\Assets\\Title.png";
+        title.UpdateImagePath();
         game.addInstance(title);
         
         //progress bars
@@ -119,17 +121,16 @@ public class Main {
     }
 
     static void initPlayer(){
+        player.UpdateImagePath();
         game.addInstance(player);
 
         game.onTick(dt->{
-            System.out.println(player.Velocity);
             player.Velocity.X = (int) (game.getInputHorizontal()*(dt*1000));
         });
 
         game.onKeyPress(e->{
             if (e.getKeyCode()== KeyEvent.VK_SPACE){
-                System.out.println("j");
-                player.Velocity.Y = 10000;
+                player.Velocity.Y = -10;
             }
         });
     }
@@ -138,6 +139,7 @@ public class Main {
         foreground = new Image2D();
         foreground.Size = maximizedBoth;
         foreground.ImagePath = "SnowVille\\Assets\\Background\\Foreground.png";
+        foreground.UpdateImagePath();
         game.addInstance(foreground);
     }
 

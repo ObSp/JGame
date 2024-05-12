@@ -14,8 +14,6 @@ import java.awt.event.KeyEvent;
 public class platformer {
     static JGame game = new JGame();
 
-    static boolean canJump = false;
-
     public static void main(String[] args) {
         Promise.await(game.start());
 
@@ -44,34 +42,14 @@ public class platformer {
 
 
         game.onTick((dt)->{
-            player.Velocity.X = (int)(game.getInputHorizontal()*(dt*100));
-
-            if (player.collidingBottom() && !canJump){
-                canJump = true;
-            } else if (!player.collidingBottom() && canJump){
-                canJump = false;
-            }
+            player.Velocity.X = (int)(game.getInputHorizontal()*(dt*1000));
         });
 
 
         game.onKeyPress(e ->{
-            if (e.getKeyCode()!= KeyEvent.VK_SPACE || !canJump) return;
-            canJump = false;
+            if (e.getKeyCode()!= KeyEvent.VK_SPACE) return;
 
-            task.spawn(()->{
-                int t = game.TickCount;
-                int temp = t+12;
-                player.Velocity.Y = 1;
-
-                while (t<temp){
-                    t = game.TickCount;
-                    System.out.print("");
-                }
-
-                player.Velocity.Y = 0;
-
-                
-            });
+            player.Velocity.Y = -15;
         });
     }
 }
