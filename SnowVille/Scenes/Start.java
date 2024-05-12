@@ -13,7 +13,7 @@ public class Start extends Scene {
     public void init(JGame game){
         this.parent = game;
 
-        ground.FillColor = Color.white;
+        ground.FillColor = new Color(0,0,0,0);
         ground.Size.X = game.getScreenWidth();
         ground.Size.Y = 50;
         ground.Position.Y = game.getScreenHeight()-ground.Size.Y;

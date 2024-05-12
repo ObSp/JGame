@@ -22,6 +22,7 @@ public class Main {
     static InputService input = services.InputService;
 
     static Image2D foreground;
+    static Image2D middleground;
 
     static Vector2 maximizedBoth;
 
@@ -29,7 +30,7 @@ public class Main {
 
     static Image2D player = new Image2D();
 
-    static final int LOADING_TIME_MULTIPLIER = 1;
+    static final int LOADING_TIME_MULTIPLIER = 5;
 
     public static void main(String[] args) {
         game.setWindowTitle("SnowVille");
@@ -139,6 +140,16 @@ public class Main {
         foreground.Size = maximizedBoth;
         foreground.ImagePath = "SnowVille\\Assets\\Background\\Foreground.png";
         foreground.UpdateImagePath();
+
+        middleground = new Image2D();
+        middleground.Size = maximizedBoth;
+        middleground.ImagePath = "SnowVille\\Assets\\Background\\MiddleGround.png";
+        middleground.UpdateImagePath();
+        middleground.Position.Y -= 20;
+
+
+
+        game.addInstance(middleground);
         game.addInstance(foreground);
     }
 
