@@ -59,6 +59,8 @@ public class PhysicsService extends Service {
             if ((Ydir == -1 && inst.collidingTop()) || (Ydir == 1 && inst.collidingBottom())) vel.Y = 0;
 
             inst.setPosition(vel.add(inst.Position));
+
+            System.err.println(vel.Y);
         }
 
     }

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.GameObjects.Sound;
@@ -27,7 +28,7 @@ public class Main {
 
     static Box2D player = new Box2D();
 
-    static final int LOADING_TIME_MULTIPLIER = 1;
+    static final int LOADING_TIME_MULTIPLIER = 3        ;
 
     public static void main(String[] args) {
         Promise.await(game.start());
@@ -122,6 +123,12 @@ public class Main {
 
         game.onTick(dt->{
             player.Velocity.X = (int) (game.getInputHorizontal()*(dt*100));
+        });
+
+        game.onKeyPress(e->{
+            if (e.getKeyCode()== KeyEvent.VK_SPACE){
+                player.Velocity.Y = 1;
+            }
         });
     }
 
