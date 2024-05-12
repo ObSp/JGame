@@ -157,4 +157,13 @@ public class Main {
         sceneService.AddScene(startScene);
         sceneService.ShowScene(startScene);
     }
+
+
+    static int scaleY(int percentage){
+        return maximizedBoth.Y*percentage;
+    }
+
+    static int scaleX(int percentage){
+        return maximizedBoth.X*percentage;
+    }
 }
