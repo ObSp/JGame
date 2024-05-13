@@ -7,8 +7,10 @@ import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.*;
+import JGamePackage.lib.Signal;
 import Scenes.*;
 
+@SuppressWarnings("unused")
 public class Main {
 
     static JGame game = new JGame();
@@ -124,11 +126,11 @@ public class Main {
         player.UpdateImagePath();
         game.addInstance(player);
 
-        game.onTick(dt->{
+        game.OnTick.Connect(dt->{
             player.Velocity.X = (int) (input.GetInputHorizontal()*(dt*1000));
         });
 
-        input.OnKeyPress(e->{
+        input.OnKeyPress.Connect(e->{
             if (e.getKeyCode()== KeyEvent.VK_SPACE){
                 player.Velocity.Y = -10;
             }

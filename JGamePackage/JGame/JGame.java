@@ -1,7 +1,6 @@
 package JGamePackage.JGame;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 import javax.swing.*;
 
@@ -20,13 +19,16 @@ public class JGame{
 
     public double tickMult = 1000;
 
+    //Signals
+    private Signal<Double> ontick = new Signal<>();
+    public final SignalWrapper<Double> OnTick = new SignalWrapper<>(ontick);
+
 
     public String Title = "JGame";
 
     private JFrame gameWindow = new JFrame(Title);
     private DrawGroup drawGroup = new DrawGroup();
 
-    private ArrayList<Consumer<Double>> onTicks = new ArrayList<>();
     public ArrayList<Instance> instances = new ArrayList<>();
 
 
@@ -49,10 +51,9 @@ public class JGame{
     private void tick(double dtSeconds){
         TickCount++;
         render();
-        for (Consumer<Double> ontick : onTicks){
-            ontick.accept(dtSeconds);
-        }
-        Services.PhysicsService.runPhysics(dtSeconds);
+        ontick.Fire(dtSeconds);
+        if (this.Services != null)
+            Services.PhysicsService.runPhysics(dtSeconds);
     }
 
     private double curSeconds(){
@@ -110,11 +111,6 @@ public class JGame{
             run();
 
         });
-    }
-
-    //adding a method to onTick
-    public void onTick(Consumer<Double> ontick){
-        onTicks.add(ontick);
     }
 
     public void waitForTick(){

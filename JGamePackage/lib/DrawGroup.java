@@ -23,7 +23,9 @@ public class DrawGroup extends JComponent {
     public void paint(Graphics g){
         //try {
             for (int i = 0; i < instances.size(); i++){
-                ((JComponent) instances.get(i)).paint(g);
+                JComponent j = instances.get(i);
+                if (j==null) continue;
+                j.paint(g);
             }
         //} catch (Exception e) {
             

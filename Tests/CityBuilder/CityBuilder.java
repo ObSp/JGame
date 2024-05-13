@@ -87,7 +87,7 @@ public class CityBuilder {
             
         });
 
-        game.onTick(dt->{
+        game.OnTick.Connect(dt->{
             if (!input.IsMouseDown()) return;
             Instance target = input.GetMouseTarget();
             if (target == null || target.FillColor.equals(selectedColor) || !(target instanceof StoredBox)) return;

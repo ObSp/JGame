@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.ArrayTable;
-import JGamePackage.lib.Signal;
+import JGamePackage.lib.BiSignal;
 
 
 /**An abstract class that all {@code JGame} classes are a subclass of. <p>
@@ -80,19 +80,19 @@ public abstract class Instance extends JComponent {
 
     /**A signal fired when the user left-clicks on this Instance
      */
-    public Signal<Integer, Integer> MouseButton1Down = new Signal<>();
+    public BiSignal<Integer, Integer> MouseButton1Down = new BiSignal<>();
 
     /**A signal fired when the user left-clicks on this Instance
      */
-    public Signal<Integer, Integer> MouseButton1Up = new Signal<>();
+    public BiSignal<Integer, Integer> MouseButton1Up = new BiSignal<>();
 
     /**A signal fired when the mouse pointer enters this Instance
      */
-    public Signal<Integer, Integer> MouseEntered = new Signal<>();
+    public BiSignal<Integer, Integer> MouseEntered = new BiSignal<>();
 
     /**A signal fired when the mouse pointer exits this Instance
      */
-    public Signal<Integer, Integer> MouseExited = new Signal<>();
+    public BiSignal<Integer, Integer> MouseExited = new BiSignal<>();
 
     public boolean inAir = false;
     public double timeInAir = 0.0;

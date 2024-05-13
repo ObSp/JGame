@@ -4,6 +4,8 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.Vector2;
 
+import JGamePackage.lib.*;
+
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -11,13 +13,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class InputService extends Service{
+    
 
-    private ArrayList<Consumer<KeyEvent>> keyEvents = new ArrayList<>();
+    //signals
+    private Signal<KeyEvent> onkeypress = new Signal<>();
+    public SignalWrapper<KeyEvent> OnKeyPress = new SignalWrapper<>(onkeypress);
+
+    private VoidSignal onclick = new VoidSignal();
+    public VoidSignalWrapper OnMouseClick = new VoidSignalWrapper(onclick);
+
+
     private ArrayList<String> heldKeys = new ArrayList<>();
-    private ArrayList<Runnable> clickEvents = new ArrayList<>();
 
     //input vars
     private boolean isMouse1Down = false;
@@ -83,9 +91,7 @@ public class InputService extends Service{
         return heldKeys.indexOf(keyText)>-1 ? true : false;
     }
 
-    public void OnKeyPress(Consumer<KeyEvent> onpressfunc){
-        keyEvents.add(onpressfunc);
-    }
+
 
     //MOUSE RELATED STUFF
 
@@ -114,10 +120,6 @@ public class InputService extends Service{
         return isMouse1Down;
     }
 
-    public void OnMouseClick(Runnable onclickfunc){
-        clickEvents.add(onclickfunc);
-    }
-
 
     private void initInput(){
         var gameWindow = this.Parent.getWindow();
@@ -132,9 +134,7 @@ public class InputService extends Service{
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
                 //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
-                for (int i = 0; i<keyEvents.size(); i++){
-                    keyEvents.get(i).accept(e);
-                }
+                onkeypress.Fire(e);
             }
 
             @Override
@@ -152,9 +152,7 @@ public class InputService extends Service{
             @Override
             public void mousePressed(MouseEvent e) {
                 isMouse1Down = true;
-                for (Runnable r : clickEvents){
-                    r.run();
-                }
+                onclick.Fire();
 
                 //firing MouseButton1Click events in instances
 

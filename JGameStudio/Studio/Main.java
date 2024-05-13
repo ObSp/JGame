@@ -53,7 +53,7 @@ public class Main {
             controlDisplay.setCurrentSelected(null);
         });
 
-        input.OnMouseClick(()->{
+        input.OnMouseClick.Connect(()->{
             controlDisplay.setCurrentSelected(input.GetMouseTarget());
         });
 

@@ -1,9 +1,9 @@
 package JGamePackage.JGame.Types;
 
-import JGamePackage.lib.Signal;
+import JGamePackage.lib.BiSignal;
 
 public class Tween {
-    public final Signal<Void, Void> Ended = new Signal<>();
+    public final BiSignal<Void, Void> Ended = new BiSignal<>();
     public final Object start;
     public final Object end;
 

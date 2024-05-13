@@ -5,6 +5,7 @@ import JGamePackage.JGame.Instances.Box2D;
 import JGamePackage.JGame.Services.InputService;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.*;
+import JGamePackage.lib.Signal;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,7 @@ import java.awt.event.KeyEvent;
 /**
  * platformer
  */
+@SuppressWarnings("unused")
 public class platformer {
     static JGame game = new JGame();
 
@@ -44,12 +46,12 @@ public class platformer {
         game.addInstance(x);
 
 
-        game.onTick((dt)->{
+        game.OnTick.Connect((dt)->{
             player.Velocity.X = (int)(input.GetInputHorizontal()*(dt*1000));
         });
 
 
-        input.OnKeyPress(e ->{
+        input.OnKeyPress.Connect(e ->{
             if (e.getKeyCode()!= KeyEvent.VK_SPACE) return;
 
             player.Velocity.Y = -15;
