@@ -22,10 +22,10 @@ public class Box2D extends Instance {
             g2.fillRect(Position.X+BorderSizePixel, Position.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
         }
         
-        g2.rotate(Rotation);
+        g2.rotate(Rotation, Position.X, Position.Y);
 
         g2.setColor(FillColor);
-        g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);
+        g2.fillRect(Position.X-(Size.X/2), Position.Y-(Size.Y/2), Size.X, Size.Y);
         //g2.fillRect(Position.X, Parent.getScreenHeight()-Position.Y, Size.X, Size.Y);
     }
 

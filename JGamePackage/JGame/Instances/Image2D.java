@@ -34,7 +34,7 @@ public class Image2D extends Instance{
             g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);
         }
 
-        g2.drawImage(img, Position.X, Position.Y, Size.X, Size.Y, null);
+        g2.drawImage(img, Position.X-(Size.X/2), Position.Y-(Size.Y/2), Size.X, Size.Y, null);
     }
 
     public void SetImagePath(String path){

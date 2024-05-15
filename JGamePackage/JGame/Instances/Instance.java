@@ -23,7 +23,6 @@ import JGamePackage.lib.BiSignal;
  */
 public abstract class Instance extends JComponent {
     /**The position of the Instance in 2D space.<p>
-     * <b>NOTE:</b> This is the position of the <b>top-left corner</b> of the object, <i> not</i> the middle.
      * 
      */
     public Vector2 Position = new Vector2(0, 0);
@@ -32,6 +31,8 @@ public abstract class Instance extends JComponent {
      * 
      */
     public Vector2 Size = new Vector2(100, 100);
+
+    public CFrame CFrame = new CFrame(Position, 0);
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
      * 
@@ -299,13 +300,39 @@ public abstract class Instance extends JComponent {
     };
 
     public void setInstanceVariableByName(String variable, Object value){
-        if (variable == "Position") Position = (Vector2) value;
-        if (variable == "Size") Position = ((Vector2)value);
-        if (variable == "FillColor") FillColor = (Color) value;
-        if (variable == "Name") Name = (String) value;
-        if (variable == "Velocity") Velocity = (Vector2) value;
-        if (variable == "Solid") Solid = (boolean) value;
-        if (variable == "Anchored") Anchored = (boolean) value;
+        if (variable.equals("Position")) Position = (Vector2) value;
+        if (variable.equals("Size")) Size = ((Vector2)value);
+        if (variable.equals("FillColor")) FillColor = (Color) value;
+        if (variable.equals("Name")) Name = (String) value;
+        if (variable.equals("Velocity")) Velocity = (Vector2) value;
+        if (variable.equals("Solid")) Solid = (boolean) value;
+        if (variable.equals("Anchored")) Anchored = (boolean) value;
+        if (variable.equals("Rotation")) Rotation = (double) value;
+    }
+
+    public Object getInstanceVariableByName(String variable){
+        if (variable.equals("Position")) return Position;
+        if (variable.equals("Size")) return Size;
+        if (variable.equals("FillColor")) return FillColor;
+        if (variable.equals("Name")) return Name;
+        if (variable.equals("Velocity")) return Velocity;
+        if (variable.equals("Solid")) return Solid;
+        if (variable.equals("Anchored")) return Anchored;
+        if (variable.equals("Rotation")) return Rotation;
+        return null;
+    }
+
+    //--TWEENING--//
+    public Tween TweenPosition(Vector2 goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo);
+    }
+
+    public Tween TweenSize(Vector2 goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenVector2(this, "Size", goal, tweenInfo);
+    }
+
+    public Tween TweenRotation(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo);
     }
 
     @Override
