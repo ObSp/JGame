@@ -21,9 +21,7 @@ public class task {
      * @param seconds : The time, in seconds, that the current thread should yield for
      */
     public static boolean wait(int seconds){
-        long t = System.currentTimeMillis()/1000;
-        while ((System.currentTimeMillis()/1000)-t <((double)seconds)) {}
-        return true;
+        return wait((double) seconds);
     }
 
     public static boolean waitMinimum(){

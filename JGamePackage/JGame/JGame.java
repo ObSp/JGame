@@ -234,6 +234,7 @@ public class JGame{
                 }
             }
         }
+
         removeInstance(raycastBox);
         return null;
     }
@@ -276,6 +277,7 @@ public class JGame{
             
             raycastBox.Position.Y+= dir;
             for (int i = 0; i < instances.size(); i++){
+                if (i>= instances.size()) continue;
                 Instance inst = instances.get(i);
                 if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) 
                     && !inst.Name.equals("raybox@Jgame") && inst.Solid){

@@ -21,6 +21,8 @@ public class Box2D extends Instance {
             g2.setColor(BorderColor);
             g2.fillRect(Position.X+BorderSizePixel, Position.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
         }
+        
+        g2.rotate(Rotation);
 
         g2.setColor(FillColor);
         g2.fillRect(Position.X, Position.Y, Size.X, Size.Y);

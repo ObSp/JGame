@@ -27,6 +27,7 @@ public class platformer {
         player.Position = new Vector2(game.getScreenWidth()/2-player.Size.X, 0);
         player.Solid = true;
         player.Anchored = false;
+        player.Rotation = 15;
         game.addInstance(player);
 
         Box2D ground = new Box2D();

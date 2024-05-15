@@ -22,11 +22,15 @@ import JGamePackage.lib.BiSignal;
  * 
  */
 public abstract class Instance extends JComponent {
-    /**The position of the object in 2D space.<p>
+    /**The position of the Instance in 2D space.<p>
      * <b>NOTE:</b> This is the position of the <b>top-left corner</b> of the object, <i> not</i> the middle.
      * 
      */
     public Vector2 Position = new Vector2(0, 0);
+
+    /**The size of the Instance in 2D space.
+     * 
+     */
     public Vector2 Size = new Vector2(100, 100);
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
@@ -49,6 +53,11 @@ public abstract class Instance extends JComponent {
      * 
      */
     public Color BorderColor = Color.black;
+
+    /**The rotation, in <b>radians</b>, of the Instance.
+     * 
+     */
+    public double Rotation = 0;
 
     /**A list of non-unique strings that can be used to gather collections of objects
      * 

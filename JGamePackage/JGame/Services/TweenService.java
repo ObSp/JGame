@@ -6,6 +6,7 @@ import JGamePackage.JGame.Types.Tween;
 import JGamePackage.JGame.Types.TweenInfo;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.task;
+import JGamePackage.lib.Signal;
 
 public class TweenService extends Service {
 
@@ -21,25 +22,23 @@ public class TweenService extends Service {
 
     /**DOESNT WORK */
     public Tween TweenPosition(Instance obj, Vector2 goal, TweenInfo tweenInfo){
-        Tween tween = new Tween(obj.Position, goal);
-        double stepSize = tweenInfo.StepSize;
-        double totalTime = tweenInfo.Time;
-        double timeStep = totalTime*stepSize;
+        if (tweenInfo==null){
+            tweenInfo = new TweenInfo();
+        }
 
-        task.spawn(()->{
-            for (double t = 0.0; t <= 1.0; t += stepSize){
-                int newXCoord = lerp(((double)obj.Position.X), ((double)goal.X), t);
-                int newYCoord = lerp(((double)obj.Position.Y), ((double)goal.Y), t);
+        Tween tween = new Tween(obj.Position.clone(), goal.clone());
 
-                obj.Position.X = newXCoord;
-                obj.Position.Y = -newYCoord;
+        Vector2 start = obj.Position.clone();
 
-                task.wait(timeStep);
-            }
-            synchronized (tween){
-                tween.Ended.Fire(null, null);
-            }
-        });
+        for (double t = 0.0; t <=1; t += (tweenInfo.Speed)*0.01){
+
+            obj.Position.X = -lerp(start.X, goal.X, t);
+            obj.Position.Y = -lerp(start.Y, goal.Y, t);
+            Parent.waitForTick();
+        }
+
+        obj.Position.X = goal.X;
+        obj.Position.Y = goal.Y;
 
         return tween;
     }

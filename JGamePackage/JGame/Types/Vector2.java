@@ -72,27 +72,27 @@ public class Vector2 {
 
 
     public Vector2 add(Vector2 other){
-        X += other.X;
-        Y += other.Y;
-        return this;
+        return new Vector2(X+other.X, Y+other.Y);
+    }
+
+    public Vector2 add(int n){
+        return new Vector2(X+n, Y+n);
     }
 
     public Vector2 subtract(Vector2 other){
-        X -= other.X;
-        Y -= other.Y;
-        return this;
+        return new Vector2(X-other.X, Y-other.Y);
+    }
+
+    public Vector2 subtract(int n){
+        return new Vector2(X-n, Y-n);
     }
 
     public Vector2 multiply(Vector2 other){
-        X *= other.X;
-        Y *= other.Y;
-        return this;
+        return new Vector2(X*other.X, Y*other.Y);
     }
 
     public Vector2 multiply(int mult){
-        X *= mult;
-        Y *= mult;
-        return this;
+        return new Vector2(X*mult, Y*mult);
     }
 
     public boolean isZero(){
