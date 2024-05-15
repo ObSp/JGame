@@ -264,7 +264,7 @@ public class Display extends JFrame {
             this.colorChoose.setText("");
             return;
         }
-        this.positionInput.setText(currentSelected.Position.toString());
+        this.positionInput.setText(currentSelected.CFrame.Position.toString());
         this.sizeInput.setText(currentSelected.Size.toString());
         this.colorChoose.setText(Util.ColorToString(currentSelected.FillColor));
     }

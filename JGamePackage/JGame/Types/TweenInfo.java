@@ -14,6 +14,11 @@ public class TweenInfo {
         this.Repeats = reps;
     }
 
+    public TweenInfo(double tweenSpeed){
+        this.Speed = tweenSpeed != 0 ? tweenSpeed : .00001;
+        this.Repeats = 0;
+    }
+
     public TweenInfo(){
         this.Speed = 1;
         this.Repeats = 0;

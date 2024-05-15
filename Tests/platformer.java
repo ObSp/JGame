@@ -24,17 +24,16 @@ public class platformer {
 
         Box2D player = new Box2D();
         player.FillColor = Color.red;
-        player.Position = new Vector2(game.getScreenWidth()/2-player.Size.X, 0);
+        player.CFrame.Position = new Vector2(game.getScreenWidth()/2-player.Size.X, 0);
         player.Solid = true;
         player.Anchored = false;
-        player.Rotation = 15;
         game.addInstance(player);
 
         Box2D ground = new Box2D();
         ground.FillColor = Color.green;
         ground.Size = new Vector2(2000, 100);
-        ground.Position.X = 0;
-        ground.Position.Y = 900;
+        ground.CFrame.Position.X = 0;
+        ground.CFrame.Position.Y = 900;
         ground.Solid = true;
         game.addInstance(ground);
 
@@ -42,7 +41,7 @@ public class platformer {
         Box2D x = new Box2D();
         x.FillColor = Color.red;
         x.Size = new Vector2(500, 50);
-        x.Position = new Vector2(1000, 700);
+        x.CFrame.Position = new Vector2(1000, 700);
         x.Solid = true;
         game.addInstance(x);
 

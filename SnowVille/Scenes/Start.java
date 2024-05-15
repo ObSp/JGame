@@ -16,7 +16,7 @@ public class Start extends Scene {
         ground.FillColor = new Color(0,0,0,0);
         ground.Size.X = game.getScreenWidth();
         ground.Size.Y = 50;
-        ground.Position.Y = game.getScreenHeight()-ground.Size.Y;
+        ground.CFrame.Position.Y = game.getScreenHeight()-ground.Size.Y;
         ground.Solid = true;
         instances.add(ground);
     }

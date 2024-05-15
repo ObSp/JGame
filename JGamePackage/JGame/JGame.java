@@ -209,7 +209,7 @@ public class JGame{
      */
     public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist, Vector2 raySize){
         Box2D raycastBox = new Box2D();
-        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.CFrame.Position = new Vector2(startVector2.X, startVector2.Y);
         raycastBox.Size = raySize;
         raycastBox.Name = "raybox@Jgame";
         raycastBox.FillColor = Color.blue;
@@ -224,13 +224,13 @@ public class JGame{
 
         for (int x = startX; x <= endX; x++){
             
-            raycastBox.Position.X+= dir;
+            raycastBox.CFrame.Position.X+= dir;
             for (int i = 0; i < instances.size(); i++){
                 Instance inst = instances.get(i);
                 if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) 
                     && !inst.Name.equals("raybox@Jgame") && inst.Solid){
                     removeInstance(raycastBox);
-                    return new RaycastResult(inst, raycastBox.Position);
+                    return new RaycastResult(inst, raycastBox.CFrame.Position);
                 }
             }
         }
@@ -261,7 +261,7 @@ public class JGame{
      */
     public RaycastResult RaycastY(Vector2 startVector2, int finishY, Instance[] blacklist, Vector2 raySize){
         Box2D raycastBox = new Box2D();
-        raycastBox.Position = new Vector2(startVector2.X, startVector2.Y);
+        raycastBox.CFrame.Position = new Vector2(startVector2.X, startVector2.Y);
         raycastBox.Size = raySize;
         raycastBox.FillColor = Color.green;
         raycastBox.Name = "raybox@Jgame";
@@ -275,14 +275,14 @@ public class JGame{
 
         for (int y = startY; y <= endY; y++){
             
-            raycastBox.Position.Y+= dir;
+            raycastBox.CFrame.Position.Y+= dir;
             for (int i = 0; i < instances.size(); i++){
                 if (i>= instances.size()) continue;
                 Instance inst = instances.get(i);
                 if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) 
                     && !inst.Name.equals("raybox@Jgame") && inst.Solid){
                         removeInstance(raycastBox);
-                    return new RaycastResult(inst, raycastBox.Position);
+                    return new RaycastResult(inst, raycastBox.CFrame.Position);
                 }
             }
         }

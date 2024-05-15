@@ -23,7 +23,7 @@ public class PhysicsTesting {
 
         task.wait(2);
         double ct = ((double)System.currentTimeMillis())/1000.0;
-        box.TweenPosition(new Vector2(300), new TweenInfo(2));
+        box.TweenPosition(new Vector2(300), new TweenInfo(2.0));
         System.out.println(((double)System.currentTimeMillis())/1000.0 - ct);
     }
 }

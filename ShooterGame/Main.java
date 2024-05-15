@@ -4,9 +4,8 @@ import java.awt.Color;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
-import JGamePackage.JGame.Types.TweenInfo;
+import JGamePackage.JGame.Types.CFrame;
 import JGamePackage.JGame.Types.Vector2;
-import JGamePackage.lib.task;
 
 public class Main {
     static JGame game = new JGame();
@@ -24,17 +23,12 @@ public class Main {
     static void playerInit(){
 
         player = new Box2D();
-        player.Position = new Vector2(1000,500);
+        player.CFrame.Position = new Vector2(1000,500);
         player.FillColor = Color.red;
         game.addInstance(player);
 
         game.OnTick.Connect(dt->{
-            Vector2 mousePos = game.Services.InputService.GetMouseLocation();
-            double xDiff = mousePos.X - player.Position.X;
-            if (xDiff == 0) return;
-
-            double yDiff = mousePos.Y - player.Position.Y;
-            player.Rotation = Math.atan(yDiff/xDiff);
+            player.CFrame.LookAt(game.Services.InputService.GetMouseLocation());
         });
     }
 }

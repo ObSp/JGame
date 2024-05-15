@@ -22,17 +22,12 @@ import JGamePackage.lib.BiSignal;
  * 
  */
 public abstract class Instance extends JComponent {
-    /**The position of the Instance in 2D space.<p>
-     * 
-     */
-    public Vector2 Position = new Vector2(0, 0);
-
     /**The size of the Instance in 2D space.
      * 
      */
     public Vector2 Size = new Vector2(100, 100);
 
-    public CFrame CFrame = new CFrame(Position, 0);
+    public CFrame CFrame = new CFrame();
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
      * 
@@ -54,11 +49,6 @@ public abstract class Instance extends JComponent {
      * 
      */
     public Color BorderColor = Color.black;
-
-    /**The rotation, in <b>radians</b>, of the Instance.
-     * 
-     */
-    public double Rotation = 0;
 
     /**A list of non-unique strings that can be used to gather collections of objects
      * 
@@ -113,7 +103,7 @@ public abstract class Instance extends JComponent {
      */
     public void Destroy(){
         Parent.removeInstance(this);
-        Position = null;
+        CFrame = null;
         Size = null;
         Name = null;
         FillColor = null;
@@ -167,24 +157,24 @@ public abstract class Instance extends JComponent {
      * @return
      */
     public boolean touchingBorderTop(){
-        return (Position.Y)<0;
+        return (CFrame.Position.Y)<0;
     }
 
     public boolean touchingBorderLeft(){
-        return (Position.X)<0;
+        return (CFrame.Position.X)<0;
     }
 
     public boolean touchingBorderRight(){
-        return (Position.X+Size.X)>Parent.getTotalScreenSize().X;
+        return (CFrame.Position.X+Size.X)>Parent.getTotalScreenSize().X;
     }
 
     public boolean touchingBorderBottom(){
-        return Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
+        return CFrame.Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
     }
 
     public boolean collidingRight(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(Position, Position.X+Size.X, bl, new Vector2(2, Size.Y-3));
+        RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X+Size.X, bl, new Vector2(2, Size.Y-3));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -196,7 +186,7 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingLeft(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(Position, Position.X-4, bl, new Vector2(2, Size.Y-3));
+        RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X-4, bl, new Vector2(2, Size.Y-3));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -207,7 +197,7 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingBottom(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastY(Position, Position.Y+Size.Y, bl, new Vector2(Size.X-3, 1));
+        RaycastResult r = Parent.RaycastY(CFrame.Position.add(new Vector2(0, Size.Y)), (CFrame.Position.Y+(Size.Y/2))+15, bl, new Vector2(Size.X-3, 1));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -218,7 +208,7 @@ public abstract class Instance extends JComponent {
 
     public boolean collidingTop(){
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastY(Position, Position.Y-3, bl, new Vector2(Size.X-3, 2));
+        RaycastResult r = Parent.RaycastY(CFrame.Position.subtract(new Vector2(0, Size.Y)), (CFrame.Position.Y-(Size.Y/2))-3, bl, new Vector2(Size.X-3, 2));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
@@ -245,8 +235,10 @@ public abstract class Instance extends JComponent {
     }
 
     public boolean overlaps(Instance other){
-        return Position.X < other.Position.X+ other.Size.X && Position.X + Size.X > other.Position.X && 
-        Position.Y < other.Position.Y + other.Size.Y && Position.Y + Size.Y > other.Position.Y;
+        if (other==null) return false;
+        Vector2 Position = this.CFrame.Position;
+        return Position.X < other.CFrame.Position.X+ other.Size.X && Position.X + Size.X > other.CFrame.Position.X && 
+        Position.Y < other.CFrame.Position.Y + other.Size.Y && Position.Y + Size.Y > other.CFrame.Position.Y;
     }
 
     public Vector2 getCollideDirection(){
@@ -273,15 +265,15 @@ public abstract class Instance extends JComponent {
     }
 
     public boolean isCoordinateInBounds(Vector2 coord){
-        if (this.Position == null) return false;
+        if (this.CFrame == null) return false;
 
         int x = coord.X;
         int y = coord.Y;
 
-        int leftCorner = this.Position.X;
-        int rightCorner = this.Position.X + this.Size.X;
-        int top = this.Position.Y;
-        int bottom = this.Position.Y + this.Size.Y;
+        int leftCorner = this.CFrame.Position.X;
+        int rightCorner = this.CFrame.Position.X + this.Size.X;
+        int top = this.CFrame.Position.Y;
+        int bottom = this.CFrame.Position.Y + this.Size.Y;
 
         boolean inBounds = (leftCorner<x && x <rightCorner && y<bottom && y>top);
 
@@ -296,29 +288,27 @@ public abstract class Instance extends JComponent {
      * @param velPos : The position to move to
      */
     public void setPosition(Vector2 velPos){
-        Position = velPos;
+        CFrame.Position = velPos;
     };
 
     public void setInstanceVariableByName(String variable, Object value){
-        if (variable.equals("Position")) Position = (Vector2) value;
+        if (variable.equals("CFrame")) CFrame = (CFrame) value;
         if (variable.equals("Size")) Size = ((Vector2)value);
         if (variable.equals("FillColor")) FillColor = (Color) value;
         if (variable.equals("Name")) Name = (String) value;
         if (variable.equals("Velocity")) Velocity = (Vector2) value;
         if (variable.equals("Solid")) Solid = (boolean) value;
         if (variable.equals("Anchored")) Anchored = (boolean) value;
-        if (variable.equals("Rotation")) Rotation = (double) value;
     }
 
     public Object getInstanceVariableByName(String variable){
-        if (variable.equals("Position")) return Position;
+        if (variable.equals("CFrame")) return CFrame;
         if (variable.equals("Size")) return Size;
         if (variable.equals("FillColor")) return FillColor;
         if (variable.equals("Name")) return Name;
         if (variable.equals("Velocity")) return Velocity;
         if (variable.equals("Solid")) return Solid;
         if (variable.equals("Anchored")) return Anchored;
-        if (variable.equals("Rotation")) return Rotation;
         return null;
     }
 
@@ -349,6 +339,6 @@ public abstract class Instance extends JComponent {
         Instance obj = (Instance) other;
 
 
-        return Name.equals(obj.Name) && Position.equals(obj.Position) && Size.equals(obj.Size) && FillColor.equals(obj.FillColor);
+        return Name.equals(obj.Name) && CFrame.equals(obj.CFrame) && Size.equals(obj.Size) && FillColor.equals(obj.FillColor);
     }
 }

@@ -16,6 +16,9 @@ public class Box2D extends Instance {
         
         Graphics2D g2 = (Graphics2D) g;
 
+        Vector2 Position = CFrame.Position;
+        double Rotation = CFrame.Rotation;
+
 
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
@@ -31,6 +34,6 @@ public class Box2D extends Instance {
 
     @Override
     public void setPosition(Vector2 pos){
-        Position = pos;
+        CFrame.Position = pos;
     }
 }

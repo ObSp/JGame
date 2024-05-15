@@ -34,7 +34,7 @@ public class Main {
             }
 
             test.Size = new Vector2(300,300);
-            test.Position = new Vector2(0, 0);
+            test.CFrame.Position = new Vector2(0, 0);
             test.FillColor = Color.red;
             game.addInstance(test);
 
@@ -42,7 +42,7 @@ public class Main {
         });
 
         controlDisplay.updateProperties.Connect((instance, props)->{
-            instance.Position = (Vector2) props.get("Position");
+            instance.CFrame.Position = (Vector2) props.get("Position");
             instance.Size = (Vector2) props.get("Size");
             instance.FillColor = (Color) props.get("Color");
         });

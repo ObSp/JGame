@@ -37,7 +37,7 @@ public class PhysicsService extends Service {
                     if (ji == inst) continue;
     
                     if (ji.overlaps(inst) && ji.Solid){
-                        inst.Position.add(inst.getCollideDirection().multiply(3));
+                        inst.CFrame.Position.add(inst.getCollideDirection().multiply(3));
                         break;
                     }
                 }
@@ -62,8 +62,8 @@ public class PhysicsService extends Service {
 
 
             //inst.setPosition(new Vector2(inst.Position.X + vel.X, inst.Position.Y + vel.Y));
-            inst.Position.X += vel.X;
-            inst.Position.Y += vel.Y;
+            inst.CFrame.Position.X += vel.X;
+            inst.CFrame.Position.Y += vel.Y;
 
             /**
             Vector2 vel = inst.Velocity.clone();

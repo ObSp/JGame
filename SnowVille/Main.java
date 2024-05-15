@@ -76,12 +76,12 @@ public class Main {
         //progress bars
         Box2D progressBackground = new Box2D();
         progressBackground.Size = new Vector2(maximizedBoth.X-400, 40);
-        progressBackground.Position = new Vector2(maximizedBoth.X/2-progressBackground.Size.X/2, maximizedBoth.Y-200);
+        progressBackground.CFrame.Position = new Vector2(maximizedBoth.X/2-progressBackground.Size.X/2, maximizedBoth.Y-200);
         progressBackground.FillColor = new Color(33, 33, 33);
 
         Box2D bar = new Box2D();
         bar.Size = new Vector2(0, progressBackground.Size.Y);
-        bar.Position = progressBackground.Position;
+        bar.CFrame.Position = progressBackground.CFrame.Position;
         bar.FillColor = new Color(119, 200, 247);
 
         game.addInstance(progressBackground);
@@ -96,7 +96,7 @@ public class Main {
 
         //setting sizes and positions to same object reference so both can be controlled at once
         bar.Size = progressBackground.Size;
-        bar.Position = progressBackground.Position;
+        bar.CFrame.Position = progressBackground.CFrame.Position;
 
         game.removeInstance(progressBackground);
 
@@ -147,7 +147,7 @@ public class Main {
         middleground.Size = maximizedBoth;
         middleground.ImagePath = "SnowVille\\Assets\\Background\\MiddleGround.png";
         middleground.UpdateImagePath();
-        middleground.Position.Y -= 20;
+        middleground.CFrame.Position.Y -= 20;
 
 
 

@@ -10,7 +10,7 @@ public class Oval2D extends Instance {
         Graphics2D g2 = (Graphics2D ) g;
 
         g2.setColor(FillColor);
-        g2.fillOval(Position.X-(Size.X/2), Position.Y-(Size.Y/2), Size.X, Size.Y);
+        g2.fillOval(CFrame.Position.X-(Size.X/2), CFrame.Position.Y-(Size.Y/2), Size.X, Size.Y);
     }
     
 }

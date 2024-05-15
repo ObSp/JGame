@@ -103,7 +103,7 @@ public class InputService extends Service{
     public Instance GetMouseTarget(){
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         for (Instance i : Parent.instances){
-            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x, mouseLoc.y-20))){ // weird offset when not subtracting 20 px????
+            if (i.isCoordinateInBounds(new Vector2(mouseLoc.x+20, mouseLoc.y))){ // weird offset when not subtracting 20 px????
                 return i;
             }
         }

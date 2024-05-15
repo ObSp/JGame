@@ -27,14 +27,14 @@ public class Group2D extends Instance{
 
         
 
-        Vector2 primarypos = Primary.Position;
-        Primary.Position = newpos;
+        Vector2 primarypos = Primary.CFrame.Position;
+        Primary.CFrame.Position = newpos;
 
         for (Instance inst : Children){
             if (inst == Primary) continue;
-            Vector2 diff = new Vector2(inst.Position.X-primarypos.X, inst.Position.Y-primarypos.Y);
-            Vector2 actual = new Vector2(Primary.Position.X+diff.X, Primary.Position.Y+diff.Y);
-            inst.Position = actual;
+            Vector2 diff = new Vector2(inst.CFrame.Position.X-primarypos.X, inst.CFrame.Position.Y-primarypos.Y);
+            Vector2 actual = new Vector2(Primary.CFrame.Position.X+diff.X, Primary.CFrame.Position.Y+diff.Y);
+            inst.CFrame.Position = actual;
         }
     }
 
@@ -43,7 +43,7 @@ public class Group2D extends Instance{
             System.out.println("ERR: Group2D.getGroupPosition() can only be called on a Group2D with a valid Primary instance.");
             return null;
         }
-        return Primary.Position.clone();
+        return Primary.CFrame.Position.clone();
     }
 
     public void AddChild(Instance newchild){

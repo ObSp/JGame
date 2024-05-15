@@ -39,7 +39,7 @@ public class CityBuilder {
     static void generateBox(int x, int y){
         StoredBox box = new StoredBox();
         box.Size = new Vector2(boxSize);
-        box.Position =  new Vector2(x*(boxSize+1), y*(boxSize+1));
+        box.CFrame.Position =  new Vector2(x*(boxSize+1), y*(boxSize+1));
         box.FillColor = colors[0];
         detectClick(box);
 
@@ -117,7 +117,7 @@ public class CityBuilder {
             Box2D b = new Box2D();
             b.Size = new Vector2(boxSize);
             b.FillColor = colors[y];
-            b.Position = new Vector2(boxX, y*(boxSize+boxPadding));
+            b.CFrame.Position = new Vector2(boxX, y*(boxSize+boxPadding));
 
             finalY++;
 
@@ -131,7 +131,7 @@ public class CityBuilder {
         Image2D clear = new Image2D();
         clear.ImagePath = "C:\\Users\\Paul W\\Documents\\GitHub\\JGame\\Tests\\CityBuilder\\Assets\\Clear.png";
         clear.Size = new Vector2(boxSize);
-        clear.Position = new Vector2(boxX, finalY*(boxSize+boxPadding));
+        clear.CFrame.Position = new Vector2(boxX, finalY*(boxSize+boxPadding));
         game.addInstance(clear);
 
         clear.MouseButton1Down.Connect((x,y)->{

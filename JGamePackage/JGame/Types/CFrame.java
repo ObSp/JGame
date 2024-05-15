@@ -20,6 +20,11 @@ public class CFrame {
         this.Position = Position;
     }
 
+    public CFrame(){
+        this.Rotation = 0;
+        this.Position = new Vector2(0);
+    }
+
     /**Modifies this CFrame's rotation to look at the other position
      * 
      * @param position : The position to look at
@@ -44,5 +49,15 @@ public class CFrame {
         CFrame c = new CFrame(origin, 0);
         c.LookAt(lookAt);
         return c;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (other==this) return true;
+        if (!(other instanceof CFrame)) return false;
+
+        CFrame c = (CFrame) other;
+
+        return Position.equals(c.Position) && Rotation == c.Rotation;
     }
 }
