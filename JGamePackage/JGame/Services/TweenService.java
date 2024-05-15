@@ -11,7 +11,7 @@ public class TweenService extends Service {
     //--UTIL FUNCTIONS--//
 
     private double lerp(double a, double b, double t){
-        return -(a + (a-b)*t);
+        return (1-t)*a + t*b;
     }
     
     public TweenService(JGame parent){

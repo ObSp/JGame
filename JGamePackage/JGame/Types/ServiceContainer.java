@@ -7,11 +7,13 @@ public class ServiceContainer {
     @SuppressWarnings("unused")
     private JGame parent;
     
-    public ParserService ParserService;
-    public PhysicsService PhysicsService;
-    public TweenService TweenService;
-    public SceneService SceneService;
-    public InputService InputService;
+    public final ParserService ParserService;
+    public final PhysicsService PhysicsService;
+    public final TweenService TweenService;
+    public final SceneService SceneService;
+    public final InputService InputService;
+    public final RaycastService RaycastService;
+    public final ShapecastService ShapecastService;
 
 
     public ServiceContainer(JGame parent){
@@ -20,5 +22,7 @@ public class ServiceContainer {
         TweenService = new TweenService(parent);
         SceneService = new SceneService(parent);
         InputService = new InputService(parent);
+        RaycastService = new RaycastService(parent);
+        ShapecastService = new ShapecastService(parent);
     }
 }

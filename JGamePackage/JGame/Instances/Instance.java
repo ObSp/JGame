@@ -27,7 +27,21 @@ public abstract class Instance extends JComponent {
      */
     public Vector2 Size = new Vector2(100, 100);
 
+    /**The CFrame of the Instance, representing both Position and Rotation in 2D space
+     * 
+     */
     public CFrame CFrame = new CFrame();
+
+    /**The Anchor Point of the Instance, specifying where the center of the object is located. 
+     * The most common anchor points are listed here: <p>
+     * {@code (0,0)} - The top left corner <p>
+     * {@code (50,50)} - The middle <p>
+     * {@code (100,100)} - The bottom right corner <p>
+     * <p>
+     * Note that the X and Y values should usually stay true to {@code 0 <= x <= 100} and {@code 0 <= y <= 100}
+     * 
+     */
+    public Vector2 AnchorPoint = new Vector2(50,50);
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
      * 
@@ -243,13 +257,6 @@ public abstract class Instance extends JComponent {
         return !collidingBottom() && !touchingBorderBottom();
     }
 
-    public boolean overlaps(Instance other){
-        if (other==null) return false;
-        Vector2 Position = this.CFrame.Position;
-        return Position.X < other.CFrame.Position.X+ other.Size.X && Position.X + Size.X > other.CFrame.Position.X && 
-        Position.Y < other.CFrame.Position.Y + other.Size.Y && Position.Y + Size.Y > other.CFrame.Position.Y;
-    }
-
     public Vector2 getCollideDirection(){
         Vector2 vect = new Vector2(0, 0);
 
@@ -273,8 +280,58 @@ public abstract class Instance extends JComponent {
         return vect;
     }
 
+
+
+    public boolean overlaps(Instance other){
+        if (other==null) return false;
+
+        //distance between top left corner and anchor point percentage
+        Vector2 anchorOffset = getAnchorPointOffset();
+
+        int leftCorner = CFrame.Position.X-anchorOffset.X;
+        int top = CFrame.Position.Y + anchorOffset.Y;
+        int rightCorner = CFrame.Position.X + anchorOffset.X;
+        int bottom = CFrame.Position.Y - anchorOffset.Y;
+
+        Vector2 otherAnchor = getAnchorPointOffset();
+        CFrame otherC = other.CFrame;
+        Vector2 otherP = otherC.Position;
+
+        int otherLeft = otherP.X-otherAnchor.X;
+        int otherTop = otherP.Y + otherAnchor.Y;
+        int otherRight = otherP.X + otherAnchor.X;
+        int otherBottom = otherP.Y - otherAnchor.Y;
+
+
+        return 
+
+        leftCorner < otherRight &&
+
+        rightCorner > otherLeft &&
+
+        top < otherBottom &&
+
+        bottom > otherTop;
+    }
+
     public boolean isCoordinateInBounds(Vector2 coord){
-        return false;
+        if (this.CFrame == null) return false;
+
+        if (coord.equals(CFrame.Position)) return true;
+
+        int x = coord.X;
+        int y = coord.Y;
+
+        //distance between top left corner and anchor point percentage
+        Vector2 anchorOffset = getAnchorPointOffset();
+
+        int leftCorner = CFrame.Position.X-anchorOffset.X;
+        int top = CFrame.Position.Y - anchorOffset.Y;
+        int rightCorner = CFrame.Position.X + anchorOffset.X;
+        int bottom = CFrame.Position.Y + anchorOffset.Y;
+
+        return (leftCorner<x && x <rightCorner && y<bottom && y>top);
+
         /**if (this.CFrame == null) return false;
 
         int x = coord.X;
@@ -288,6 +345,10 @@ public abstract class Instance extends JComponent {
         boolean inBounds = (leftCorner<x && x <rightCorner && y<bottom && y>top);
 
         return inBounds;*/
+
+
+
+
     }
 
 
@@ -309,6 +370,8 @@ public abstract class Instance extends JComponent {
         if (variable.equals("Velocity")) Velocity = (Vector2) value;
         if (variable.equals("Solid")) Solid = (boolean) value;
         if (variable.equals("Anchored")) Anchored = (boolean) value;
+        if (variable.equals("Rotation")) CFrame.Rotation = (double) value;
+        if (variable.equals("Position")) CFrame.Position = (Vector2) value;
     }
 
     public Object getInstanceVariableByName(String variable){
@@ -319,7 +382,14 @@ public abstract class Instance extends JComponent {
         if (variable.equals("Velocity")) return Velocity;
         if (variable.equals("Solid")) return Solid;
         if (variable.equals("Anchored")) return Anchored;
+        if (variable.equals("Rotation")) return CFrame.Rotation;
+        if (variable.equals("Position")) return CFrame.Position;
         return null;
+    }
+
+
+    protected Vector2 getAnchorPointOffset(){
+        return new Vector2((int) ((double)Size.X*((double)AnchorPoint.X/100.0)), (int) ((double)Size.Y*((double)AnchorPoint.Y/100.0)));
     }
 
     //--TWEENING--//

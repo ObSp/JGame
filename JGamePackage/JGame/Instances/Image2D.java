@@ -34,7 +34,9 @@ public class Image2D extends Instance{
             g2.fillRect(CFrame.Position.X, CFrame.Position.Y, Size.X, Size.Y);
         }
 
-        g2.drawImage(img, CFrame.Position.X-(Size.X/2), CFrame.Position.Y-(Size.Y/2), Size.X, Size.Y, null);
+        Vector2 anchorOffset = getAnchorPointOffset();
+
+        g2.drawImage(img, CFrame.Position.X-anchorOffset.X, CFrame.Position.Y-anchorOffset.Y, Size.X, Size.Y, null);
     }
 
     public void SetImagePath(String path){

@@ -66,10 +66,9 @@ public class Main {
 
         //background
         Image2D title = new Image2D();
-        // to make sure transparency works with the image
-        title.BackgroundTransparent = false;
         title.Size = maximizedBoth;
         title.ImagePath = "SnowVille\\Assets\\Title.png";
+        title.AnchorPoint = new Vector2(0);
         title.UpdateImagePath();
         game.addInstance(title);
         
@@ -78,11 +77,13 @@ public class Main {
         progressBackground.Size = new Vector2(maximizedBoth.X-400, 40);
         progressBackground.CFrame.Position = new Vector2(maximizedBoth.X/2-progressBackground.Size.X/2, maximizedBoth.Y-200);
         progressBackground.FillColor = new Color(33, 33, 33);
+        progressBackground.AnchorPoint = new Vector2(0);
 
         Box2D bar = new Box2D();
         bar.Size = new Vector2(0, progressBackground.Size.Y);
         bar.CFrame.Position = progressBackground.CFrame.Position;
         bar.FillColor = new Color(119, 200, 247);
+        bar.AnchorPoint = new Vector2(0);
 
         game.addInstance(progressBackground);
         game.addInstance(bar);
@@ -141,9 +142,11 @@ public class Main {
         foreground = new Image2D();
         foreground.Size = maximizedBoth;
         foreground.ImagePath = "SnowVille\\Assets\\Background\\Foreground.png";
+        foreground.AnchorPoint = new Vector2(0);
         foreground.UpdateImagePath();
 
         middleground = new Image2D();
+        middleground.AnchorPoint = new Vector2(0);
         middleground.Size = maximizedBoth;
         middleground.ImagePath = "SnowVille\\Assets\\Background\\MiddleGround.png";
         middleground.UpdateImagePath();

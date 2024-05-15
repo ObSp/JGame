@@ -27,8 +27,15 @@ public class Box2D extends Instance {
         
         g2.rotate(Rotation, Position.X, Position.Y);
 
+        //calculating offset
+        double xAnchor = ((double)AnchorPoint.X)/100.0;
+        double yAnchor = ((double)AnchorPoint.Y)/100.0;
+
+        int xOffset = (int) (((double)Size.X)*xAnchor);
+        int yOffset = (int) (((double)Size.Y)*yAnchor);
+
         g2.setColor(FillColor);
-        g2.fillRect(Position.X-(Size.X/2), Position.Y-(Size.Y/2), Size.X, Size.Y);
+        g2.fillRect(Position.X+xOffset, Position.Y+yOffset, Size.X, Size.Y);
         //g2.fillRect(Position.X, Parent.getScreenHeight()-Position.Y, Size.X, Size.Y);
     }
 

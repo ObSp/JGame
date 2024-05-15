@@ -61,6 +61,14 @@ public class Vector2 {
         Y= (int) y;
     }
 
+    /**Creates a new Vector2 with the X and Y coordinates set to 0
+     * 
+     */
+    public Vector2(){
+        X = 0;
+        Y = 0;
+    }
+
     /**Creates a new Vector2 and sets the Vector2's X and Y coordinates equal to the {@code n} parameter.
      * 
      * @param n : The number to set the X and Y coordinates to
