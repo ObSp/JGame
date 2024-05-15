@@ -157,45 +157,53 @@ public abstract class Instance extends JComponent {
      * @return
      */
     public boolean touchingBorderTop(){
-        return (CFrame.Position.Y)<0;
+        return false;
+        //return (CFrame.Position.Y)<0;
     }
 
     public boolean touchingBorderLeft(){
-        return (CFrame.Position.X)<0;
+        return false;
+        //return (CFrame.Position.X)<0;
     }
 
     public boolean touchingBorderRight(){
-        return (CFrame.Position.X+Size.X)>Parent.getTotalScreenSize().X;
+        return false;
+        //return (CFrame.Position.X+Size.X)>Parent.getTotalScreenSize().X;
     }
 
     public boolean touchingBorderBottom(){
-        return CFrame.Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
+        return false;
+        //return CFrame.Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
     }
 
     public boolean collidingRight(){
-        Instance[] bl = {this};
+        return false;
+        /**Instance[] bl = {this};
         RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X+Size.X, bl, new Vector2(2, Size.Y-3));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
         }
 
-        return false;
+        return false;*/
     }
 
 
     public boolean collidingLeft(){
-        Instance[] bl = {this};
+        return false;
+        /**Instance[] bl = {this};
         RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X-4, bl, new Vector2(2, Size.Y-3));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
         }
 
-        return false;
+        return false;*/
     }
 
     public boolean collidingBottom(){
+        return false;
+        /**
         Instance[] bl = {this};
         RaycastResult r = Parent.RaycastY(CFrame.Position.add(new Vector2(0, Size.Y)), (CFrame.Position.Y+(Size.Y/2))+15, bl, new Vector2(Size.X-3, 1));
 
@@ -203,18 +211,19 @@ public abstract class Instance extends JComponent {
             return true;
         }
 
-        return false;
+        return false;*/
     }
 
     public boolean collidingTop(){
-        Instance[] bl = {this};
+        return false;
+        /**Instance[] bl = {this};
         RaycastResult r = Parent.RaycastY(CFrame.Position.subtract(new Vector2(0, Size.Y)), (CFrame.Position.Y-(Size.Y/2))-3, bl, new Vector2(Size.X-3, 2));
 
         if (r!= null && r.HitInstance.Solid && this.Solid){
             return true;
         }
 
-        return false;
+        return false;*/
     }
 
 
@@ -265,7 +274,8 @@ public abstract class Instance extends JComponent {
     }
 
     public boolean isCoordinateInBounds(Vector2 coord){
-        if (this.CFrame == null) return false;
+        return false;
+        /**if (this.CFrame == null) return false;
 
         int x = coord.X;
         int y = coord.Y;
@@ -277,7 +287,7 @@ public abstract class Instance extends JComponent {
 
         boolean inBounds = (leftCorner<x && x <rightCorner && y<bottom && y>top);
 
-        return inBounds;
+        return inBounds;*/
     }
 
 
