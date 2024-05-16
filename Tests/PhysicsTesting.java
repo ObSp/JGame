@@ -6,6 +6,7 @@ import java.awt.Color;
 import JGamePackage.JGame.*;
 import JGamePackage.lib.*;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.JGame.Types.RaycastResult;
 import JGamePackage.JGame.Types.TweenInfo;
 import JGamePackage.JGame.Types.Vector2;
@@ -16,26 +17,18 @@ public class PhysicsTesting {
 
     public static void main(String[] args) {
 
+        Box2D box = new Box2D();
+        box.CFrame.Position = new Vector2(300);
+        box.FillColor = Color.black;
+        box.AnchorPoint = new Vector2(100);
 
-        Box2D other = new Box2D();
-        other.Name = "H";
-        other.CFrame.Position = new Vector2(500);
-        other.FillColor = Color.black;
-        other.AnchorPoint = new Vector2(0);
-        other.Size = new Vector2(200);
-        game.addInstance(other);
+        Box2D c = new Box2D();
+        c.CFrame.Position = box.GetCornerPosition(Enum.InstanceCornerType.TopRight);
+        c.AnchorPoint = new Vector2(50);
+        c.Size = new Vector2(15);
+        c.FillColor = Color.red;
 
-        RaycastResult result = game.Services.ShapecastService.RectangleCast(new Vector2(0), new Vector2(700), null, null);
-
-        if (result == null) return;
-
-        System.out.println(result.HitInstance);
-
-        Box2D visualizer = new Box2D();
-        visualizer.FillColor = Color.green;
-        visualizer.CFrame.Position = result.FinalPosition;
-        visualizer.AnchorPoint = new Vector2(50);
-        game.addInstance(visualizer);
-        
+        game.addInstance(box);
+        game.addInstance(c);
     }
 }

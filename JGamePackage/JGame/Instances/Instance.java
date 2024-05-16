@@ -7,9 +7,17 @@ import javax.swing.JComponent;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Types.*;
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.ArrayTable;
 import JGamePackage.lib.BiSignal;
 
+
+enum Corners{
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight
+}
 
 /**An abstract class that all {@code JGame} classes are a subclass of. <p>
  * It contains basic methods, like Instance.Destroy() that are needed when working with basic rendering objects.
@@ -285,22 +293,15 @@ public abstract class Instance extends JComponent {
     public boolean overlaps(Instance other){
         if (other==null) return false;
 
-        //distance between top left corner and anchor point percentage
-        Vector2 anchorOffset = getAnchorPointOffset();
+        int leftCorner = topLeftCorner().X;
+        int top = topLeftCorner().Y;
+        int rightCorner = topRightCorner().X;
+        int bottom = bottomLeftCorner().Y;
 
-        int leftCorner = CFrame.Position.X-anchorOffset.X;
-        int top = CFrame.Position.Y + anchorOffset.Y;
-        int rightCorner = CFrame.Position.X + anchorOffset.X;
-        int bottom = CFrame.Position.Y - anchorOffset.Y;
-
-        Vector2 otherAnchor = getAnchorPointOffset();
-        CFrame otherC = other.CFrame;
-        Vector2 otherP = otherC.Position;
-
-        int otherLeft = otherP.X-otherAnchor.X;
-        int otherTop = otherP.Y + otherAnchor.Y;
-        int otherRight = otherP.X + otherAnchor.X;
-        int otherBottom = otherP.Y - otherAnchor.Y;
+        int otherLeft = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).X;
+        int otherTop = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).Y;
+        int otherRight = other.GetCornerPosition(Enum.InstanceCornerType.TopRight).X;
+        int otherBottom = other.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
 
 
         return 
@@ -389,7 +390,41 @@ public abstract class Instance extends JComponent {
 
 
     protected Vector2 getAnchorPointOffset(){
-        return new Vector2((int) ((double)Size.X*((double)AnchorPoint.X/100.0)), (int) ((double)Size.Y*((double)AnchorPoint.Y/100.0)));
+        return new Vector2((int) ((double)Size.X*(((double)AnchorPoint.X)/100.0)), (int) ((double)Size.Y*(((double)AnchorPoint.Y)/100.0)));
+    }
+
+    protected int getAnchorPointOffsetX(){
+        return (int) ((double)Size.X*(((double)AnchorPoint.X)/100.0));
+    }
+
+    protected int getAnchorPointOffsetY(){
+        return (int) ((double)Size.Y*(((double)AnchorPoint.Y)/100.0));
+    }
+
+    //cornerstuff
+
+    protected Vector2 topLeftCorner(){
+        return new Vector2(CFrame.Position.X - getAnchorPointOffsetX(), CFrame.Position.Y - getAnchorPointOffsetY());
+    }
+
+    protected Vector2 topRightCorner(){
+        return new Vector2(CFrame.Position.X + getAnchorPointOffsetX(), CFrame.Position.Y - getAnchorPointOffsetY());
+    }
+
+    protected Vector2 bottomLeftCorner(){
+        return new Vector2(CFrame.Position.X - getAnchorPointOffsetX(), CFrame.Position.Y + getAnchorPointOffsetY());
+    }
+
+    protected Vector2 bottomRightCorner(){
+        return new Vector2(CFrame.Position.X + getAnchorPointOffsetX(), CFrame.Position.Y + getAnchorPointOffsetY());
+    }
+
+    public Vector2 GetCornerPosition(int corner){
+        if (corner == Enum.InstanceCornerType.TopLeft) return topLeftCorner();
+        if (corner == Enum.InstanceCornerType.TopRight) return topRightCorner();
+        if (corner == Enum.InstanceCornerType.BottomLeft) return bottomLeftCorner();
+        if (corner == Enum.InstanceCornerType.BottomRight) return bottomRightCorner();
+        throw new Error("No Such Corner Type Exception: corner identifier "+corner+" is not a valid corner type.");
     }
 
     //--TWEENING--//

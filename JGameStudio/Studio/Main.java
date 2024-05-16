@@ -26,6 +26,7 @@ public class Main {
 
         controlDisplay.Instantiate.Connect((typeofObject,A)->{
             Instance test = new Box2D();
+            
 
             if (typeofObject.equals("Oval2D")){
                 test = new Oval2D();
