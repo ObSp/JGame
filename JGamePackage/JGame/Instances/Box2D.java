@@ -14,12 +14,17 @@ public class Box2D extends Instance {
     
     public void paint(Graphics g) {
         
-        Graphics2D g2 = (Graphics2D) g;
+        //if (!Parent.Camera.isInstanceInViewport(this)) return;
 
         Vector2 Position = CFrame.Position;
         double Rotation = CFrame.Rotation;
 
+        Vector2 actualPos = Parent.Camera.GetInstancePositionRelativeToCameraPosition(this);
+        actualPos = actualPos.subtract(getAnchorPointOffset());
 
+
+
+        Graphics2D g2 = (Graphics2D) g;
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
             g2.fillRect(Position.X+BorderSizePixel, Position.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
@@ -27,12 +32,10 @@ public class Box2D extends Instance {
         
         g2.rotate(Rotation, Position.X, Position.Y);
 
-        //calculating offset
-        int xOffset = getAnchorPointOffsetX();
-        int yOffset = getAnchorPointOffsetY();
+        
 
         g2.setColor(FillColor);
-        g2.fillRect(Position.X-xOffset, Position.Y-yOffset, Size.X, Size.Y);
+        g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
     }
 
     @Override

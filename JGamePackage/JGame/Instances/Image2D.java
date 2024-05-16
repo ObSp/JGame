@@ -27,6 +27,9 @@ public class Image2D extends Instance{
     public void paint(Graphics g) {
         if (img == null) return;
         
+        Vector2 actualPos = Parent.Camera.GetInstancePositionRelativeToCameraPosition(this);
+        actualPos = actualPos.subtract(getAnchorPointOffset());
+        
         Graphics2D g2 = (Graphics2D) g;
 
         if (!BackgroundTransparent){
@@ -34,9 +37,7 @@ public class Image2D extends Instance{
             g2.fillRect(CFrame.Position.X, CFrame.Position.Y, Size.X, Size.Y);
         }
 
-        Vector2 anchorOffset = getAnchorPointOffset();
-
-        g2.drawImage(img, CFrame.Position.X-anchorOffset.X, CFrame.Position.Y-anchorOffset.Y, Size.X, Size.Y, null);
+        g2.drawImage(img, actualPos.X, actualPos.Y, Size.X, Size.Y, null);
     }
 
     public void SetImagePath(String path){

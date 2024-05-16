@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.*;
@@ -31,12 +32,15 @@ public class JGame{
 
     public ArrayList<Instance> instances = new ArrayList<>();
 
+    public Camera Camera;
+
 
     public ServiceContainer Services;
 
     private void staticConstruct(){
         Promise.await(this.start());
         Services = new ServiceContainer(this);
+        Camera = new Camera(this);
     }
 
     public JGame(){

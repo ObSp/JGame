@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 import JGamePackage.JGame.*;
+import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.ArrayTable;
@@ -388,7 +389,7 @@ public abstract class Instance extends JComponent {
 
 
     protected Vector2 getAnchorPointOffset(){
-        return new Vector2((int) ((double)Size.X*(((double)AnchorPoint.X)/100.0)), (int) ((double)Size.Y*(((double)AnchorPoint.Y)/100.0)));
+        return new Vector2(getAnchorPointOffsetX(), getAnchorPointOffsetY());
     }
 
     protected int getAnchorPointOffsetX(){

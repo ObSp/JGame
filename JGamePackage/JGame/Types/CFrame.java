@@ -60,4 +60,9 @@ public class CFrame {
 
         return Position.equals(c.Position) && Rotation == c.Rotation;
     }
+
+    @Override
+    public CFrame clone(){
+        return new CFrame(Position.clone(), Rotation);
+    }
 }

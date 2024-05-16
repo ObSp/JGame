@@ -87,6 +87,10 @@ public class Vector2 {
         return new Vector2(X+n, Y+n);
     }
 
+    public Vector2 add(int x, int y){
+        return new Vector2(X+x, Y+y);
+    }
+
     public Vector2 subtract(Vector2 other){
         return new Vector2(X-other.X, Y-other.Y);
     }
