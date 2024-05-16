@@ -61,9 +61,7 @@ public class ShapecastService extends Service {
         rayBox.FillColor = Color.red;
         rayBox.CFrame.Position = start;
 
-        game.addInstance(rayBox);
-
-        for (double t = 0.0; t <= 1.0; t += .01){
+        for (double t = 0.0; t <= 1.0; t += .001){
             var foundInst = checkInstancesWithInstance(rayBox, params);
 
             //collided with something
@@ -72,7 +70,6 @@ public class ShapecastService extends Service {
             }
 
             rayBox.CFrame.Position = new Vector2(lerp(start.X, destination.X, t), lerp(start.Y, destination.Y, t));
-            game.waitForTick();
         }
 
         return null;

@@ -49,7 +49,7 @@ public abstract class Instance extends JComponent {
      * Note that the X and Y values should usually stay true to {@code 0 <= x <= 100} and {@code 0 <= y <= 100}
      * 
      */
-    public Vector2 AnchorPoint = new Vector2(50,50);
+    public Vector2 AnchorPoint = new Vector2(0);
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
      * 
@@ -324,14 +324,12 @@ public abstract class Instance extends JComponent {
         int y = coord.Y;
 
         //distance between top left corner and anchor point percentage
-        Vector2 anchorOffset = getAnchorPointOffset();
+        int leftSide = topLeftCorner().X;
+        int rightSide = topRightCorner().X;
+        int top = topLeftCorner().Y;
+        int bottom = bottomLeftCorner().Y;
 
-        int leftCorner = CFrame.Position.X-anchorOffset.X;
-        int top = CFrame.Position.Y - anchorOffset.Y;
-        int rightCorner = CFrame.Position.X + anchorOffset.X;
-        int bottom = CFrame.Position.Y + anchorOffset.Y;
-
-        return (leftCorner<x && x <rightCorner && y<bottom && y>top);
+        return (leftSide<x && x <rightSide && y<bottom && y>top);
 
         /**if (this.CFrame == null) return false;
 
@@ -408,15 +406,15 @@ public abstract class Instance extends JComponent {
     }
 
     protected Vector2 topRightCorner(){
-        return new Vector2(CFrame.Position.X + getAnchorPointOffsetX(), CFrame.Position.Y - getAnchorPointOffsetY());
+        return new Vector2((CFrame.Position.X + Size.X) - getAnchorPointOffsetX(), CFrame.Position.Y - getAnchorPointOffsetY());
     }
 
     protected Vector2 bottomLeftCorner(){
-        return new Vector2(CFrame.Position.X - getAnchorPointOffsetX(), CFrame.Position.Y + getAnchorPointOffsetY());
+        return new Vector2(CFrame.Position.X - getAnchorPointOffsetX(), (CFrame.Position.Y + Size.Y) - getAnchorPointOffsetY());
     }
 
     protected Vector2 bottomRightCorner(){
-        return new Vector2(CFrame.Position.X + getAnchorPointOffsetX(), CFrame.Position.Y + getAnchorPointOffsetY());
+        return new Vector2((CFrame.Position.X + Size.X) - getAnchorPointOffsetX(), (CFrame.Position.Y + Size.Y) - getAnchorPointOffsetY());
     }
 
     public Vector2 GetCornerPosition(int corner){
