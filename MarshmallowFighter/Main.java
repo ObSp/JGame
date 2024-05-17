@@ -1,4 +1,4 @@
-package MarshmellowFighter;
+package MarshmallowFighter;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -9,7 +9,7 @@ import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.task;
-import MarshmellowFighter.Classes.*;
+import MarshmallowFighter.Classes.*;
 
 public class Main {
     static JGame game = new JGame();

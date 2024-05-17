@@ -1,4 +1,4 @@
-package MarshmellowFighter.Classes;
+package MarshmallowFighter.Classes;
 
 public final class Constants {
 
