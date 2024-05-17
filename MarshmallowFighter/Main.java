@@ -15,7 +15,7 @@ public class Main {
 
     static InputService input = game.Services.InputService;
 
-    static Entity[] enemies = new Entity[1];
+    static Entity[] entities = new Entity[1];
 
     static Player plr;
 
@@ -32,7 +32,7 @@ public class Main {
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
         BasicMarshmallow mallow = new BasicMarshmallow(game);
-        enemies[0] = mallow;
+        entities[0] = mallow;
         plr = new Player(game);
 
         gameLoop();
@@ -84,7 +84,7 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            for (Entity x : enemies){
+            for (Entity x : entities){
                 int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y -5; //sub because shadow
                 int xY = x.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
                 if (xY > plrY && x.model.ZIndex <= plr.model.ZIndex){
