@@ -151,29 +151,33 @@ public class InputService extends Service{
 
             @Override
             public void mousePressed(MouseEvent e) {
-                isMouse1Down = true;
-                onclick.Fire();
+                if (e.getButton() == MouseEvent.BUTTON1){
+                    isMouse1Down = true;
+                    onclick.Fire();
 
-                //firing MouseButton1Click events in instances
-
-                Instance target = GetMouseTarget();
-                if (target != null){
-                    Vector2 mouseLoc = GetMouseLocation();
-                    target.MouseButton1Down.Fire(mouseLoc.X, mouseLoc.Y);
+                    Instance target = GetMouseTarget();
+                    if (target != null){
+                        Vector2 mouseLoc = GetMouseLocation();
+                        target.MouseButton1Down.Fire(mouseLoc.X, mouseLoc.Y);
+                    } else if(e.getButton() == MouseEvent.BUTTON2){
+                        isMouse2Down = true;
+                    }
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                isMouse1Down = false;
-
-                //firing MouseButton1Click events in instances
-
-                Instance target = GetMouseTarget();
-                if (target != null){
-                    Vector2 mouseLoc = GetMouseLocation();
-                    target.MouseButton1Up.Fire(mouseLoc.X, mouseLoc.Y);
+                if (e.getButton() == MouseEvent.BUTTON1){
+                    isMouse1Down = false;
+                    Instance target = GetMouseTarget();
+                    if (target != null){
+                        Vector2 mouseLoc = GetMouseLocation();
+                        target.MouseButton1Up.Fire(mouseLoc.X, mouseLoc.Y);
+                    }
+                } else if(e.getButton() == MouseEvent.BUTTON2){
+                    isMouse2Down = false;
                 }
+
             }
 
             @Override
