@@ -16,21 +16,19 @@ public class Box2D extends Instance {
         
         //if (!Parent.Camera.isInstanceInViewport(this)) return;
 
-        Vector2 Position = CFrame.Position;
-        double Rotation = CFrame.Rotation;
-
-        Vector2 actualPos = Parent.Camera.GetInstancePositionRelativeToCameraPosition(this);
-        actualPos = actualPos.subtract(getAnchorPointOffset());
+        //garuanteed to be the actual top/left corner of the object, translated and shifted and whatknot
+        Vector2 actualPos = GetRenderPosition();
 
 
 
         Graphics2D g2 = (Graphics2D) g;
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
-            g2.fillRect(Position.X+BorderSizePixel, Position.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
+            g2.fillRect(actualPos.X+BorderSizePixel, actualPos.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
         }
         
-        g2.rotate(Rotation, Position.X, Position.Y);
+        //always making sure to rotate around center of the object
+        g2.rotate(CFrame.Rotation, actualPos.X+(Size.X/2), actualPos.Y+(Size.X/2));
 
         
 

@@ -18,6 +18,9 @@ public class Image2D extends Instance{
     public boolean BackgroundTransparent = true;
     private BufferedImage img;
 
+    public boolean FlipHorizontally = false;
+    public boolean FlipVertically = false;
+
     public Image2D(){
         Name = "Image";
     }
@@ -27,17 +30,19 @@ public class Image2D extends Instance{
     public void paint(Graphics g) {
         if (img == null) return;
         
-        Vector2 actualPos = Parent.Camera.GetInstancePositionRelativeToCameraPosition(this);
-        actualPos = actualPos.subtract(getAnchorPointOffset());
+        Vector2 actualPos = GetRenderPosition();
         
         Graphics2D g2 = (Graphics2D) g;
+        
+
+        g2.rotate(CFrame.Rotation, actualPos.X+(Size.X/2), actualPos.Y+(Size.X/2));
 
         if (!BackgroundTransparent){
             g2.setColor(this.FillColor);
             g2.fillRect(CFrame.Position.X, CFrame.Position.Y, Size.X, Size.Y);
         }
 
-        g2.drawImage(img, actualPos.X, actualPos.Y, Size.X, Size.Y, null);
+        g2.drawImage(img, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
     }
 
     public void SetImagePath(String path){

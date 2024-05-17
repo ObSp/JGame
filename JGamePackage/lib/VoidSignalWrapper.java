@@ -18,11 +18,11 @@ public class VoidSignalWrapper {
     }
 
 
-    public VoidConnection Connect(Runnable callback){
+    public VoidSignal.VoidConnection Connect(Runnable callback){
         return sig.Connect(callback);
     }
 
-    public VoidConnection Once(Runnable callback){
+    public VoidSignal.VoidConnection Once(Runnable callback){
         return sig.Once(callback);
     }
 }

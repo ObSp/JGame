@@ -2,7 +2,7 @@ package JGamePackage.lib;
 
 import java.util.ArrayList;
 
-public class VoidSignal {
+public class VoidSignal extends AbstractSignal{
     
     public ArrayList<VoidConnection> _connections = new ArrayList<>();
     public ArrayList<VoidConnection> _onces = new ArrayList<>();
@@ -46,50 +46,50 @@ public class VoidSignal {
     }
 
 
-}
+    public /**A class representing a connection between a {@code Signal} and a function
+    * 
+    */
+   class VoidConnection extends AbstractConnection {
+       private Runnable callback;
+       private VoidSignal parent;
+   
+       /**A boolean representing whether or not this Connection is currently connected to a Signal.
+        * 
+        */
+       public boolean Connected = true;
+   
+       /**Constructs a new {@code Connection} with the given callback and parent {@code Signal}.
+        * 
+        * @param callback
+        */
+       public VoidConnection(Runnable callback, VoidSignal parent){
+           this.callback = callback;
+           this.parent = parent;
+       }
+   
+       public void _call(){
+           if (!Connected) {
+               throw new Error("Unable to call an already disconnected Connection");
+           }
+           callback.run();
+       }
+   
+       /**Disconnects this Connection from the parent signal so it won't be called again
+        * 
+        */
+       public void Disconnect(){
+           if (parent._connections.contains(this)){
+               parent._connections.remove(this);
+           }
+   
+           if (parent._onces.contains(this)){
+               parent._onces.remove(this);
+           }
+   
+           Connected = false;
+       }
+   
+   }
 
-
-/**A class representing a connection between a {@code Signal} and a function
- * 
- */
-class VoidConnection {
-    private Runnable callback;
-    private VoidSignal parent;
-
-    /**A boolean representing whether or not this Connection is currently connected to a Signal.
-     * 
-     */
-    public boolean Connected = true;
-
-    /**Constructs a new {@code Connection} with the given callback and parent {@code Signal}.
-     * 
-     * @param callback
-     */
-    public VoidConnection(Runnable callback, VoidSignal parent){
-        this.callback = callback;
-        this.parent = parent;
-    }
-
-    public void _call(){
-        if (!Connected) {
-            throw new Error("Unable to call an already disconnected Connection");
-        }
-        callback.run();
-    }
-
-    /**Disconnects this Connection from the parent signal so it won't be called again
-     * 
-     */
-    public void Disconnect(){
-        if (parent._connections.contains(this)){
-            parent._connections.remove(this);
-        }
-
-        if (parent._onces.contains(this)){
-            parent._onces.remove(this);
-        }
-
-        Connected = false;
-    }
 
 }

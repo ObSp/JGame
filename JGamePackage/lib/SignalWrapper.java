@@ -19,11 +19,11 @@ public class SignalWrapper<T> {
     }
 
 
-    public Connection<T> Connect(Consumer<T> callback){
+    public Signal<T>.Connection Connect(Consumer<T> callback){
         return sig.Connect(callback);
     }
 
-    public Connection<T> Once(Consumer<T> callback){
+    public Signal<T>.Connection Once(Consumer<T> callback){
         return sig.Once(callback);
     }
 }

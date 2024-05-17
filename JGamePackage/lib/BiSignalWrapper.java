@@ -19,11 +19,11 @@ public class BiSignalWrapper<T,U> {
     }
 
 
-    public BiConnection<T,U> Connect(BiConsumer<T,U> callback){
+    public BiSignal<T,U>.BiConnection Connect(BiConsumer<T,U> callback){
         return sig.Connect(callback);
     }
 
-    public BiConnection<T,U> Once(BiConsumer<T,U> callback){
+    public BiSignal<T,U>.BiConnection Once(BiConsumer<T,U> callback){
         return sig.Once(callback);
     }
 }

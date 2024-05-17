@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 import JGamePackage.JGame.*;
-import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.ArrayTable;
@@ -94,12 +93,13 @@ public abstract class Instance extends JComponent {
      */
     public boolean Anchored = true;
 
-    /**Whether an instance will be repainted every frame. This is useful for background images that don't change and therefore shouldn't
-     * tank performance by being painted every frame but should still be shown
+    /**Whether this Instance should be affected by the Camera's offset. <p>
+     * This is useful for static background images that should always stay in the same place no matter what.
      * 
      */
-    public boolean Static = false;
-    public boolean wasDrawn = false;
+    public boolean MoveWithCamera = true;
+
+
 
     /**A signal fired when the user left-clicks on this Instance
      */
@@ -398,6 +398,13 @@ public abstract class Instance extends JComponent {
 
     protected int getAnchorPointOffsetY(){
         return (int) ((double)Size.Y*(((double)AnchorPoint.Y)/100.0));
+    }
+
+    public Vector2 GetRenderPosition(){
+        if (MoveWithCamera){
+            return Parent.Camera.GetInstancePositionRelativeToCameraPosition(this).subtract(getAnchorPointOffset());
+        }
+        return CFrame.Position.subtract(getAnchorPointOffset());
     }
 
     //cornerstuff

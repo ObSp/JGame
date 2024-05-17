@@ -3,19 +3,18 @@ package JGamePackage.lib;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class Signal<T extends Object> {
+public class Signal<T extends Object> extends AbstractSignal {
     
-    public ArrayList<Connection<T>> _connections = new ArrayList<>();
-    public ArrayList<Connection<T>> _onces = new ArrayList<>();
+    public ArrayList<Connection> _connections = new ArrayList<>();
+    public ArrayList<Connection> _onces = new ArrayList<>();
 
     /**Connects the given callback to this Signal's event and returns a {@code Connection} object representing it.
      * 
      * @param callback : The function to connect to this Signal's event
      * @return A new connection representing it
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Connection<T> Connect(Consumer<T> callback){
-        Connection<T> con = new Connection(callback, this);
+    public Connection Connect(Consumer<T> callback){
+        Connection con = new Connection(callback, this);
         _connections.add(con);
         return con;
     }
@@ -25,9 +24,8 @@ public class Signal<T extends Object> {
      * @param callback : The function to connect to this Signal's event
      * @return A new connection representing it
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Connection<T> Once(Consumer<T> callback){
-        Connection<T> con = new Connection(callback, this);
+    public Connection Once(Consumer<T> callback){
+        Connection con = new Connection(callback, this);
         _onces.add(con);
         return con;
     }
@@ -38,7 +36,7 @@ public class Signal<T extends Object> {
      * @param arg2
      */
     public void Fire(T arg1){
-        for (Connection<T> con : _connections){
+        for (Connection con : _connections){
             con._call(arg1);
         }
 
@@ -48,51 +46,50 @@ public class Signal<T extends Object> {
         }
     }
 
+    public /**A class representing a connection between a {@code Signal} and a function
+    * 
+    */
+   class Connection extends AbstractConnection{
+       private Consumer<T> callback;
+       private Signal<T> parent;
+   
+       /**A boolean representing whether or not this Connection is currently connected to a Signal.
+        * 
+        */
+       public boolean Connected = true;
+   
+       /**Constructs a new {@code Connection} with the given callback and parent {@code Signal}.
+        * 
+        * @param callback
+        */
+       public Connection(Consumer<T> callback, Signal<T> parent){
+           this.callback = callback;
+           this.parent = parent;
+       }
+   
+       public void _call(T arg1){
+           if (!Connected) {
+               throw new Error("Unable to call an already disconnected Connection");
+           }
+           callback.accept(arg1);
+       }
+   
+       /**Disconnects this Connection from the parent signal so it won't be called again
+        * 
+        */
+       public void Disconnect(){
+           if (parent._connections.contains(this)){
+               parent._connections.remove(this);
+           }
+   
+           if (parent._onces.contains(this)){
+               parent._onces.remove(this);
+           }
+   
+           Connected = false;
+       }
+   
+   }
 
-}
-
-
-/**A class representing a connection between a {@code Signal} and a function
- * 
- */
-class Connection<T> {
-    private Consumer<T> callback;
-    private Signal<T> parent;
-
-    /**A boolean representing whether or not this Connection is currently connected to a Signal.
-     * 
-     */
-    public boolean Connected = true;
-
-    /**Constructs a new {@code Connection} with the given callback and parent {@code Signal}.
-     * 
-     * @param callback
-     */
-    public Connection(Consumer<T> callback, Signal<T> parent){
-        this.callback = callback;
-        this.parent = parent;
-    }
-
-    public void _call(T arg1){
-        if (!Connected) {
-            throw new Error("Unable to call an already disconnected Connection");
-        }
-        callback.accept(arg1);
-    }
-
-    /**Disconnects this Connection from the parent signal so it won't be called again
-     * 
-     */
-    public void Disconnect(){
-        if (parent._connections.contains(this)){
-            parent._connections.remove(this);
-        }
-
-        if (parent._onces.contains(this)){
-            parent._onces.remove(this);
-        }
-
-        Connected = false;
-    }
 
 }
