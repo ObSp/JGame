@@ -8,7 +8,6 @@ import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.Enum;
-import JGamePackage.lib.task;
 import MarshmallowFighter.Classes.*;
 
 public class Main {
@@ -30,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         game.setBackground(new Color(100, 115, 125));
         game.setWindowTitle("Marshmallow Fighter");
-        game.setWindowIcon("MarshmellowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
+        game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
         BasicMarshmallow mallow = new BasicMarshmallow(game);
         enemies[0] = mallow;
@@ -86,7 +85,7 @@ public class Main {
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
             for (Entity x : enemies){
-                int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y - 10; //sub because shadow
+                int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y -5; //sub because shadow
                 int xY = x.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
                 if (xY > plrY && x.model.ZIndex <= plr.model.ZIndex){
                     x.model.ZIndex = plr.model.ZIndex + 1;
