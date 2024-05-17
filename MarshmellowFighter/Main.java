@@ -7,13 +7,16 @@ import JGamePackage.JGame.*;
 import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
-import JGamePackage.JGame.Types.*;
+import JGamePackage.JGame.Types.Enum;
+import JGamePackage.lib.task;
 import MarshmellowFighter.Classes.*;
 
 public class Main {
     static JGame game = new JGame();
 
     static InputService input = game.Services.InputService;
+
+    static Entity[] enemies = new Entity[1];
 
     static Player plr;
 
@@ -25,14 +28,17 @@ public class Main {
     static double dtMult = 500;
 
     public static void main(String[] args) {
-        game.setBackground(new Color(221, 140, 198));
+        game.setBackground(new Color(100, 115, 125));
+        game.setWindowTitle("Marshmallow Fighter");
+        game.setWindowIcon("MarshmellowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
         BasicMarshmallow mallow = new BasicMarshmallow(game);
+        enemies[0] = mallow;
         plr = new Player(game);
 
         gameLoop();
         inputDetect();
-
+        zindexManagement();
     }
 
     static void gameLoop(){
@@ -49,12 +55,6 @@ public class Main {
                 plr.state = Constants.EntityStateTypes.Running;
                 plr.anim_buffer_ticks = Constants.RUN_ANIM_BUFFER_TICKS;
             }
-
-            if (yInputOffset < 0){
-                setFlipped(true);
-            } else if (yInputOffset > 0)
-                setFlipped(false);
-            
 
             if (xInputOffset < 0){
                 setFlipped(true);
@@ -83,13 +83,34 @@ public class Main {
         }
     }
 
+    static void zindexManagement(){
+        game.OnTick.Connect(dt->{
+            for (Entity x : enemies){
+                int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y - 10; //sub because shadow
+                int xY = x.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
+                if (xY > plrY && x.model.ZIndex <= plr.model.ZIndex){
+                    x.model.ZIndex = plr.model.ZIndex + 1;
+                } else if (xY <= plrY && x.model.ZIndex >= plr.model.ZIndex)
+                x.model.ZIndex = plr.model.ZIndex - 1;
+            }
+        });
+    }
+
     static void attack(){
-        plr.PlayAnimation(Constants.KnifeAttackSprites);
+        if (plr.attacking) return;
+        plr.attacking = true;
+        plr.PlayAnimation(Constants.KnifeAttackSprites).Finished.Once(()->{
+            plr.attacking = false;
+        });
     }
 
     static void inputDetect(){
         input.OnKeyPress.Connect(e->{
             if (e.getKeyCode() == KeyEvent.VK_SPACE) attack();
+        });
+
+        input.OnMouseClick.Connect(()->{
+            attack();
         });
     }
 

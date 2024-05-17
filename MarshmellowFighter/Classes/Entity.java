@@ -17,6 +17,7 @@ public abstract class Entity {
 
     public boolean playingAnimation = false;
     protected SpriteSheet curAnimSprites;
+    protected Animation curAnim;
 
     public Humanoid Humanoiod = new Humanoid();
 
@@ -30,13 +31,16 @@ public abstract class Entity {
     }
 
     protected void advanceAnimationFrame(){
-        if (curAnimSprites == null || !playingAnimation) return;
+        if (curAnimSprites == null || !playingAnimation || curAnim == null) return;
 
         if (game.TickCount % curAnimSprites.TickBuffers[curAnimSprites.SpritePosition]!=0) return;
 
         if (!curAnimSprites.hasNext()){
+            curAnim.Finished.Fire();
+            curAnim.Finished = null;
             curAnimSprites = null;
             playingAnimation = false;
+            curAnim = null;
             return;
         }
         curAnimSprites.AdvanceSpritePosition();
@@ -44,10 +48,12 @@ public abstract class Entity {
     }
 
 
-    public void PlayAnimation(SpriteSheet sprites){
+    public Animation PlayAnimation(SpriteSheet sprites){
         curAnimSprites = sprites;
         curAnimSprites.SpritePosition = 0;
         playingAnimation = true;
+        curAnim = new Animation();
+        return curAnim;
     }
 
     protected void initAnimTickLoop(){

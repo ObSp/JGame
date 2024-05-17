@@ -13,11 +13,11 @@ public class Box2D extends Instance {
 
     
     public void paint(Graphics g) {
-        
-        //if (!Parent.Camera.isInstanceInViewport(this)) return;
 
-        //garuanteed to be the actual top/left corner of the object, translated and shifted and whatknot
         Vector2 actualPos = GetRenderPosition();
+        
+        if (!Parent.Camera.isInstanceInViewport(this, actualPos))
+            return;
 
 
 

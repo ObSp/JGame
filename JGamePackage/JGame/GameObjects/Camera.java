@@ -48,56 +48,41 @@ public class Camera extends GameObject {
     }
 
     public boolean isInstanceInViewport(Instance obj){
-        return overlaps(obj);
+        return overlaps(obj, obj.GetRenderPosition());
     }
 
-    private int getLeft(Vector2 pos){
-        return pos.X;
+    public boolean isInstanceInViewport(Instance obj, Vector2 renderpos){
+        return overlaps(obj, renderpos);
     }
 
-    private int getTop(Vector2 pos){
-        return pos.Y;
-    }
-
-    private int getRight(Vector2 pos, Vector2 tsz){
-        return pos.X+tsz.X;
-    }
-
-    private int getBottom(Vector2 pos, Vector2 tsz){
-        return pos.Y + tsz.Y;
+    private Vector2 getTopLeftCorner(Vector2 fullSize){
+        return getActualPos(fullSize);
     }
 
 
 
-    private boolean overlaps(Instance other){
+    private boolean overlaps(Instance other, Vector2 renderpos){
         if (other==null) return false;
 
         Vector2 screenSize = game.getTotalScreenSize();
-        Vector2 actualPos = getActualPos(screenSize);
 
-        int leftCorner = getLeft(actualPos);
-        int top = getTop(actualPos);
-        int rightCorner = getRight(actualPos, screenSize);
-        int bottom = getBottom(actualPos, screenSize);
+        int left = 0;
+        int top = 0;
+        int right = left + screenSize.X;
+        int bottom = top + screenSize.Y;
 
-        int cX = Position.X;
-        int cY = Position.Y;
+        Vector2 topLeft = renderpos;
+        int otherLeft = topLeft.X;
+        int otherRight = topLeft.X+other.Size.X;
+        int otherTop = topLeft.Y;
+        int otherBottom = otherTop+other.Size.Y;
 
-        int otherLeft = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).X+cX;
-        int otherTop = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).Y-cY;
-        int otherRight = other.GetCornerPosition(Enum.InstanceCornerType.TopRight).X+cX;
-        int otherBottom = other.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y-cY;
+        boolean visibleLeft = otherRight > left;
+        boolean visibleRight = otherLeft < right;
+        boolean visibleTop = otherBottom > top;
+        boolean visibleBottom = otherTop < bottom;
 
-
-        return 
-
-        leftCorner < otherRight &&
-
-        rightCorner > otherLeft &&
-
-        top < otherBottom &&
-
-        bottom > otherTop;
+        return visibleLeft && visibleRight && visibleTop && visibleBottom;
     }
 
 

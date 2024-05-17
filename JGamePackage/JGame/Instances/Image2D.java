@@ -29,8 +29,11 @@ public class Image2D extends Instance{
     @Override
     public void paint(Graphics g) {
         if (img == null) return;
-        
+
         Vector2 actualPos = GetRenderPosition();
+        
+        if (!Parent.Camera.isInstanceInViewport(this, actualPos))
+            return;
         
         Graphics2D g2 = (Graphics2D) g;
         

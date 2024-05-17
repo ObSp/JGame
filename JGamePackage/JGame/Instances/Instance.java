@@ -99,6 +99,14 @@ public abstract class Instance extends JComponent {
      */
     public boolean MoveWithCamera = true;
 
+    /**This instance's priority in rendering.
+     * A higher ZIndex means that this Instance will rendered on top of other Instances.
+     * 
+     */
+    public int ZIndex = 0;
+
+    public boolean wasDrawn = false;
+
 
 
     /**A signal fired when the user left-clicks on this Instance
@@ -401,7 +409,7 @@ public abstract class Instance extends JComponent {
     }
 
     public Vector2 GetRenderPosition(){
-        if (MoveWithCamera){
+        if (MoveWithCamera && this.Parent != null){
             return Parent.Camera.GetInstancePositionRelativeToCameraPosition(this).subtract(getAnchorPointOffset());
         }
         return CFrame.Position.subtract(getAnchorPointOffset());

@@ -12,7 +12,7 @@ public class Player extends Entity{
 
     public static final int PLAYER_SIZE = 150;
 
-
+    public boolean attacking = false;
 
     public int anim_buffer_ticks = Constants.IDLE_ANIM_BUFFER_TICKS;
     

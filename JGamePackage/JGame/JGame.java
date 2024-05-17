@@ -48,7 +48,7 @@ public class JGame{
     }
 
     private void render(){
-        drawGroup.instances = instances;
+        drawGroup.instances = utilFuncs.toInstArray(instances);
         gameWindow.repaint();
     }
 
@@ -125,8 +125,8 @@ public class JGame{
     }
 
     public void addInstance(Instance x){
-        instances.add(x);
         x.Parent = this;
+        instances.add(x);
     }
 
     public void removeInstance(Instance x){
