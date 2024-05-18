@@ -14,9 +14,9 @@ public class CollisionService extends Service {
     private boolean blacklistContains(Instance[] bl, Instance toFind){
         for (Instance x : bl){
             if (x==toFind)
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
     public Instance GetInstancesInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
@@ -43,19 +43,19 @@ public class CollisionService extends Service {
      * @param options
      * @return
      */
-    public boolean CheckCollisionInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
+    public Instance CheckCollisionInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
         Box2D box = new Box2D();
         box.Size = boxSize.clone();
         box.CFrame.Position = position.clone();
 
         for (Instance inst : Parent.instances){
             if (inst.overlaps(box) && (!options.SolidsOnly || inst.Solid) && !blacklistContains(options.Blacklist, inst)){
-                return true;
+                return inst;
             }
         }
 
 
 
-        return false;
+        return null;
     }
 }

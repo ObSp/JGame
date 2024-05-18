@@ -29,10 +29,20 @@ public class Sound extends GameObject{
         this(new File(path));
     }
 
-    /**Reumes this sounds' playback
+    /**Reumes this sounds' playback from the beginning
      * 
      */
     public void Play(){
+        Playing = true;
+        this.sound.setFramePosition(0);
+        this.sound.start();
+        Playing = false;
+    }
+
+    /**Reumes this sounds' playback
+     * 
+     */
+    public void UnPause(){
         Playing = true;
         this.sound.start();
     }

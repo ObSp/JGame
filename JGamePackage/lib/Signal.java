@@ -41,9 +41,11 @@ public class Signal<T extends Object> extends AbstractSignal {
         }
 
         for (int i = _onces.size()-1; i > -1; i--){
-            _onces.get(i)._call(arg1);
-            _onces.get(i).Disconnect();
+            Connection c = _onces.get(i);
+            c._call(arg1);
+            c.Connected = false;
         }
+        this._onces = new ArrayList<>();
     }
 
     public /**A class representing a connection between a {@code Signal} and a function

@@ -1,6 +1,5 @@
 package JGamePackage.lib;
 
-import java.util.ArrayList;
 import java.awt.*;
 
 import javax.swing.JComponent;
