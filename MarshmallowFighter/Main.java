@@ -8,7 +8,7 @@ import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.Enum;
-import JGamePackage.lib.task;
+import JGamePackage.JGame.Types.Vector2;
 import MarshmallowFighter.Classes.*;
 
 public class Main {
@@ -19,6 +19,7 @@ public class Main {
     static Entity[] enemies = new Entity[1];
 
     static Player plr;
+    static Box2D hitbox;
 
     static Camera cam = game.Camera;
     static final double CAM_LERP_SPEED = .05;
@@ -30,11 +31,17 @@ public class Main {
     public static void main(String[] args) {
         game.setBackground(new Color(100, 115, 125));
         game.setWindowTitle("Marshmallow Fighter");
-        game.setWindowIcon("MarshmellowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
+        game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
         BasicMarshmallow mallow = new BasicMarshmallow(game);
         enemies[0] = mallow;
         plr = new Player(game);
+
+        hitbox = new Box2D();
+        hitbox.AnchorPoint = new Vector2(-50+(Constants.PLAYER_HITBOX_SIZE_X-45), 100);
+        hitbox.Size.X = Constants.PLAYER_HITBOX_SIZE_X;
+        hitbox.Size.Y = Constants.PLAYER_HITBOX_SIZE_Y;
+        game.addInstance(hitbox);
 
         gameLoop();
         inputDetect();
@@ -63,8 +70,21 @@ public class Main {
             }
 
 
-            player.CFrame.Position.X += xInputOffset;
-            player.CFrame.Position.Y -= yInputOffset;
+            if (xInputOffset!=0){
+                player.CFrame.Position.X += xInputOffset;
+            }
+
+            if (yInputOffset!=0){
+
+                if (yInputOffset>0){
+                    player.CFrame.Position.Y -= yInputOffset;
+                }else if (yInputOffset < 0){
+                    player.CFrame.Position.Y -= yInputOffset;
+                }
+
+            }
+
+            hitbox.CFrame.Position = player.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).add(player.FlipHorizontally ? -100 : 0, 0);
 
             cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
             cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);

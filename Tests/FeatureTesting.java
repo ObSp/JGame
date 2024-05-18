@@ -4,10 +4,8 @@ package Tests;
 import java.awt.Color;
 
 import JGamePackage.JGame.*;
-import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
-import JGamePackage.lib.task;
 
 public class FeatureTesting {
     static JGame game = new JGame();
