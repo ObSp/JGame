@@ -32,6 +32,9 @@ public final class Constants {
 
     public static final int BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS = 40;
 
+    public static final int PLAYER_HITBOX_SIZE_Y = 50;
+    public static final int PLAYER_HITBOX_SIZE_X = 70;
+
 
 
     //--{CLASSES}--//
