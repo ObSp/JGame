@@ -68,7 +68,7 @@ public class Main {
         Image2D title = new Image2D();
         title.Size = maximizedBoth;
         title.ImagePath = "SnowVille\\Assets\\Title.png";
-        title.AnchorPoint = new Vector2(0);
+        title.AnchorPoint = new Vector2(50);
         title.UpdateImagePath();
         game.addInstance(title);
         

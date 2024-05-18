@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 public class Signal<T extends Object> extends AbstractSignal {
     
-    public ArrayList<Connection> _connections = new ArrayList<>();
+    public ArrayTable<Connection> _connections = new ArrayTable<>();
     public ArrayList<Connection> _onces = new ArrayList<>();
 
     /**Connects the given callback to this Signal's event and returns a {@code Connection} object representing it.

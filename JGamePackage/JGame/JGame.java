@@ -91,7 +91,7 @@ public class JGame{
      * <b>NOTE:</b> This should be called inside a {@code Promise.await(Promise)} function to ensure
      * the framework has been initialized before running any code related to it.
      * 
-     * @return : A promise that is resolved once initialization is complete
+     * @return A promise that is resolved once initialization is complete
      * 
      * 
      * @see Promise
@@ -122,6 +122,11 @@ public class JGame{
         while (this.TickCount == lastTick) {
             System.out.print("");
         }
+    }
+
+    public void waitTicks(int ticksToWait){
+        for (int t = 0; t < ticksToWait; t++)
+            waitForTick();
     }
 
     public void addInstance(Instance x){

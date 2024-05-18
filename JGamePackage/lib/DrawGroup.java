@@ -29,6 +29,7 @@ public class DrawGroup extends JComponent {
         }
 
         for (Instance x : instances){
+            if (x.Parent == null) continue;
             x.paint(g);
         }
 

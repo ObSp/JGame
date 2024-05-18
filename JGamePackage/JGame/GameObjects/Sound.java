@@ -9,7 +9,7 @@ import javax.sound.sampled.FloatControl;
 public class Sound extends GameObject{
     private Clip sound;
     private File file;
-    public float Volume = 1f;
+    public double Volume = 1.0;
     public boolean Playing;
 
     public Sound(File file){
@@ -71,12 +71,16 @@ public class Sound extends GameObject{
         this.sound.loop(loops);
     }
 
-    public void SetVolume(float volume){
+    public void SetVolume(double volume){
         FloatControl gainControl = (FloatControl) this.sound.getControl(FloatControl.Type.MASTER_GAIN);
 
-        float range = gainControl.getMaximum() - gainControl.getMinimum();
-        float gain = (range * volume) + gainControl.getMinimum();
-        gainControl.setValue(gain);
+        double range = gainControl.getMaximum() - gainControl.getMinimum();
+        double gain = (range * volume) + gainControl.getMinimum();
+        gainControl.setValue((float) gain);
         this.Volume = volume;
+    }
+
+    public void SetFramePosition(int pos){
+        this.sound.setFramePosition(pos);
     }
 }

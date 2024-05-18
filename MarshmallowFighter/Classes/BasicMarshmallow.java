@@ -8,6 +8,9 @@ public class BasicMarshmallow extends Entity {
 
     public static final int MarshmallowSize = 100;
     private SpriteSheet idleSprites = Constants.BasicMarshmallowIdle;
+
+    //whether to display a hurt animation instead of idle
+    private boolean isHurt = false;
     
     public BasicMarshmallow(JGame game){
         super(game);
@@ -21,6 +24,14 @@ public class BasicMarshmallow extends Entity {
         game.addInstance(model);
     }
 
+    @Override
+    public Animation PlayAnimation(SpriteSheet s){
+        if (playingAnimation)
+            return null;
+
+        return super.PlayAnimation(s);
+    }
+
     protected void setAnimationImage(String path){
         model.ImagePath = path;
         model.UpdateImagePath();
@@ -29,7 +40,7 @@ public class BasicMarshmallow extends Entity {
 
     protected void gameLoop(){
         game.OnTick.Connect(dt->{
-            if (playingAnimation || game.TickCount%Constants.BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS!=0) return;
+            if (playingAnimation || game.TickCount%Constants.BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS!=0 || isHurt) return;
 
             model.ImagePath = idleSprites.Sprites[idleSprites.AdvanceSpritePosition()];
             model.UpdateImagePath();

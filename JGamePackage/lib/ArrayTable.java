@@ -184,6 +184,10 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
         return -1;
     }
 
+    public boolean contains(E o){
+        return indexOf(o) > -1;
+    }
+
     /**
      * Sets the value of index i to object o
      * 
