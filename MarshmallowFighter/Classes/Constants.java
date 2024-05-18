@@ -1,11 +1,11 @@
-package MarshmellowFighter.Classes;
+package MarshmallowFighter.Classes;
 
 public final class Constants {
 
     //--{PLAYER RELATED}--//
 
     
-    public static final String PlayerStatePath = "MarshmellowFighter\\Media\\PlayerStates\\";
+    public static final String PlayerStatePath = "MarshmallowFighter\\Media\\PlayerStates\\";
 
 
     public static final SpriteSheet PlayerIdleSprites = new SpriteSheet(new String[] {
@@ -24,7 +24,7 @@ public final class Constants {
 
     //--{BasicMarshmallow}--//
 
-    public static final String BasicMarshmallowPath = "MarshmellowFighter\\Media\\BasicMarshmallowStates\\";
+    public static final String BasicMarshmallowPath = "MarshmallowFighter\\Media\\BasicMarshmallowStates\\";
 
     public static final SpriteSheet BasicMarshmallowIdle = new SpriteSheet(new String[] {
         BasicMarshmallowPath+"idle1.png", BasicMarshmallowPath+"idle2.png"

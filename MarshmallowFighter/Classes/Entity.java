@@ -1,4 +1,4 @@
-package MarshmellowFighter.Classes;
+package MarshmallowFighter.Classes;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;

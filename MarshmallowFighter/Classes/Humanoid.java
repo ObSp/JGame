@@ -1,4 +1,4 @@
-package MarshmellowFighter.Classes;
+package MarshmallowFighter.Classes;
 
 public class Humanoid {
     public double Health = 100;
