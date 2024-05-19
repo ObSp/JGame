@@ -17,7 +17,7 @@ public class Player extends Entity{
     public int anim_buffer_ticks = Constants.IDLE_ANIM_BUFFER_TICKS;
     
     public Player(JGame game){
-        super(game);
+        super(game, "Player", null);
 
         model = new Image2D();
 

@@ -13,7 +13,7 @@ public class BasicMarshmallow extends Entity {
     private boolean isHurt = false;
     
     public BasicMarshmallow(JGame game){
-        super(game);
+        super(game, "BasicMarshmallow", Constants.BasicMarshmallowHit);
 
         model = new Image2D();
         model.Associate = this;
@@ -25,18 +25,6 @@ public class BasicMarshmallow extends Entity {
         game.addInstance(model);
     }
 
-    @Override
-    public Animation PlayAnimation(SpriteSheet s){
-        return PlayAnimation(s, false);
-    }
-
-    public Animation PlayAnimation(SpriteSheet s, boolean override){
-        if (playingAnimation && !override)
-            return null;
-
-        return super.PlayAnimation(s);
-    }
-
     protected void setAnimationImage(String path){
         model.ImagePath = path;
         model.UpdateImagePath();
@@ -44,6 +32,8 @@ public class BasicMarshmallow extends Entity {
 
     public void onHit(){
         this.PlayAnimation(Constants.BasicMarshmallowHit);
+
+        this.Humanoid.TakeDamage(Constants.BASIC_MARSHMALLOW_KNIFE_ATTACK_DAMAGE);
     }
 
 

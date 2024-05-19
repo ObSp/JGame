@@ -169,6 +169,8 @@ public class Main {
             || result.HitInstance.Associate == null || !(result.HitInstance.Associate instanceof Entity))
             return;
 
+        Damage((Entity) result.HitInstance.Associate);
+
         task.spawn(()->{
             game.waitTicks(15);
             var hitsound = new Sound(knifeHitPath);
@@ -176,8 +178,11 @@ public class Main {
             hitsound.Play();
 
             //play hurt animation
-            
         });
+    }
+
+    static void Damage(Entity ent){
+        ent.onHit();
     }
 
     static void inputDetect(){

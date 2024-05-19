@@ -19,12 +19,18 @@ public abstract class Entity {
     protected SpriteSheet curAnimSprites;
     protected Animation curAnim;
 
+    public final String type;
+
     public Humanoid Humanoid = new Humanoid();
+
+    public final SpriteSheet hurtAnim;
 
     protected final JGame game;
 
-    public Entity(JGame game){
+    public Entity(JGame game, String type, SpriteSheet hurt){
         this.game = game;
+        this.type = type;
+        this.hurtAnim = hurt;
 
         initAnimTickLoop();
         gameLoop();
@@ -48,12 +54,19 @@ public abstract class Entity {
     }
 
 
-    public Animation PlayAnimation(SpriteSheet sprites){
+    public Animation PlayAnimation(SpriteSheet sprites, boolean override){
+        if (playingAnimation && !override)
+            return null;
+
         curAnimSprites = sprites;
         curAnimSprites.SpritePosition = 0;
         playingAnimation = true;
         curAnim = new Animation();
         return curAnim;
+    }
+
+    public Animation PlayAnimation(SpriteSheet sprites){
+        return PlayAnimation(sprites, false);
     }
 
     protected void initAnimTickLoop(){

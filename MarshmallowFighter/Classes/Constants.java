@@ -26,6 +26,9 @@ public final class Constants {
     public static final int KNIFE_ATTACK_KNOCKBACK_X = 30;
     public static final int KNIFE_ATTACK_KNOCKBACK_Y = -10;
 
+    public static final int PLAYER_HITBOX_SIZE_Y = 50;
+    public static final int PLAYER_HITBOX_SIZE_X = 70;
+
 
     //--{BasicMarshmallow}--//
 
@@ -37,12 +40,22 @@ public final class Constants {
 
     public static final SpriteSheet BasicMarshmallowHit = new SpriteSheet(new String[] {
         BasicMarshmallowPath+"hit1.png", BasicMarshmallowPath+"hit2.png", BasicMarshmallowPath+"hit1.png"
-    }, new int[] {2,2,1});
+    }, new int[] {10,5,1});
+
+    public static final SpriteSheet BasicMarshmallowDeath = new SpriteSheet(new String[] {
+
+    }, null);
 
     public static final int BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS = 40;
 
-    public static final int PLAYER_HITBOX_SIZE_Y = 50;
-    public static final int PLAYER_HITBOX_SIZE_X = 70;
+    public static final int BASIC_MARSHMALLOW_KNIFE_ATTACK_DAMAGE = 20;
+
+    public static final String[] BasicMarshmallowHurtProgression = {
+        /*[1] =  */BasicMarshmallowPath+"hurt1.png",
+        /*[2] =  */BasicMarshmallowPath+"hurt2.png",
+        /*[3] =  */BasicMarshmallowPath+"hurt3.png",
+        /*[4] =  */BasicMarshmallowPath+"hurt4.png",
+    };
 
 
 
