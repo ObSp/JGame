@@ -43,8 +43,9 @@ public final class Constants {
     }, new int[] {10,5,1});
 
     public static final SpriteSheet BasicMarshmallowDeath = new SpriteSheet(new String[] {
-
-    }, null);
+        BasicMarshmallowPath+"die1.png", BasicMarshmallowPath+"die2.png", BasicMarshmallowPath+"die3.png",
+        BasicMarshmallowPath+"die4.png", BasicMarshmallowPath+"die5.png", BasicMarshmallowPath+"die6.png"
+    }, new int[] {10,10,10,10,10,10});
 
     public static final int BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS = 40;
 

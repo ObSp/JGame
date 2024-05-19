@@ -15,6 +15,7 @@ public class Image2D extends Instance{
      * 
      */
     public String ImagePath = "JGamePackage\\JGame\\Files\\IMAGEDEFAULT.png";
+    public String RealPath = new String(ImagePath);
     public boolean BackgroundTransparent = true;
     private BufferedImage img;
 
@@ -51,6 +52,7 @@ public class Image2D extends Instance{
     public void SetImagePath(String path){
         try {
             this.img = ImageIO.read(new File(path));
+            RealPath = path;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +64,7 @@ public class Image2D extends Instance{
     public void UpdateImagePath(){
         try {
             this.img = ImageIO.read(new File(ImagePath));
+            RealPath = ImagePath;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -58,6 +58,11 @@ public class Main {
 
         BasicMarshmallow mallow = new BasicMarshmallow(game);
         enemies[0] = mallow;
+
+        mallow.Died.Once(()->{
+            enemies[0] = new BasicMarshmallow(game);
+        });
+
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
 
@@ -169,15 +174,17 @@ public class Main {
             || result.HitInstance.Associate == null || !(result.HitInstance.Associate instanceof Entity))
             return;
 
-        Damage((Entity) result.HitInstance.Associate);
+        
+        Entity hitEnt = (Entity) result.HitInstance.Associate;
+        Damage(hitEnt);
 
+        if (hitEnt.isDead)
+            return;
         task.spawn(()->{
             game.waitTicks(15);
             var hitsound = new Sound(knifeHitPath);
             hitsound.SetVolume(1);
             hitsound.Play();
-
-            //play hurt animation
         });
     }
 

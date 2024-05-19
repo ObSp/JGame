@@ -2,6 +2,7 @@ package MarshmallowFighter.Classes;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.lib.VoidSignal;
 
 /**Represents all moving objects, including the Player, enemies, and other non-static objects
  * 
@@ -16,14 +17,17 @@ public abstract class Entity {
     public int state;
 
     public boolean playingAnimation = false;
+    public boolean isDead = false;
     protected SpriteSheet curAnimSprites;
     protected Animation curAnim;
 
     public final String type;
 
     public Humanoid Humanoid = new Humanoid();
+    public final VoidSignal Died = new VoidSignal();
 
     public final SpriteSheet hurtAnim;
+
 
     protected final JGame game;
 
@@ -41,6 +45,7 @@ public abstract class Entity {
 
         if (game.TickCount % curAnimSprites.TickBuffers[curAnimSprites.SpritePosition]!=0) return;
 
+        //animation done
         if (!curAnimSprites.hasNext()){
             curAnim.Finished.Fire();
             curAnim.Finished = null;
@@ -57,7 +62,7 @@ public abstract class Entity {
     public Animation PlayAnimation(SpriteSheet sprites, boolean override){
         if (playingAnimation && !override)
             return null;
-
+        
         curAnimSprites = sprites;
         curAnimSprites.SpritePosition = 0;
         playingAnimation = true;
