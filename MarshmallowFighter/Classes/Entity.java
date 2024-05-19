@@ -19,7 +19,7 @@ public abstract class Entity {
     protected SpriteSheet curAnimSprites;
     protected Animation curAnim;
 
-    public Humanoid Humanoiod = new Humanoid();
+    public Humanoid Humanoid = new Humanoid();
 
     protected final JGame game;
 
@@ -71,4 +71,6 @@ public abstract class Entity {
     protected abstract void gameLoop();
 
     protected abstract void setAnimationImage(String path);
+
+    public abstract void onHit();
 }

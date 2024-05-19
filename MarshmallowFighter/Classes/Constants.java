@@ -16,7 +16,7 @@ public final class Constants {
     public static final SpriteSheet KnifeAttackSprites = new SpriteSheet(new String[] {
         PlayerStatePath+"atk1.png", PlayerStatePath+"atk2.png",
         PlayerStatePath+"atk3.png", PlayerStatePath+"atk4.png"
-    }, new int[] {6,5,4,3});
+    }, new int[] {6,5,4,1});
 
     public static final int IDLE_ANIM_BUFFER_TICKS = 15;
     public static final int RUN_ANIM_BUFFER_TICKS = 10;
@@ -34,6 +34,10 @@ public final class Constants {
     public static final SpriteSheet BasicMarshmallowIdle = new SpriteSheet(new String[] {
         BasicMarshmallowPath+"idle1.png", BasicMarshmallowPath+"idle2.png"
     }, null);
+
+    public static final SpriteSheet BasicMarshmallowHit = new SpriteSheet(new String[] {
+        BasicMarshmallowPath+"hit1.png", BasicMarshmallowPath+"hit2.png", BasicMarshmallowPath+"hit1.png"
+    }, new int[] {2,2,1});
 
     public static final int BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS = 40;
 

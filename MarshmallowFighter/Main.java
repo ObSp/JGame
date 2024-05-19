@@ -165,7 +165,8 @@ public class Main {
             new RaycastParams(colOpts.Blacklist, false));
 
         
-        if (result==null || Math.abs(result.FinalPosition.X-plrPos.X)>Constants.KNIFE_ATTACK_RANGE_PIXELS)
+        if (result==null || Math.abs(result.FinalPosition.X-plrPos.X)>Constants.KNIFE_ATTACK_RANGE_PIXELS
+            || result.HitInstance.Associate == null || !(result.HitInstance.Associate instanceof Entity))
             return;
 
         task.spawn(()->{
@@ -173,6 +174,8 @@ public class Main {
             var hitsound = new Sound(knifeHitPath);
             hitsound.SetVolume(1);
             hitsound.Play();
+
+            //play hurt animation
             
         });
     }

@@ -55,6 +55,12 @@ public abstract class Instance extends JComponent {
      * 
      */
     public String Name = "Instance";
+
+    /**An instance variable that can be used to associate this Instance with other Objects.
+     * 
+     */
+    public Object Associate;
+
     public JGame Parent;
 
     /**What color this object will be drawn as

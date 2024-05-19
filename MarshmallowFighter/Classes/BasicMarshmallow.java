@@ -16,6 +16,7 @@ public class BasicMarshmallow extends Entity {
         super(game);
 
         model = new Image2D();
+        model.Associate = this;
         model.Size = new Vector2(MarshmallowSize);
         model.CFrame.Position = new Vector2(0,0);
         model.AnchorPoint = new Vector2(50);
@@ -26,7 +27,11 @@ public class BasicMarshmallow extends Entity {
 
     @Override
     public Animation PlayAnimation(SpriteSheet s){
-        if (playingAnimation)
+        return PlayAnimation(s, false);
+    }
+
+    public Animation PlayAnimation(SpriteSheet s, boolean override){
+        if (playingAnimation && !override)
             return null;
 
         return super.PlayAnimation(s);
@@ -37,6 +42,10 @@ public class BasicMarshmallow extends Entity {
         model.UpdateImagePath();
     }
 
+    public void onHit(){
+        this.PlayAnimation(Constants.BasicMarshmallowHit);
+    }
+
 
     protected void gameLoop(){
         game.OnTick.Connect(dt->{
@@ -44,7 +53,6 @@ public class BasicMarshmallow extends Entity {
 
             model.ImagePath = idleSprites.Sprites[idleSprites.AdvanceSpritePosition()];
             model.UpdateImagePath();
-
         });
     }
 }

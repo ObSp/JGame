@@ -40,6 +40,9 @@ public class Player extends Entity{
         });
     }
 
+    @Override
+    public void onHit(){}
+
 
     protected void setAnimationImage(String path){
         model.ImagePath = path;
