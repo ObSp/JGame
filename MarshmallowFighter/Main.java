@@ -2,6 +2,7 @@ package MarshmallowFighter;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.GameObjects.Camera;
@@ -21,7 +22,7 @@ public class Main {
 
     static InputService input = game.Services.InputService;
 
-    static Entity[] enemies = new Entity[1];
+    static ArrayList<Entity> entities = new ArrayList<>();
 
     static String knifeSoundPath = "MarshmallowFighter\\Media\\SFX\\KnifeSwing.wav";
     static String knifeHitPath = "MarshmallowFighter\\Media\\SFX\\KnifeHit.wav";
@@ -55,13 +56,6 @@ public class Main {
         music = new Sound("MarshmallowFighter\\Media\\Music\\Background.wav");
         music.SetVolume(.7);
         music.setInfiniteLoop(true);
-
-        BasicMarshmallow mallow = new BasicMarshmallow(game);
-        enemies[0] = mallow;
-
-        mallow.Died.Once(()->{
-            enemies[0] = new BasicMarshmallow(game);
-        });
 
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
@@ -125,6 +119,20 @@ public class Main {
 
             cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
             cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);
+
+
+            //makes everything insanely laggy
+            if (game.TickCount%500 == 0){
+                var marsh = new BasicMarshmallow(game);
+                marsh.model.CFrame.Position.X = (int) (Math.random()*1001);
+                marsh.model.CFrame.Position.Y = (int) (Math.random()*1001);
+                entities.add(marsh);
+                System.out.println("spawn");
+
+                marsh.Died.Connect(()->{
+                    entities.remove(marsh);
+                });
+            }
         });
     }
 
@@ -144,7 +152,7 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            for (Entity x : enemies){
+            for (Entity x : entities){
                 int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y - 10; //sub because shadow
                 int xY = x.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
                 if (xY > plrY && x.model.ZIndex <= plr.model.ZIndex){

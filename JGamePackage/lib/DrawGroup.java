@@ -15,7 +15,7 @@ public class DrawGroup extends JComponent {
 
     @Override
     public void paint(Graphics g){
-        int size = instances.length;
+        /**int size = instances.length;
         for (int i = 0; i < size; i++) {
 
             int mindex = i; //the index of the smallest number in the list, starting at the current index in order to ignore any already sorted list items
@@ -26,7 +26,7 @@ public class DrawGroup extends JComponent {
             Instance itemAtIndex = instances[i]; //temporary variable to store the item at the index that will be changed
             instances[i] = instances[mindex]; //set the list index of i to the lowest number in the list after this index
             instances[mindex] = itemAtIndex; //set the old index of the lowest number to the old number at index i, effectively swapping them
-        }
+        }*/
 
         for (Instance x : instances){
             if (x.Parent == null) continue;
