@@ -41,6 +41,8 @@ public class Main {
     static Box2D hitbox;
     static Box2D topBox;
 
+    static int numMellows = 0;
+
     /**1: facing right, -1: facing left */
     static int plrDirection = 1;
 
@@ -66,6 +68,7 @@ public class Main {
 
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
+        plr.model.ZIndex = 1;
 
         hitbox = new Box2D();
         hitbox.AnchorPoint = new Vector2(-50+(Constants.PLAYER_HITBOX_SIZE_X-45), 100);
@@ -111,6 +114,12 @@ public class Main {
                 player.CFrame.Position.X += xInputOffset;
             }
 
+            hitbox.CFrame.Position = player.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).add(player.FlipHorizontally ? -100 : 0, 0);
+            topBox.CFrame.Position = hitbox.CFrame.Position.add(20,-hitbox.Size.Y-10);
+
+            cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
+            cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);
+
             if (yInputOffset!=0){
 
                 if (yInputOffset>0 && canMoveUp()){
@@ -121,24 +130,19 @@ public class Main {
 
             }
 
-            hitbox.CFrame.Position = player.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).add(player.FlipHorizontally ? -100 : 0, 0);
-            topBox.CFrame.Position = hitbox.CFrame.Position.add(20,-hitbox.Size.Y-10);
 
-            cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
-            cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);
-
-
-            //makes everything insanely laggy
-            if (game.TickCount%100 == 0){
+            if (game.TickCount%100 == 0 && numMellows < 4){
+                numMellows++;
                 var marsh = new BasicMarshmallow(game);
                 marsh.model.CFrame.Position.X = (int) (Math.random()*1001);
                 marsh.model.CFrame.Position.Y = (int) (Math.random()*1001);
-                entities.add(marsh);
-                System.out.println("spawn");
 
-                marsh.Died.Connect(()->{
-                    entities.remove(marsh);
-                });
+                synchronized (entities) {
+                    entities.add(marsh);
+                    marsh.Died.Once(()->{
+                        entities.remove(marsh);
+                    });
+                }
             }
         });
     }
@@ -159,13 +163,17 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            for (Entity x : entities){
-                int plrY = plr.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y - 10; //sub because shadow
-                int xY = x.model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
-                if (xY > plrY && x.model.ZIndex <= plr.model.ZIndex){
-                    x.model.ZIndex = plr.model.ZIndex + 1;
-                } else if (xY <= plrY && x.model.ZIndex >= plr.model.ZIndex)
-                x.model.ZIndex = plr.model.ZIndex - 1;
+            System.out.println(entities.size());
+            synchronized (entities) {
+                for (Entity x : entities){
+                    int plrY = plr.model.GetRenderPosition().Y+30; //sub because shadow
+                    int xY = x.model.GetRenderPosition().Y;
+                    if (xY > plrY ){
+                        x.model.ZIndex = 2;
+                    } else {
+                        x.model.ZIndex = 0;
+                    }
+                }
             }
         });
     }
