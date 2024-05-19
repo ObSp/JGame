@@ -17,6 +17,13 @@ import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.task;
 import MarshmallowFighter.Classes.*;
 
+/**NOTES:
+ * 
+ * - Animation is currently insanely laggy, as images are currently creating new BufferedImages every frame
+ * 
+ * 
+ */
+
 public class Main {
     static JGame game = new JGame();
 
@@ -122,7 +129,7 @@ public class Main {
 
 
             //makes everything insanely laggy
-            if (game.TickCount%500 == 0){
+            if (game.TickCount%100 == 0){
                 var marsh = new BasicMarshmallow(game);
                 marsh.model.CFrame.Position.X = (int) (Math.random()*1001);
                 marsh.model.CFrame.Position.Y = (int) (Math.random()*1001);

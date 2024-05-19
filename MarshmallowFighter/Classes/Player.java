@@ -1,5 +1,7 @@
 package MarshmallowFighter.Classes;
 
+import java.awt.image.BufferedImage;
+
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
@@ -35,8 +37,7 @@ public class Player extends Entity{
         game.OnTick.Connect(dt->{
             if (game.TickCount%anim_buffer_ticks!=0 || playingAnimation) return;
 
-            model.ImagePath = idleSprites.Sprites[idleSprites.AdvanceSpritePosition()];
-            model.UpdateImagePath(); 
+            model.SetBufferedImage(idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()]);
         });
     }
 
@@ -44,8 +45,7 @@ public class Player extends Entity{
     public void onHit(){}
 
 
-    protected void setAnimationImage(String path){
-        model.ImagePath = path;
-        model.UpdateImagePath();
+    protected void setAnimationImage(BufferedImage path){
+        this.model.SetBufferedImage(path);
     }
 }

@@ -47,16 +47,17 @@ public final class Constants {
         BasicMarshmallowPath+"die4.png", BasicMarshmallowPath+"die5.png", BasicMarshmallowPath+"die6.png"
     }, new int[] {10,10,10,10,10,10});
 
+    
+    public static final SpriteSheet BasicMarshmallowHurtProgression = new SpriteSheet(new String[] {
+        BasicMarshmallowPath+"hurt1.png",
+        BasicMarshmallowPath+"hurt2.png",
+        BasicMarshmallowPath+"hurt3.png",
+        BasicMarshmallowPath+"hurt4.png",
+    }, null);
+
     public static final int BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS = 40;
 
     public static final int BASIC_MARSHMALLOW_KNIFE_ATTACK_DAMAGE = 20;
-
-    public static final String[] BasicMarshmallowHurtProgression = {
-        /*[1] =  */BasicMarshmallowPath+"hurt1.png",
-        /*[2] =  */BasicMarshmallowPath+"hurt2.png",
-        /*[3] =  */BasicMarshmallowPath+"hurt3.png",
-        /*[4] =  */BasicMarshmallowPath+"hurt4.png",
-    };
 
 
 

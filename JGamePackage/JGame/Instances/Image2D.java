@@ -70,6 +70,10 @@ public class Image2D extends Instance{
         }
     }
 
+    public void SetBufferedImage(BufferedImage image){
+        img = image;
+    }
+
     
     @Override
     public void setPosition(Vector2 velpos){

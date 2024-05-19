@@ -1,5 +1,7 @@
 package MarshmallowFighter.Classes;
 
+import java.awt.image.BufferedImage;
+
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.Vector2;
@@ -28,9 +30,8 @@ public class BasicMarshmallow extends Entity {
         game.addInstance(model);
     }
 
-    protected void setAnimationImage(String path){
-        model.ImagePath = path;
-        model.UpdateImagePath();
+    protected void setAnimationImage(BufferedImage path){
+        this.model.SetBufferedImage(path);
     }
 
     public void onHit(){
@@ -54,6 +55,7 @@ public class BasicMarshmallow extends Entity {
             this.PlayAnimation(Constants.BasicMarshmallowDeath, true).Finished.Once(()->{
                 game.removeInstance(model);
                 this.Died.Fire();
+                this.Destroy();
             });
         });
     }
@@ -63,9 +65,6 @@ public class BasicMarshmallow extends Entity {
             die();
             return;
         }
-        //String p = Constants.BasicMarshmallowHurtProgression[Constants.BasicMarshmallowHurtProgression.length-curHurtPos];
-        //model.ImagePath = p;
-        //model.UpdateImagePath();
     }
 
 
@@ -74,13 +73,11 @@ public class BasicMarshmallow extends Entity {
             if (playingAnimation || game.TickCount%Constants.BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS!=0) return;
 
             if (isHurt && !playingAnimation){
-                model.ImagePath = Constants.BasicMarshmallowHurtProgression[4-curHurtPos > -1 && 4-curHurtPos < 4 ? 4-curHurtPos : 0];
-                model.UpdateImagePath();
+                model.SetBufferedImage(Constants.BasicMarshmallowHurtProgression.ImageBuffer[4-curHurtPos > -1 && 4-curHurtPos < 4 ? 4-curHurtPos : 0]);
                 return;
             }
 
-            model.ImagePath = idleSprites.Sprites[idleSprites.AdvanceSpritePosition()];
-            model.UpdateImagePath();
+            model.SetBufferedImage(idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()]);
         });
     }
 }

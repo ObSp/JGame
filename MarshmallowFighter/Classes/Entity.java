@@ -1,5 +1,7 @@
 package MarshmallowFighter.Classes;
 
+import java.awt.image.BufferedImage;
+
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.lib.VoidSignal;
@@ -20,6 +22,8 @@ public abstract class Entity {
     public boolean isDead = false;
     protected SpriteSheet curAnimSprites;
     protected Animation curAnim;
+
+    private boolean stopGameLoop = false;
 
     public final String type;
 
@@ -55,7 +59,7 @@ public abstract class Entity {
             return;
         }
         curAnimSprites.AdvanceSpritePosition();
-        setAnimationImage(curAnimSprites.Sprites[curAnimSprites.SpritePosition]);
+        setAnimationImage(curAnimSprites.ImageBuffer[curAnimSprites.SpritePosition]);
     }
 
 
@@ -76,10 +80,14 @@ public abstract class Entity {
 
     protected void initAnimTickLoop(){
         game.OnTick.Connect(dt->{
-            if (!playingAnimation) return;
+            if (!playingAnimation || stopGameLoop) return;
 
             advanceAnimationFrame();
         });
+    }
+
+    public void Destroy(){
+        stopGameLoop = true;
     }
 
 
@@ -88,7 +96,7 @@ public abstract class Entity {
      */
     protected abstract void gameLoop();
 
-    protected abstract void setAnimationImage(String path);
+    protected abstract void setAnimationImage(BufferedImage img);
 
     public abstract void onHit();
 }
