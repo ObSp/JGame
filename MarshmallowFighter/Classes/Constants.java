@@ -59,7 +59,11 @@ public final class Constants {
 
     public static final int BASIC_MARSHMALLOW_KNIFE_ATTACK_DAMAGE = 20;
 
+    public static final String BASIC_MARSHMALLOW_LOOT_PATH = BasicMarshmallowPath+"Loot.png";
+    public static final int BASIC_MARSHMALLOW_LOOT_SIZE = 100;
 
+    //--{MISC}--//
+    public static final String SHOP_IMAGE_PATH = "MarshmallowFighter\\Media\\Models\\Shop.png";
 
     //--{CLASSES}--//
     public class EntityStateTypes{

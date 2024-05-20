@@ -43,6 +43,8 @@ public class Main {
 
     static int numMellows = 0;
 
+    static Shop shop;
+
     /**1: facing right, -1: facing left */
     static int plrDirection = 1;
 
@@ -66,6 +68,10 @@ public class Main {
         music.SetVolume(.7);
         music.setInfiniteLoop(true);
 
+        shop = new Shop(game);
+
+        entities.add(new BasicMarshmallow(game));
+
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
         plr.model.ZIndex = 1;
@@ -81,7 +87,7 @@ public class Main {
         topBox.FillColor = Color.red;
 
         movementCastingBlacklist = new Instance[] {plr.model};
-        colOpts = new CollisionOptions(movementCastingBlacklist, false);
+        colOpts = new CollisionOptions(movementCastingBlacklist, true);
 
         gameLoop();
         inputDetect();
@@ -129,21 +135,6 @@ public class Main {
                 }
 
             }
-
-
-            if (game.TickCount%100 == 0 && numMellows < 4){
-                numMellows++;
-                var marsh = new BasicMarshmallow(game);
-                marsh.model.CFrame.Position.X = (int) (Math.random()*1001);
-                marsh.model.CFrame.Position.Y = (int) (Math.random()*1001);
-
-                synchronized (entities) {
-                    entities.add(marsh);
-                    marsh.Died.Once(()->{
-                        entities.remove(marsh);
-                    });
-                }
-            }
         });
     }
 
@@ -163,15 +154,18 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            System.out.println(entities.size());
             synchronized (entities) {
-                for (Entity x : entities){
+                for (Instance inst : game.instances){
+                    Object associate = inst.Associate;
+                    if (associate == null || !((associate instanceof Interactible) || (associate instanceof Entity) || (associate instanceof Model)) 
+                        || inst == plr.model) continue;
+
                     int plrY = plr.model.GetRenderPosition().Y+30; //sub because shadow
-                    int xY = x.model.GetRenderPosition().Y;
+                    int xY = inst.GetRenderPosition().Y;
                     if (xY > plrY ){
-                        x.model.ZIndex = 2;
+                        inst.ZIndex = 2;
                     } else {
-                        x.model.ZIndex = 0;
+                        inst.ZIndex = 0;
                     }
                 }
             }

@@ -26,6 +26,7 @@ public class BasicMarshmallow extends Entity {
         model.CFrame.Position = new Vector2(0,0);
         model.AnchorPoint = new Vector2(50);
         model.ImagePath = idleSprites.Sprites[0];
+        model.Solid = true;
         model.UpdateImagePath();
         game.addInstance(model);
     }
@@ -56,6 +57,7 @@ public class BasicMarshmallow extends Entity {
                 game.removeInstance(model);
                 this.Died.Fire();
                 this.Destroy();
+                new BasicMarshmallowLoot(game, model.CFrame.Position.clone());
             });
         });
     }
