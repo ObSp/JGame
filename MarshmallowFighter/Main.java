@@ -10,7 +10,6 @@ import JGamePackage.JGame.GameObjects.Sound;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.CollisionOptions;
-import JGamePackage.JGame.Types.Enum;
 import JGamePackage.JGame.Types.RaycastParams;
 import JGamePackage.JGame.Types.RaycastResult;
 import JGamePackage.JGame.Types.Vector2;
@@ -19,7 +18,7 @@ import MarshmallowFighter.Classes.*;
 
 /**NOTES:
  * 
- * - Animation is currently insanely laggy, as images are currently creating new BufferedImages every frame
+ * 
  * 
  * 
  */
@@ -38,8 +37,6 @@ public class Main {
 
     static Player plr;
     static Vector2 plrPos;
-    static Box2D hitbox;
-    static Box2D topBox;
 
     static int numMellows = 0;
 
@@ -69,22 +66,16 @@ public class Main {
         music.setInfiniteLoop(true);
 
         shop = new Shop(game);
-
-        entities.add(new BasicMarshmallow(game));
+        for (int i = 0; i < 10; i++){
+            Image2D x = new BasicMarshmallow(game).model;
+            x.CFrame.Position.X = (int) (Math.random()*1001);
+            x.CFrame.Position.Y = (int) (Math.random()*1001);
+        }
 
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
-        plr.model.ZIndex = 1;
+        plr.model.ZIndex = 0;
 
-        hitbox = new Box2D();
-        hitbox.AnchorPoint = new Vector2(-50+(Constants.PLAYER_HITBOX_SIZE_X-45), 100);
-        hitbox.Size.X = Constants.PLAYER_HITBOX_SIZE_X;
-        hitbox.Size.Y = Constants.PLAYER_HITBOX_SIZE_Y;
-
-        topBox = new Box2D();
-        topBox.Size.X = hitbox.Size.X;
-        topBox.Size.Y = 10;
-        topBox.FillColor = Color.red;
 
         movementCastingBlacklist = new Instance[] {plr.model};
         colOpts = new CollisionOptions(movementCastingBlacklist, true);
@@ -120,17 +111,14 @@ public class Main {
                 player.CFrame.Position.X += xInputOffset;
             }
 
-            hitbox.CFrame.Position = player.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).add(player.FlipHorizontally ? -100 : 0, 0);
-            topBox.CFrame.Position = hitbox.CFrame.Position.add(20,-hitbox.Size.Y-10);
-
             cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
             cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);
 
             if (yInputOffset!=0){
 
-                if (yInputOffset>0 && canMoveUp()){
+                if (yInputOffset>0 && plr.canMoveUp()){
                     player.CFrame.Position.Y -= yInputOffset;
-                }else if (yInputOffset < 0 && canMoveDown()){
+                }else if (yInputOffset < 0 && plr.canMoveDown()){
                     player.CFrame.Position.Y -= yInputOffset;
                 }
 
@@ -155,17 +143,16 @@ public class Main {
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
             synchronized (entities) {
+                int plrY = plr.model.GetRenderPosition().Y+plr.model.Size.Y-10;
                 for (Instance inst : game.instances){
                     Object associate = inst.Associate;
                     if (associate == null || !((associate instanceof Interactible) || (associate instanceof Entity) || (associate instanceof Model)) 
                         || inst == plr.model) continue;
-
-                    int plrY = plr.model.GetRenderPosition().Y+30; //sub because shadow
-                    int xY = inst.GetRenderPosition().Y;
-                    if (xY > plrY ){
-                        inst.ZIndex = 2;
+                    int xY = inst.GetRenderPosition().Y+inst.Size.Y;
+                    if (xY > plrY){
+                        inst.ZIndex = 1;
                     } else {
-                        inst.ZIndex = 0;
+                        inst.ZIndex = -1;
                     }
                 }
             }
@@ -217,17 +204,6 @@ public class Main {
         input.OnMouseClick.Connect(()->{
             attack();
         });
-    }
-
-
-    static boolean canMoveUp(){
-        Instance col = game.Services.CollisionService.CheckCollisionInBox(hitbox.CFrame.Position.add(30,-hitbox.Size.Y+20), new Vector2(hitbox.Size.X-30, 2), colOpts);
-        return !(col != null && col.CFrame.Position.Y <= plr.model.CFrame.Position.Y);
-    }
-
-    static boolean canMoveDown(){
-        Instance col = game.Services.CollisionService.CheckCollisionInBox(hitbox.CFrame.Position.add(30,-80), new Vector2(hitbox.Size.X-30, 2), colOpts);
-        return !(col != null && col.CFrame.Position.Y >= plr.model.CFrame.Position.Y);
     }
 
 

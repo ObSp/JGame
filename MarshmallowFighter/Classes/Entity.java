@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.VoidSignal;
 
 /**Represents all moving objects, including the Player, enemies, and other non-static objects
@@ -29,6 +30,7 @@ public abstract class Entity {
 
     public Humanoid Humanoid = new Humanoid();
     public final VoidSignal Died = new VoidSignal();
+    public Box2D hitbox = new Box2D();
 
     public final SpriteSheet hurtAnim;
 
@@ -41,7 +43,6 @@ public abstract class Entity {
         this.hurtAnim = hurt;
 
         initAnimTickLoop();
-        gameLoop();
     }
 
     protected void advanceAnimationFrame(){
@@ -88,6 +89,55 @@ public abstract class Entity {
 
     public void Destroy(){
         stopGameLoop = true;
+    }
+
+     public boolean canMoveUp(){
+        Vector2 hitboxPos = hitbox.GetRenderPosition();
+
+        for (Instance inst : game.instances){
+            if (!inst.Solid) continue;
+            if (inst.Associate instanceof Entity)
+                inst = ((Entity)inst.Associate).hitbox;
+
+            
+            Vector2 posToCheck = new Vector2(
+                hitboxPos.X,
+                hitboxPos.Y+Constants.PLAYER_HITBOX_UP_SHIFT
+            );
+
+            Vector2 sizeToCheck = new Vector2(
+                hitbox.Size.X,
+                Constants.PLAYER_HITBOX_UP_SHIFT
+            );
+
+            if (inst.overlaps(posToCheck, sizeToCheck))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean canMoveDown(){
+        Vector2 hitboxPos = hitbox.GetRenderPosition();
+        
+        for (Instance inst : game.instances){
+            if (!inst.Solid) continue;
+            if (inst.Associate instanceof Entity)
+                inst = ((Entity)inst.Associate).hitbox;
+            
+            Vector2 posToCheck = new Vector2(
+                hitboxPos.X,
+                hitboxPos.Y+Constants.PLAYER_HITBOX_DOWN_SHIFT
+            );
+
+            Vector2 sizeToCheck = new Vector2(
+                hitbox.Size.X,
+                Constants.PLAYER_HITBOX_DOWN_SHIFT
+            );
+
+            if (inst.overlaps(posToCheck , sizeToCheck))
+                return false;
+        }
+        return true;
     }
 
 

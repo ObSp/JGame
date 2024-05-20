@@ -329,6 +329,29 @@ public abstract class Instance extends JComponent {
 
         bottom > otherTop;
     }
+    
+    public boolean overlaps(Vector2 pos, Vector2 size){
+        int leftCorner = topLeftCorner().X;
+        int top = topLeftCorner().Y;
+        int rightCorner = topRightCorner().X;
+        int bottom = bottomLeftCorner().Y;
+
+        int otherLeft = pos.X;
+        int otherTop = pos.Y;
+        int otherRight = pos.X+size.X;
+        int otherBottom = pos.Y + size.Y;
+
+
+        return 
+
+        leftCorner < otherRight &&
+
+        rightCorner > otherLeft &&
+
+        top < otherBottom &&
+
+        bottom > otherTop;
+    }
 
     public boolean isCoordinateInBounds(Vector2 coord){
         if (this.CFrame == null) return false;

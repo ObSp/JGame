@@ -4,13 +4,14 @@ import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.task;
 
 public class BasicMarshmallow extends Entity {
 
     public static final int MarshmallowSize = 100;
-    private SpriteSheet idleSprites = Constants.BasicMarshmallowIdle;
+    private SpriteSheet idleSprites;
 
     private int curHurtPos = 5;
 
@@ -18,27 +19,60 @@ public class BasicMarshmallow extends Entity {
     private boolean isHurt = false;
     
     public BasicMarshmallow(JGame game){
-        super(game, "BasicMarshmallow", Constants.BasicMarshmallowHit);
+        
+        super(game, "BasicMarshmallow", Constants.BasicMarshmallowHit.copy());
+
+        idleSprites = Constants.BasicMarshmallowIdle.copy();
 
         model = new Image2D();
         model.Associate = this;
         model.Size = new Vector2(MarshmallowSize);
         model.CFrame.Position = new Vector2(0,0);
         model.AnchorPoint = new Vector2(50);
-        model.ImagePath = idleSprites.Sprites[0];
+        model.Image = idleSprites.ImageBuffer[0];
         model.Solid = true;
-        model.UpdateImagePath();
+        model.Name = "BasicMarshmallow";
         game.addInstance(model);
+
+
+        
+        hitbox.AnchorPoint = new Vector2(-40,100);
+        hitbox.Size = new Vector2(
+            (double) model.Size.X * Constants.BASIC_MARSHMALLOW_HITBOX_WIDTH_PERCENT, 
+            (double) model.Size.Y * Constants.BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT
+        );
+        hitbox.Solid = true;
+        //game.addInstance(hitbox);
+
+        gameLoop();
+    }
+
+    protected void moveRandom(){
+        Vector2 pos = model.CFrame.Position;
+
+        //y
+        if (Math.random() > .5){
+            pos.Y -= 1;
+        } else {
+            pos.Y += 1;
+        }
+
+        //x
+        if (Math.random() > .5){
+            pos.X += 1;
+        } else {
+            pos.Y -= 1;
+        }
     }
 
     protected void setAnimationImage(BufferedImage path){
-        this.model.SetBufferedImage(path);
+        this.model.Image = path;
     }
 
     public void onHit(){
         if (isDead) return;
         if (!isHurt) isHurt = true;
-        this.PlayAnimation(Constants.BasicMarshmallowHit);
+        this.PlayAnimation(Constants.BasicMarshmallowHit.copy());
 
         this.Humanoid.TakeDamage(Constants.BASIC_MARSHMALLOW_KNIFE_ATTACK_DAMAGE);
 
@@ -53,7 +87,7 @@ public class BasicMarshmallow extends Entity {
         isDead = true;
         task.spawn(()->{
             game.waitTicks(10);
-            this.PlayAnimation(Constants.BasicMarshmallowDeath, true).Finished.Once(()->{
+            this.PlayAnimation(Constants.BasicMarshmallowDeath.copy(), true).Finished.Once(()->{
                 game.removeInstance(model);
                 this.Died.Fire();
                 this.Destroy();
@@ -72,14 +106,20 @@ public class BasicMarshmallow extends Entity {
 
     protected void gameLoop(){
         game.OnTick.Connect(dt->{
+            //hitbox
+            hitbox.CFrame.Position = model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft);
+
+            //moveRandom();
+
+            //animation
             if (playingAnimation || game.TickCount%Constants.BASIC_MARSHMALLOW_IDLE_ANIM_BUFFER_TICKS!=0) return;
 
             if (isHurt && !playingAnimation){
-                model.SetBufferedImage(Constants.BasicMarshmallowHurtProgression.ImageBuffer[4-curHurtPos > -1 && 4-curHurtPos < 4 ? 4-curHurtPos : 0]);
+                model.Image = Constants.BasicMarshmallowHurtProgression.ImageBuffer[4-curHurtPos > -1 && 4-curHurtPos < 4 ? 4-curHurtPos : 0];
                 return;
             }
 
-            model.SetBufferedImage(idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()]);
+            model.Image = idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()];
         });
     }
 }

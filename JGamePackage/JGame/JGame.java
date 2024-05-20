@@ -54,10 +54,11 @@ public class JGame{
 
     private void tick(double dtSeconds){
         TickCount++;
-        render();
         ontick.Fire(dtSeconds);
         if (this.Services != null)
             Services.PhysicsService.runPhysics(dtSeconds);
+
+        render();
     }
 
     private double curSeconds(){

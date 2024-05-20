@@ -17,6 +17,7 @@ public class Shop extends Model {
         model.Associate = this;
         model.AnchorPoint = new Vector2(50);
         model.Solid = true;
+        model.Name = "Shop";
         game.addInstance(model);
     }
 }

@@ -16,8 +16,9 @@ public class Image2D extends Instance{
      */
     public String ImagePath = "JGamePackage\\JGame\\Files\\IMAGEDEFAULT.png";
     public String RealPath = new String(ImagePath);
+    public BufferedImage Image;
+
     public boolean BackgroundTransparent = true;
-    private BufferedImage img;
 
     public boolean FlipHorizontally = false;
     public boolean FlipVertically = false;
@@ -29,7 +30,7 @@ public class Image2D extends Instance{
 
     @Override
     public void paint(Graphics g) {
-        if (img == null) return;
+        if (Image == null) return;
 
         Vector2 actualPos = GetRenderPosition();
         
@@ -46,12 +47,12 @@ public class Image2D extends Instance{
             g2.fillRect(CFrame.Position.X, CFrame.Position.Y, Size.X, Size.Y);
         }
 
-        g2.drawImage(img, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
+        g2.drawImage(Image, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
     }
 
     public void SetImagePath(String path){
         try {
-            this.img = ImageIO.read(new File(path));
+            this.Image = ImageIO.read(new File(path));
             RealPath = path;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,15 +64,11 @@ public class Image2D extends Instance{
      */
     public void UpdateImagePath(){
         try {
-            this.img = ImageIO.read(new File(ImagePath));
+            this.Image = ImageIO.read(new File(ImagePath));
             RealPath = ImagePath;
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void SetBufferedImage(BufferedImage image){
-        img = image;
     }
 
     

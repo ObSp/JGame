@@ -10,7 +10,7 @@ public class SpriteSheet {
     public final String[] Sprites;
     public BufferedImage[] ImageBuffer;
     public final int[] TickBuffers;
-    public int SpritePosition;
+    public int SpritePosition = 0;
     public final boolean Repeating;
 
     private void imgBufferFromPaths(){
@@ -53,5 +53,9 @@ public class SpriteSheet {
         if (SpritePosition >= Sprites.length)
             SpritePosition = 0;
         return SpritePosition;
+    }
+
+    public SpriteSheet copy(){
+        return new SpriteSheet(Sprites.clone(), TickBuffers != null ? TickBuffers.clone() : null, Repeating);
     }
 }

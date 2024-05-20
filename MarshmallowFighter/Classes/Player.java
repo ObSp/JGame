@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
+import JGamePackage.JGame.Types.Enum;
 
 public class Player extends Entity{
 
@@ -24,10 +25,19 @@ public class Player extends Entity{
         model = new Image2D();
 
         model.AnchorPoint = new Vector2(50);
-        model.ImagePath = idleSprites.Sprites[0];
-        model.UpdateImagePath();
+        model.Image = idleSprites.ImageBuffer[0];
         model.Size = new Vector2(PLAYER_SIZE);
+        model.Name = "Player";
         game.addInstance(model);
+
+        hitbox.AnchorPoint = new Vector2(-20,100);
+        hitbox.Size = new Vector2(
+            (double) model.Size.X * Constants.PLAYER_HITBOX_WIDTH_PERCENT, 
+            (double) model.Size.Y * Constants.PLAYER_HITBOX_HEIGHT_PERCENT
+        );
+        //game.addInstance(hitbox);
+
+        gameLoop();
 
     }
 
@@ -35,9 +45,14 @@ public class Player extends Entity{
     @Override
     protected void gameLoop(){
         game.OnTick.Connect(dt->{
+            //hitbox
+            hitbox.CFrame.Position = model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft)
+                .add(model.FlipHorizontally ? -100 : 0, 0);
+
+            //animation 
             if (game.TickCount%anim_buffer_ticks!=0 || playingAnimation) return;
 
-            model.SetBufferedImage(idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()]);
+            model.Image = idleSprites.ImageBuffer[idleSprites.AdvanceSpritePosition()];
         });
     }
 
@@ -46,6 +61,6 @@ public class Player extends Entity{
 
 
     protected void setAnimationImage(BufferedImage path){
-        this.model.SetBufferedImage(path);
+        this.model.Image = path;
     }
 }

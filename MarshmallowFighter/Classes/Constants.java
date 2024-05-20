@@ -26,8 +26,11 @@ public final class Constants {
     public static final int KNIFE_ATTACK_KNOCKBACK_X = 30;
     public static final int KNIFE_ATTACK_KNOCKBACK_Y = -10;
 
-    public static final int PLAYER_HITBOX_SIZE_Y = 50;
-    public static final int PLAYER_HITBOX_SIZE_X = 70;
+    public static final double PLAYER_HITBOX_WIDTH_PERCENT = .5;
+    public static final double PLAYER_HITBOX_HEIGHT_PERCENT = .2;
+
+    public static final int PLAYER_HITBOX_UP_SHIFT = 5;
+    public static final int PLAYER_HITBOX_DOWN_SHIFT = 5;
 
 
     //--{BasicMarshmallow}--//
@@ -36,7 +39,7 @@ public final class Constants {
 
     public static final SpriteSheet BasicMarshmallowIdle = new SpriteSheet(new String[] {
         BasicMarshmallowPath+"idle1.png", BasicMarshmallowPath+"idle2.png"
-    }, null);
+    }, null, true);
 
     public static final SpriteSheet BasicMarshmallowHit = new SpriteSheet(new String[] {
         BasicMarshmallowPath+"hit1.png", BasicMarshmallowPath+"hit2.png", BasicMarshmallowPath+"hit1.png"
@@ -61,6 +64,9 @@ public final class Constants {
 
     public static final String BASIC_MARSHMALLOW_LOOT_PATH = BasicMarshmallowPath+"Loot.png";
     public static final int BASIC_MARSHMALLOW_LOOT_SIZE = 100;
+
+    public static final double BASIC_MARSHMALLOW_HITBOX_WIDTH_PERCENT = .6;
+    public static final double BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT = .3;
 
     //--{MISC}--//
     public static final String SHOP_IMAGE_PATH = "MarshmallowFighter\\Media\\Models\\Shop.png";
