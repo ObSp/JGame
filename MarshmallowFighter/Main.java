@@ -60,6 +60,8 @@ public class Main {
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
+        cam.AnchorPoint = new Vector2(50);
+
         //music
         music = new Sound("MarshmallowFighter\\Media\\Music\\Background.wav");
         music.SetVolume(.7);
@@ -83,6 +85,11 @@ public class Main {
         gameLoop();
         inputDetect();
         zindexManagement();
+
+        plr.interactibleTriggered.Connect(interactible ->{
+            plr.MarshmallowLootCount++;
+            interactible.onInteract();
+        });
     }
 
     static void gameLoop(){
@@ -182,8 +189,10 @@ public class Main {
         Entity hitEnt = (Entity) result.HitInstance.Associate;
         Damage(hitEnt);
 
-        if (hitEnt.isDead)
+        if (hitEnt.isDead){
+            plr.MarshmallowsKilled++;
             return;
+        }
         task.spawn(()->{
             game.waitTicks(15);
             var hitsound = new Sound(knifeHitPath);

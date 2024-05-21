@@ -3,21 +3,11 @@ package JGamePackage.JGame.Instances;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JComponent;
-
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.ArrayTable;
 import JGamePackage.lib.BiSignal;
-
-
-enum Corners{
-    TopLeft,
-    TopRight,
-    BottomLeft,
-    BottomRight
-}
 
 /**An abstract class that all {@code JGame} classes are a subclass of. <p>
  * It contains basic methods, like Instance.Destroy() that are needed when working with basic rendering objects.
@@ -29,7 +19,7 @@ enum Corners{
  * Instead, the intended use is to call {@code JGame.addInstance(this)}.
  * 
  */
-public abstract class Instance extends JComponent {
+public abstract class Instance {
     /**The size of the Instance in 2D space.
      * 
      */

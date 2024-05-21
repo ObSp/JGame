@@ -1,11 +1,13 @@
 package MarshmallowFighter.Classes;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.JGame.Types.Enum;
+import JGamePackage.lib.Signal;
 
 public class Player extends Entity{
 
@@ -15,9 +17,19 @@ public class Player extends Entity{
 
     public static final int PLAYER_SIZE = 150;
 
+    public int MarshmallowLootCount = 0;
+    public int MarshmallowsKilled = 0;
+
     public boolean attacking = false;
 
     public int anim_buffer_ticks = Constants.IDLE_ANIM_BUFFER_TICKS;
+
+    //interactibles
+    private int shownMarshies = 0;
+
+    public Interactible currentlyShownInteractible;
+
+    public Signal<Interactible> interactibleTriggered = new Signal<>();
     
     public Player(JGame game){
         super(game, "Player", null);
@@ -38,9 +50,49 @@ public class Player extends Entity{
         //game.addInstance(hitbox);
 
         gameLoop();
+        detectInput();
 
     }
 
+    public Vector2 getPositionIncludingReflectShift(){
+        return model.CFrame.Position.add(model.FlipHorizontally ? -100 : 0, 0);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private void checkInteractibles(){
+        ArrayList<Interactible> interactibles = (ArrayList<Interactible>) game.Globals.get("interactibles");
+
+        if (interactibles == null) return;
+
+        Vector2 plrPos = getPositionIncludingReflectShift();
+
+        for (Interactible v : interactibles){
+            if (shownMarshies>Constants.INTERACTIBLE_MAX_SHOWN_AT_ONCE) return;
+            Vector2 modelPos = v.model.CFrame.Position;
+            if (Math.abs(plrPos.X-modelPos.X)<= v.InteractionDistanceX && Math.abs(plrPos.Y-modelPos.Y)<=v.InteractionDistanceY){
+                if (v.InteractionPromptVisible) continue;
+                v.InteractionPromptVisible = true;
+                v.PlayerEnteredBounds();
+                shownMarshies++;
+                currentlyShownInteractible = v;
+            } else if (v.InteractionPromptVisible) {
+                v.InteractionPromptVisible = false;
+                v.PlayerExitedBounds();
+                shownMarshies--;
+                if (currentlyShownInteractible==v)
+                    currentlyShownInteractible = null;
+            }
+        }
+    }
+
+    protected void detectInput(){
+        game.Services.InputService.OnKeyPress.Connect(e->{
+            if (currentlyShownInteractible != null && e.getKeyCode() == currentlyShownInteractible.InteractionKey ){
+                interactibleTriggered.Fire(currentlyShownInteractible);
+            }
+        });
+    }
     
     @Override
     protected void gameLoop(){
@@ -48,6 +100,9 @@ public class Player extends Entity{
             //hitbox
             hitbox.CFrame.Position = model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft)
                 .add(model.FlipHorizontally ? -100 : 0, 0);
+
+            //interatible stuff
+            checkInteractibles();
 
             //animation 
             if (game.TickCount%anim_buffer_ticks!=0 || playingAnimation) return;

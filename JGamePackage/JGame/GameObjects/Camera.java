@@ -18,7 +18,7 @@ public class Camera extends GameObject {
      * 
      */
     public Vector2 Position;
-    public Vector2 AnchorPoint = new Vector2(50);
+    public Vector2 AnchorPoint = new Vector2(0);
 
     public Camera(JGame game){
         this.game = game;

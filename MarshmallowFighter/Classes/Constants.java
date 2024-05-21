@@ -68,8 +68,18 @@ public final class Constants {
     public static final double BASIC_MARSHMALLOW_HITBOX_WIDTH_PERCENT = .6;
     public static final double BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT = .3;
 
-    //--{MISC}--//
+
+    //--{SHOP}--//
     public static final String SHOP_IMAGE_PATH = "MarshmallowFighter\\Media\\Models\\Shop.png";
+    public static final double SHOP_HITBOX_WIDTH_PERCENT = .6;
+    public static final double SHOP_HITBOX_HEIGHT_PERCENT = .1;
+
+
+    //--{INTERACTIBLES}--//
+    public static final String INTERACTIBLE_E_IMAGE_PATH = "MarshmallowFighter\\Media\\Misc\\PickupTextLoot.png";
+    public static final int INTERACTIBLE_MAX_SHOWN_AT_ONCE = 1;
+
+    //--{MISC}--//
 
     //--{CLASSES}--//
     public class EntityStateTypes{

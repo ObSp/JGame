@@ -27,7 +27,7 @@ public class ArrayDictionary<T extends Object, U extends Object> implements Iter
             if (SELF_DICT_LIST.get(i).Key.equals(key)) return i;
         }
 
-        throw new Error("Key "+key+" not found in dictionary");
+        return -1;
     }
 
 
@@ -48,7 +48,10 @@ public class ArrayDictionary<T extends Object, U extends Object> implements Iter
 
 
     public U get(T key){
-        return SELF_DICT_LIST.get(INDEX_OF(key)).Value;
+        int i = INDEX_OF(key);
+        if (i == -1) return null;
+
+        return SELF_DICT_LIST.get(i).Value;
     }
 
 

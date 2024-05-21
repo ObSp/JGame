@@ -2,4 +2,5 @@ GAME IDEA:
 
 Open world (maybe not? too much work without an actual level editor?),
 Collect marshmallows,
-Sell
+Sell,
+Repeat

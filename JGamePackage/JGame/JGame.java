@@ -20,6 +20,8 @@ public class JGame{
 
     public double tickMult = 1000;
 
+    public ArrayDictionary<Object, Object> Globals = new ArrayDictionary<>();
+
     //Signals
     private Signal<Double> ontick = new Signal<>();
     public final SignalWrapper<Double> OnTick = new SignalWrapper<>(ontick);
@@ -136,7 +138,9 @@ public class JGame{
     }
 
     public void removeInstance(Instance x){
-        instances.remove(x);
+        for (int i = instances.size()-1; i > -1; i--)
+            if (instances.get(i)==x)
+                instances.remove(i);
         x.Parent = null;
     }
 
@@ -194,110 +198,6 @@ public class JGame{
 
     public void setBackground(Color c){
         gameWindow.getContentPane().setBackground(c);
-    }
-
-        //--RAYCASTING--//
-    /**Shoots a ray from the {@code X} coordinate of Vector2 {@code startVector2} to finishX,
-     * checking for collisions each {@code Raystep} and returning a new {@code RaycastResult} if
-     * a collision is detected.
-     * <p>
-     * If no collision is detected on the specified path, this function simply returns {@code null}
-     * 
-     * <p>
-     * <b>NOTE:</b> The "ray" is in reality a {@code Box2D} instance, hence the required {@code raySize} parameter.
-     * 
-     * @param startVector2 : The start position of the ray, as a {@code Vector2}
-     * @param finishX : The end X coordinate of the ray
-     * @param blacklist : The list of {@code Instances} to be ignored in the case that they collide with the ray
-     * @param raySize : The size of the ray box, as a Vector2
-     * @return A new RaycastResult or null, depending on whether a collision was detected or not
-     * 
-     * @see RaycastResult
-     * @see Vector2
-     * @see Instance
-     * @see Box2D
-     */
-    public RaycastResult RaycastX(Vector2 startVector2, int finishX, Instance[] blacklist, Vector2 raySize){
-        Box2D raycastBox = new Box2D();
-        raycastBox.CFrame.Position = new Vector2(startVector2.X, startVector2.Y);
-        raycastBox.Size = raySize;
-        raycastBox.Name = "raybox@Jgame";
-        raycastBox.FillColor = Color.blue;
-        addInstance(raycastBox);
-
-        int dir = startVector2.X<finishX ? 1 : -1;
-        
-
-        int startX = dir == 1 ? startVector2.X : finishX;
-        int endX = dir == 1 ? finishX : startVector2.X;
-
-
-        for (int x = startX; x <= endX; x++){
-            
-            raycastBox.CFrame.Position.X+= dir;
-            for (int i = 0; i < instances.size(); i++){
-                Instance inst = instances.get(i);
-                if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) 
-                    && !inst.Name.equals("raybox@Jgame") && inst.Solid){
-                    removeInstance(raycastBox);
-                    return new RaycastResult(inst, raycastBox.CFrame.Position);
-                }
-            }
-        }
-
-        removeInstance(raycastBox);
-        return null;
-    }
-
-    /**Shoots a ray from the {@code Y} coordinate of Vector2 {@code startVector2} to finishY,
-     * checking for collisions each {@code Raystep} and returning a new {@code RaycastResult} if
-     * a collision is detected.
-     * <p>
-     * If no collision is detected on the specified path, this function simply returns {@code null}
-     * 
-     * <p>
-     * <b>NOTE:</b> The "ray" is in reality a {@code Box2D} instance, hence the required {@code raySize} parameter.
-     * 
-     * @param startVector2 : The start position of the ray, as a {@code Vector2}
-     * @param finishY : The end Y coordinate of the ray
-     * @param blacklist : The list of {@code Instances} to be ignored in the case that they collide with the ray
-     * @param raySize : The size of the ray box, as a Vector2
-     * @return A new RaycastResult or null, depending on whether a collision was detected or not
-     * 
-     * @see RaycastResult
-     * @see Vector2
-     * @see Instance
-     * @see Box2D
-     */
-    public RaycastResult RaycastY(Vector2 startVector2, int finishY, Instance[] blacklist, Vector2 raySize){
-        Box2D raycastBox = new Box2D();
-        raycastBox.CFrame.Position = new Vector2(startVector2.X, startVector2.Y);
-        raycastBox.Size = raySize;
-        raycastBox.FillColor = Color.green;
-        raycastBox.Name = "raybox@Jgame";
-        addInstance(raycastBox);
-        int dir = startVector2.Y<finishY ? 1 : -1;
-        
-
-        int startY = dir == 1 ? startVector2.Y : finishY;
-        int endY = dir == 1 ? finishY : startVector2.Y;
-
-
-        for (int y = startY; y <= endY; y++){
-            
-            raycastBox.CFrame.Position.Y+= dir;
-            for (int i = 0; i < instances.size(); i++){
-                if (i>= instances.size()) continue;
-                Instance inst = instances.get(i);
-                if (raycastBox.overlaps(inst) && !utilFuncs.blacklistContains(blacklist, inst) && !inst.equals(raycastBox) 
-                    && !inst.Name.equals("raybox@Jgame") && inst.Solid){
-                        removeInstance(raycastBox);
-                    return new RaycastResult(inst, raycastBox.CFrame.Position);
-                }
-            }
-        }
-        removeInstance(raycastBox);
-        return null;
     }
 
 }

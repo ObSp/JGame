@@ -24,6 +24,8 @@ public abstract class Entity {
     protected SpriteSheet curAnimSprites;
     protected Animation curAnim;
 
+    public boolean hitBoxSidesSolid = false;
+
     private boolean stopGameLoop = false;
 
     public final String type;
@@ -97,7 +99,11 @@ public abstract class Entity {
         for (Instance inst : game.instances){
             if (!inst.Solid) continue;
             if (inst.Associate instanceof Entity)
-                inst = ((Entity)inst.Associate).hitbox;
+                inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
+
+            if (inst.Associate instanceof Model)
+                inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
 
             
             Vector2 posToCheck = new Vector2(
@@ -122,7 +128,10 @@ public abstract class Entity {
         for (Instance inst : game.instances){
             if (!inst.Solid) continue;
             if (inst.Associate instanceof Entity)
-                inst = ((Entity)inst.Associate).hitbox;
+                inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
+
+            if (inst.Associate instanceof Model)
+                inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
             
             Vector2 posToCheck = new Vector2(
                 hitboxPos.X,
@@ -134,7 +143,7 @@ public abstract class Entity {
                 Constants.PLAYER_HITBOX_DOWN_SHIFT
             );
 
-            if (inst.overlaps(posToCheck , sizeToCheck))
+            if (inst.overlaps(posToCheck, sizeToCheck))
                 return false;
         }
         return true;
