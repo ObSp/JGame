@@ -68,10 +68,9 @@ public class Player extends Entity{
         Vector2 plrPos = getPositionIncludingReflectShift();
 
         for (Interactible v : interactibles){
-            if (shownMarshies>Constants.INTERACTIBLE_MAX_SHOWN_AT_ONCE) return;
             Vector2 modelPos = v.model.CFrame.Position;
             if (Math.abs(plrPos.X-modelPos.X)<= v.InteractionDistanceX && Math.abs(plrPos.Y-modelPos.Y)<=v.InteractionDistanceY){
-                if (v.InteractionPromptVisible) continue;
+                if (v.InteractionPromptVisible || shownMarshies>=Constants.INTERACTIBLE_MAX_SHOWN_AT_ONCE) continue;
                 v.InteractionPromptVisible = true;
                 v.PlayerEnteredBounds();
                 shownMarshies++;
@@ -80,15 +79,13 @@ public class Player extends Entity{
                 v.InteractionPromptVisible = false;
                 v.PlayerExitedBounds();
                 shownMarshies--;
-                if (currentlyShownInteractible==v)
-                    currentlyShownInteractible = null;
             }
         }
     }
 
     protected void detectInput(){
         game.Services.InputService.OnKeyPress.Connect(e->{
-            if (currentlyShownInteractible != null && e.getKeyCode() == currentlyShownInteractible.InteractionKey ){
+            if (currentlyShownInteractible != null && e.getKeyCode() == currentlyShownInteractible.InteractionKey){
                 interactibleTriggered.Fire(currentlyShownInteractible);
             }
         });
