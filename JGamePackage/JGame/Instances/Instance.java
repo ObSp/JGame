@@ -101,6 +101,8 @@ public abstract class Instance {
      */
     public int ZIndex = 0;
 
+    private double transparency = 1;
+
     public boolean wasDrawn = false;
 
 
@@ -471,6 +473,16 @@ public abstract class Instance {
 
     public Tween TweenRotation(Double goal, TweenInfo tweenInfo){
         return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo);
+    }
+
+
+    public void SetTransparency(double Transparency){
+        transparency = Transparency;
+        FillColor = new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), (int) (transparency*255.0));
+    }
+
+    public double GetTransparency(){
+        return transparency;
     }
 
     @Override
