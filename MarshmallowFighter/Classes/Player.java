@@ -87,6 +87,7 @@ public class Player extends Entity{
         game.Services.InputService.OnKeyPress.Connect(e->{
             if (currentlyShownInteractible != null && e.getKeyCode() == currentlyShownInteractible.InteractionKey){
                 interactibleTriggered.Fire(currentlyShownInteractible);
+                shownMarshies--;
             }
         });
     }

@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
  * 
  * 
  */
-public class ArrayDictionary<T extends Object, U extends Object> implements Iterator<Object>, Iterable<Object> {
+public class ArrayDictionary<T, U> implements Iterator<Object>, Iterable<Object> {
 
     //INSTANCE VARIABLES
     private ArrayTable<KeyValuePair> SELF_DICT_LIST;
@@ -19,6 +19,12 @@ public class ArrayDictionary<T extends Object, U extends Object> implements Iter
     //CONSTRUCTORS
     public ArrayDictionary(){
         SELF_DICT_LIST  = new ArrayTable<>();
+    }
+
+    public ArrayDictionary(T[] keys, U[] values){
+        SELF_DICT_LIST = new ArrayTable<>();
+        for (int i = 0; i < keys.length; i++)
+            put(keys[i], values[i]);
     }
 
 

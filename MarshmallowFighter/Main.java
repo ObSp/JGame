@@ -60,6 +60,8 @@ public class Main {
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
+        var map = MapLoader.LoadMap(game, "MarshmallowFighter\\Media\\DATA.json");
+
         cam.AnchorPoint = new Vector2(50);
 
         //music
@@ -149,18 +151,16 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            synchronized (entities) {
-                int plrY = plr.model.GetRenderPosition().Y+plr.model.Size.Y-10;
-                for (Instance inst : game.instances){
-                    Object associate = inst.Associate;
-                    if (associate == null || !((associate instanceof Interactible) || (associate instanceof Entity) || (associate instanceof Model)) 
-                        || inst == plr.model) continue;
-                    int xY = inst.GetRenderPosition().Y+inst.Size.Y;
-                    if (xY > plrY){
-                        inst.ZIndex = 1;
-                    } else {
-                        inst.ZIndex = -1;
-                    }
+            int plrY = plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10;
+            for (Instance inst : game.instances) {
+                Object associate = inst.Associate;
+                if (associate == null || !((associate instanceof Interactible) || (associate instanceof Entity) || (associate instanceof Model))|| inst == plr.model)
+                    continue;
+                int xY = inst.GetRenderPosition().Y + inst.Size.Y;
+                if (xY > plrY) {
+                    inst.ZIndex = 1;
+                } else {
+                    inst.ZIndex = -1;
                 }
             }
         });
