@@ -24,6 +24,8 @@ public class MapLoader {
         Model m = new Model(game);
         m.model.Size = jsonObjectToVector2((JSONObject) obj.get("Size"));
         m.model.CFrame.Position = jsonObjectToVector2((JSONObject) obj.get("Position"));
+        m.model.SetImagePath((String) obj.get("ImagePath"));
+        return m.model;
     }
 
     @SuppressWarnings("unchecked")
@@ -48,13 +50,11 @@ public class MapLoader {
 
                 
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return instances;
 
     }
 }
