@@ -60,6 +60,7 @@ public class Main {
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
+        @SuppressWarnings("unused")
         var map = MapLoader.LoadMap(game, "MarshmallowFighter\\Media\\DATA.json");
 
         cam.AnchorPoint = new Vector2(50);
@@ -153,8 +154,7 @@ public class Main {
         game.OnTick.Connect(dt->{
             int plrY = plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10;
             for (Instance inst : game.instances) {
-                Object associate = inst.Associate;
-                if (associate == null || !((associate instanceof Interactible) || (associate instanceof Entity) || (associate instanceof Model))|| inst == plr.model)
+                if (inst == plr.model || inst.hasTag("Prompt"))
                     continue;
                 int xY = inst.GetRenderPosition().Y + inst.Size.Y;
                 if (xY > plrY) {

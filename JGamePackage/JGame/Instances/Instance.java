@@ -151,7 +151,7 @@ public abstract class Instance {
      * @param tag The tag to be added to this instance
      */
     public void addTag(String tag){
-        if (Tags.indexOf(tag)==-1) return; // already added tag
+        if (Tags.indexOf(tag)!=-1) return; // already added tag
 
         Tags.add(tag);
     }

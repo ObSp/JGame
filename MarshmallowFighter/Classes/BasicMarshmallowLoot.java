@@ -28,6 +28,7 @@ public class BasicMarshmallowLoot extends Interactible {
         prompt.CFrame = model.CFrame;
         prompt.SetImagePath(Constants.INTERACTIBLE_E_IMAGE_PATH);
         prompt.Size = model.Size.clone();
+        prompt.addTag("Prompt");
     }
 
     @SuppressWarnings("unchecked")

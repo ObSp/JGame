@@ -22,9 +22,11 @@ public class MapLoader {
 
     private static Instance newModel(JGame game, JSONObject obj){
         Model m = new Model(game);
+        m.model = new Image2D();
         m.model.Size = jsonObjectToVector2((JSONObject) obj.get("Size"));
         m.model.CFrame.Position = jsonObjectToVector2((JSONObject) obj.get("Position"));
         m.model.SetImagePath((String) obj.get("ImagePath"));
+        game.addInstance(m.model);
         return m.model;
     }
 
@@ -45,7 +47,7 @@ public class MapLoader {
                 var obj = iter.next();
                 String type = (String) obj.get("Type");
                 if (type.equals("Model")){
-                    instances.add(newModel(game, jsonObj));
+                    instances.add(newModel(game, obj));
                 }
 
                 
