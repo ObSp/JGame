@@ -23,7 +23,7 @@ public final class Constants {
     public static final int IDLE_ANIM_BUFFER_TICKS = 15;
     public static final int RUN_ANIM_BUFFER_TICKS = 10;
 
-    public static final int KNIFE_ATTACK_RANGE_PIXELS = 200;
+    public static final int KNIFE_ATTACK_RANGE_PIXELS = 125;
 
     public static final int KNIFE_ATTACK_KNOCKBACK_X = 30;
     public static final int KNIFE_ATTACK_KNOCKBACK_Y = -10;

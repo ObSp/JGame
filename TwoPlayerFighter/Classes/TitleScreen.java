@@ -14,5 +14,6 @@ public class TitleScreen {
     }
 
     public void Show(){
+        game.Title = "j";
     }
 }

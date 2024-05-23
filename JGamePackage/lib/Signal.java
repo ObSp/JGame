@@ -36,8 +36,8 @@ public class Signal<T extends Object> extends AbstractSignal {
      * @param arg2
      */
     public void Fire(T arg1){
-        for (Connection con : _connections){
-            con._call(arg1);
+        for (int i = 0; i < _connections.getLength(); i++){
+            _connections.get(i)._call(arg1);
         }
 
         for (int i = _onces.size()-1; i > -1; i--){

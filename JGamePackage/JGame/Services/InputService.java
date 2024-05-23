@@ -123,7 +123,7 @@ public class InputService extends Service{
 
     private void initInput(){
         var gameWindow = this.Parent.getWindow();
-        var instances = this.Parent.instances;
+        //var instances = this.Parent.instances;
         //Key input
         gameWindow.addKeyListener(new KeyListener() {
             @Override
@@ -182,22 +182,10 @@ public class InputService extends Service{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                for (Instance inst : instances){
-                    if (e.getSource() == inst){
-                        Vector2 mouseLoc = GetMouseLocation();
-                        inst.MouseEntered.Fire(mouseLoc.X, mouseLoc.Y);
-                    }
-                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                for (Instance inst : instances){
-                    if (e.getSource() == inst){
-                        Vector2 mouseLoc = GetMouseLocation();
-                        inst.MouseExited.Fire(mouseLoc.X, mouseLoc.Y);
-                    }
-                }
             }
         });
     

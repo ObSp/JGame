@@ -176,12 +176,14 @@ public class Main {
             plr.attacking = false;
         });
 
+        var actPos = plr.getPositionIncludingReflectShift();
+
         //raycasting
-        RaycastResult result = game.Services.RaycastService.Raycast(plrPos, new Vector2((plrPos.X+Constants.KNIFE_ATTACK_RANGE_PIXELS)*plrDirection, plrPos.Y), 
+        RaycastResult result = game.Services.RaycastService.Raycast(actPos, new Vector2((plrPos.X+Constants.KNIFE_ATTACK_RANGE_PIXELS)*plrDirection, plrPos.Y), 
             new RaycastParams(colOpts.Blacklist, false));
 
         
-        if (result==null || Math.abs(result.FinalPosition.X-plrPos.X)>Constants.KNIFE_ATTACK_RANGE_PIXELS
+        if (result==null || Math.abs(result.FinalPosition.X-actPos.X)>Constants.KNIFE_ATTACK_RANGE_PIXELS
             || result.HitInstance.Associate == null || !(result.HitInstance.Associate instanceof Entity))
             return;
 

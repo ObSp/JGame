@@ -3,10 +3,11 @@
         {
             "Type": "Model",
             "Position": {"X": 0, "Y": 0},
-            "Size": {"X": 100, "Y": 100},
-            "ImagePath": "MarshmallowFighter\\Media\\BasicMarshmallowStates\\die4.png",
-            "HitboxScaleX": 0.7,
-            "HitboxSizeY": 0.1
+            "Size": {"X": 500, "Y": 500},
+            "ImagePath": "MarshmallowFighter\\Media\\Models\\Tree.png",
+            "HitboxScaleX": 0.6,
+            "HitboxScaleY": 0.1,
+            "HitboxShiftRightDiv": 6
         }
     ]
 }

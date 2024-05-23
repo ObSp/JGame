@@ -97,12 +97,14 @@ public abstract class Entity {
         Vector2 hitboxPos = hitbox.GetRenderPosition();
 
         for (Instance inst : game.instances){
-            if (!inst.Solid) continue;
+            var temp = inst;
             if (inst.Associate instanceof Entity)
                 inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
 
             if (inst.Associate instanceof Model)
                 inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
+            if (!inst.Solid && temp==inst) continue;
             
 
             
@@ -126,12 +128,14 @@ public abstract class Entity {
         Vector2 hitboxPos = hitbox.GetRenderPosition();
         
         for (Instance inst : game.instances){
-            if (!inst.Solid) continue;
+            var temp = inst;
             if (inst.Associate instanceof Entity)
                 inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
 
             if (inst.Associate instanceof Model)
                 inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
+            if (!inst.Solid && temp==inst) continue;
             
             Vector2 posToCheck = new Vector2(
                 hitboxPos.X,

@@ -186,73 +186,60 @@ public abstract class Instance {
      * @return
      */
     public boolean touchingBorderTop(){
-        return false;
-        //return (CFrame.Position.Y)<0;
+        return GetRenderPosition().Y<0;
     }
 
     public boolean touchingBorderLeft(){
-        return false;
-        //return (CFrame.Position.X)<0;
+        return GetRenderPosition().X<0;
     }
 
     public boolean touchingBorderRight(){
-        return false;
-        //return (CFrame.Position.X+Size.X)>Parent.getTotalScreenSize().X;
+        return topRightCorner().X>=Parent.getTotalScreenSize().X;
     }
 
     public boolean touchingBorderBottom(){
-        return false;
-        //return CFrame.Position.Y+Size.Y>Parent.getTotalScreenSize().Y;
+        return bottomRightCorner().Y>=Parent.getTotalScreenSize().Y;
     }
 
     public boolean collidingRight(){
-        return false;
-        /**Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X+Size.X, bl, new Vector2(2, Size.Y-3));
+        Instance[] bl = {this};
+        Vector2 pos = topRightCorner();
+        CollisionOptions opts = new CollisionOptions(bl, true);
+        Instance hit = Parent.Services.CollisionService.CheckCollisionInBox(pos, new Vector2(3, Size.Y), opts);
 
-        if (r!= null && r.HitInstance.Solid && this.Solid){
-            return true;
-        }
 
-        return false;*/
+        return hit != null;
     }
 
 
     public boolean collidingLeft(){
-        return false;
-        /**Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastX(CFrame.Position, CFrame.Position.X-4, bl, new Vector2(2, Size.Y-3));
+        Instance[] bl = {this};
+        Vector2 pos = topLeftCorner();
+        CollisionOptions opts = new CollisionOptions(bl, true);
+        Instance hit = Parent.Services.CollisionService.CheckCollisionInBox(pos.add(-3, 0), new Vector2(3, Size.Y), opts);
 
-        if (r!= null && r.HitInstance.Solid && this.Solid){
-            return true;
-        }
 
-        return false;*/
+        return hit != null;
     }
 
     public boolean collidingBottom(){
-        return false;
-        /**
         Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastY(CFrame.Position.add(new Vector2(0, Size.Y)), (CFrame.Position.Y+(Size.Y/2))+15, bl, new Vector2(Size.X-3, 1));
+        Vector2 pos = bottomLeftCorner();
+        CollisionOptions opts = new CollisionOptions(bl, true);
+        Instance hit = Parent.Services.CollisionService.CheckCollisionInBox(pos.add(0, 3), new Vector2(Size.X, 3), opts);
 
-        if (r!= null && r.HitInstance.Solid && this.Solid){
-            return true;
-        }
 
-        return false;*/
+        return hit != null;
     }
 
     public boolean collidingTop(){
-        return false;
-        /**Instance[] bl = {this};
-        RaycastResult r = Parent.RaycastY(CFrame.Position.subtract(new Vector2(0, Size.Y)), (CFrame.Position.Y-(Size.Y/2))-3, bl, new Vector2(Size.X-3, 2));
+        Instance[] bl = {this};
+        Vector2 pos = topLeftCorner();
+        CollisionOptions opts = new CollisionOptions(bl, true);
+        Instance hit = Parent.Services.CollisionService.CheckCollisionInBox(pos.add(0, -3), new Vector2(Size.X, 3), opts);
 
-        if (r!= null && r.HitInstance.Solid && this.Solid){
-            return true;
-        }
 
-        return false;*/
+        return hit != null;
     }
 
 
@@ -280,9 +267,9 @@ public abstract class Instance {
         boolean left = this.collidingLeft();
         boolean right = this.collidingRight();
 
-        if (bottom) vect.Y = -1;
-
         if (top) vect.Y = 1;
+
+        if (bottom) vect.Y = -1;
 
         //if (top && bottom) vect.Y = 0;
 

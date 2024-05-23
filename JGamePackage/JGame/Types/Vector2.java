@@ -106,6 +106,11 @@ public class Vector2 {
     public Vector2 multiply(int mult){
         return new Vector2(X*mult, Y*mult);
     }
+
+    public Vector2 multiply(int x, int y){
+        return new Vector2(X*x, Y*y);
+    }
+
     public boolean isZero(){
         return X==0 && Y==0;
     }

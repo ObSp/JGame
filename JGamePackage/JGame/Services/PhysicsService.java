@@ -30,15 +30,16 @@ public class PhysicsService extends Service {
                 inst.timeInAir = 0;
             }
 
+            Vector2 colDir = inst.getCollideDirection();
+
             //making sure inst isnt inside of anything
-            if (!inst.getCollideDirection().isZero()){
+            if (!colDir.isZero()){
                 for (int j = 0; j < instances.length; j++){
                     Instance ji = instances[j];
                     if (ji == inst) continue;
     
                     if (ji.overlaps(inst) && ji.Solid){
-                        inst.CFrame.Position.add(inst.getCollideDirection().multiply(3));
-                        break;
+                        inst.CFrame.Position = inst.CFrame.Position.add(colDir.multiply(15));
                     }
                 }
             }
@@ -50,14 +51,14 @@ public class PhysicsService extends Service {
             //                      up  down
             int yDir = vel.Y > -1 ? -1 : 1;
 
-            if ((xDir == 1 && inst.collidingLeft()) || (xDir==-1 && inst.collidingRight())) vel.X = 0;
-            if ((yDir == 1 && inst.collidingTop())) vel.Y = 0;
+            if ((xDir == -1 && inst.collidingLeft()) || (xDir==1 && inst.collidingRight())) vel.X = 0;
+            if ((yDir == 1 && inst.collidingTop()) || (yDir==-1 && inst.collidingBottom())) vel.Y = 0;
 
             //touching ground
             if (!inst.inAir && vel.Y > 0){
                 vel.Y = 0;
             } else {
-                vel.Y += getPositionShift(inst);
+                vel.Y += getPositionShift(inst)*(dt*100);
             }
 
 
@@ -91,9 +92,9 @@ public class PhysicsService extends Service {
 
     //formula: 2pixels/secondsInAir^2
 
-    private int getPositionShift(Instance inst){
+    private double getPositionShift(Instance inst){
         double grav = inst.timeInAir*PhysicsSettings.GlobalGravity;
-        return (int) (Math.clamp(grav, 0, PhysicsSettings.AirResistance));
+        return Math.clamp(grav, 0, PhysicsSettings.AirResistance);
     }
     
 }

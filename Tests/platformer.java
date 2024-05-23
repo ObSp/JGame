@@ -20,13 +20,13 @@ public class platformer {
     static InputService input = game.Services.InputService;
 
     public static void main(String[] args) {
-        Promise.await(game.start());
 
         Box2D player = new Box2D();
         player.FillColor = Color.red;
         player.CFrame.Position = new Vector2(game.getScreenWidth()/2-player.Size.X, 0);
         player.Solid = true;
         player.Anchored = false;
+        player.ZIndex = 2;
         game.addInstance(player);
 
         Box2D ground = new Box2D();
@@ -41,7 +41,7 @@ public class platformer {
         Box2D x = new Box2D();
         x.FillColor = Color.red;
         x.Size = new Vector2(500, 50);
-        x.CFrame.Position = new Vector2(1000, 700);
+        x.CFrame.Position = new Vector2(1000, 800);
         x.Solid = true;
         game.addInstance(x);
 
@@ -54,7 +54,7 @@ public class platformer {
         input.OnKeyPress.Connect(e ->{
             if (e.getKeyCode()!= KeyEvent.VK_SPACE) return;
 
-            player.Velocity.Y = -15;
+            player.Velocity.Y = -30;
         });
     }
 }

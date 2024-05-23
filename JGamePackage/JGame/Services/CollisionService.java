@@ -1,5 +1,7 @@
 package JGamePackage.JGame.Services;
 
+import java.util.ArrayList;
+
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
 import JGamePackage.JGame.Instances.Instance;
@@ -19,20 +21,29 @@ public class CollisionService extends Service {
         return false;
     }
 
-    public Instance GetInstancesInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
+    private Instance[] listToArray(ArrayList<Instance> list){
+        Instance[] insts = new Instance[list.size()];
+        for (int i = 0; i < insts.length; i++)
+            insts[i] = list.get(i);
+        return insts;
+    }
+
+    public Instance[] GetInstancesInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
+        ArrayList<Instance> colliding = new ArrayList<>();
+
         Box2D box = new Box2D();
         box.Size = boxSize.clone();
         box.CFrame.Position = position.clone();
 
         for (Instance inst : Parent.instances){
             if (inst.overlaps(box) && (!options.SolidsOnly || inst.Solid) && !blacklistContains(options.Blacklist, inst)){
-                return inst;
+                colliding.add(inst);
             }
         }
 
 
 
-        return null;
+        return listToArray(colliding);
     }
 
     /**Checks the collision inside of bounds boxSize and position, returning true if there are other Instances
@@ -47,6 +58,8 @@ public class CollisionService extends Service {
         Box2D box = new Box2D();
         box.Size = boxSize.clone();
         box.CFrame.Position = position.clone();
+        //box.FillColor = Color.black;
+        //Parent.addInstance(box);
 
         for (Instance inst : Parent.instances){
             if (inst.overlaps(box) && (!options.SolidsOnly || inst.Solid) && !blacklistContains(options.Blacklist, inst)){

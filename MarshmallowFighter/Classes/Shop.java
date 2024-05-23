@@ -17,7 +17,6 @@ public class Shop extends Model {
         model.CFrame.Position = new Vector2(1180 , 353);
         model.Associate = this;
         model.AnchorPoint = new Vector2(0,100);
-        model.Solid = true;
         model.Name = "Shop";
         game.addInstance(model);
 
