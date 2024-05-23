@@ -12,6 +12,8 @@ public abstract class Player {
 
     public int movementDirection = 0;
 
+    public boolean stunned = false;
+
     protected InputService input;
 
     private static Player newSquare(JGame game){
@@ -43,7 +45,7 @@ public abstract class Player {
     }
 
     public void jump(){
-        if (model.collidingBottom())
+        if (!model.inAir)
             model.Velocity.Y = -30;
     }
 }

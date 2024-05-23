@@ -53,20 +53,24 @@ public class Game {
     }
 
     public void movement(double dt){
-        if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.left)){
-            player1.model.Velocity.X = -(int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
-        } else if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.right)){
-            player1.model.Velocity.X = (int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
-        } else {
-            player1.model.Velocity.X = 0;
+        if (!player1.stunned){
+            if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.left)){
+                player1.model.Velocity.X = -(int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
+            } else if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.right)){
+                player1.model.Velocity.X = (int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
+            } else {
+                player1.model.Velocity.X = 0;
+            }
         }
 
-        if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.left)){
-            player2.model.Velocity.X = -(int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
-        } else if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.right)){
-            player2.model.Velocity.X = (int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
-        } else {
-            player2.model.Velocity.X = 0;
+        if (!player2.stunned){
+            if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.left)){
+                player2.model.Velocity.X = -(int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
+            } else if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.right)){
+                player2.model.Velocity.X = (int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
+            } else {
+                player2.model.Velocity.X = 0;
+            }
         }
             
     }

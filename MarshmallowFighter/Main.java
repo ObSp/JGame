@@ -56,7 +56,7 @@ public class Main {
     static double dtMult = 500;
 
     public static void main(String[] args) {
-        game.setBackground(new Color(100, 115, 125));
+        game.setBackground(new Color(87, 41, 75));
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 
@@ -64,7 +64,6 @@ public class Main {
         var map = MapLoader.LoadMap(game, "MarshmallowFighter\\Media\\DATA.json");
 
         cam.AnchorPoint = new Vector2(50);
-
         //music
         music = new Sound("MarshmallowFighter\\Media\\Music\\Background.wav");
         music.SetVolume(.7);

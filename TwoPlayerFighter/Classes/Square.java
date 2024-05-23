@@ -15,6 +15,7 @@ public class Square extends Player {
         model.Anchored = false;
         model.Associate = this;
         model.Solid = true;
+        model.WeightPercentage = 1.3;
         game.addInstance(model);
     }
 

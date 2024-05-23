@@ -30,6 +30,8 @@ public class PhysicsService extends Service {
                 inst.timeInAir = 0;
             }
 
+            //For x: -1 = right, 1 = left
+            //For y: -1 = bottom, 1 = top
             Vector2 colDir = inst.getCollideDirection();
 
             //making sure inst isnt inside of anything
@@ -39,6 +41,10 @@ public class PhysicsService extends Service {
                     if (ji == inst) continue;
     
                     if (ji.overlaps(inst) && ji.Solid){
+                        /*Vector2 topRight = inst.GetCornerPosition(Enum.InstanceCornerType.TopLeft);
+                        if (colDir.Y==-1){
+                            inst.SetTopSidePosition(topRight.Y-inst.Size.Y-2);
+                        }*/
                         inst.CFrame.Position = inst.CFrame.Position.add(colDir.multiply(15));
                     }
                 }

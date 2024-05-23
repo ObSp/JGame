@@ -76,6 +76,8 @@ public final class Constants {
     public static final double SHOP_HITBOX_WIDTH_PERCENT = .6;
     public static final double SHOP_HITBOX_HEIGHT_PERCENT = .1;
 
+    public static final String SHOP_INTERACTIBLE_PATH = "MarshmallowFighter\\Media\\Misc\\OpenText.png";
+
 
     //--{INTERACTIBLES}--//
     public static final String INTERACTIBLE_E_IMAGE_PATH = "MarshmallowFighter\\Media\\Misc\\PickupTextLoot.png";

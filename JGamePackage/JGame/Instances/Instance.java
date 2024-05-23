@@ -451,6 +451,19 @@ public abstract class Instance {
         throw new Error("No Such Corner Type Exception: corner identifier "+corner+" is not a valid corner type.");
     }
 
+    public void SetTopLeftCornerPosition(Vector2 pos){
+        CFrame.Position.Y = pos.Y-getAnchorPointOffsetY();
+        CFrame.Position.X = pos.X-getAnchorPointOffsetX();
+    }
+
+    public void SetLeftSidePosition(int x){
+        CFrame.Position.X = x-getAnchorPointOffsetX();
+    }
+
+    public void SetTopSidePosition(int y){
+        CFrame.Position.Y = y-getAnchorPointOffsetY();
+    }
+
     //--TWEENING--//
     public Tween TweenPosition(Vector2 goal, TweenInfo tweenInfo){
         return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo);

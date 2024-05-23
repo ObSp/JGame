@@ -6,9 +6,13 @@ import JGamePackage.JGame.Instances.Image2D;
 import JGamePackage.JGame.Types.Vector2;
 
 public class Shop extends Model {
+
+    public ShopInteractible interactible;
     
     public Shop(JGame game){
         super(game);
+
+        interactible = new ShopInteractible(game);
 
         model = new Image2D();
         model.ImagePath = Constants.SHOP_IMAGE_PATH;
@@ -19,6 +23,8 @@ public class Shop extends Model {
         model.AnchorPoint = new Vector2(0,100);
         model.Name = "Shop";
         game.addInstance(model);
+
+        interactible.model.CFrame = model.CFrame;
 
         hitBoxSidesSolid = true;
 
