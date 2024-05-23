@@ -10,6 +10,8 @@ public abstract class Player {
     protected JGame game;
     public Image2D model = new Image2D();
 
+    public int movementDirection = 0;
+
     protected InputService input;
 
     private static Player newSquare(JGame game){
@@ -44,6 +46,4 @@ public abstract class Player {
         if (model.collidingBottom())
             model.Velocity.Y = -30;
     }
-
-    
 }

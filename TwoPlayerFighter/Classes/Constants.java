@@ -17,4 +17,8 @@ public final class Constants {
     public static final String RECTANGLE_IMAGE_PATH = "TwoPlayerFighter\\Media\\rectangle.png";
 
     public static final int SQUARE_MOVEMENT_SPEED = 8;
+    public static final int RECTANGLE_MOVEMENT_SPEED = 7;
+
+
+    public static final String GAME_MUSIC_MATH = "TwoPlayerFighter\\Media\\Sounds\\FightingMusic.wav";
 }

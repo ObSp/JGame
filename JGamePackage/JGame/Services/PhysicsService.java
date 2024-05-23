@@ -58,7 +58,7 @@ public class PhysicsService extends Service {
             if (!inst.inAir && vel.Y > 0){
                 vel.Y = 0;
             } else {
-                vel.Y += getPositionShift(inst)*(dt*100);
+                vel.Y += getPositionShift(inst)*(dt*50);
             }
 
 
@@ -93,7 +93,7 @@ public class PhysicsService extends Service {
     //formula: 2pixels/secondsInAir^2
 
     private double getPositionShift(Instance inst){
-        double grav = inst.timeInAir*PhysicsSettings.GlobalGravity;
+        double grav = inst.timeInAir*(PhysicsSettings.GlobalGravity*inst.WeightPercentage);
         return Math.clamp(grav, 0, PhysicsSettings.AirResistance);
     }
     

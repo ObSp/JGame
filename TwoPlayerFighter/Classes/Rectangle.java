@@ -15,6 +15,7 @@ public class Rectangle extends Player {
         model.Anchored = false;
         model.Associate = this;
         model.Solid = true;
+        model.WeightPercentage = .5;
         game.addInstance(model);
     }
 

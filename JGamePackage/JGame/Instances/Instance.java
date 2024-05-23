@@ -53,6 +53,8 @@ public abstract class Instance {
 
     public JGame Parent;
 
+    public double WeightPercentage = 1;
+
     /**What color this object will be drawn as
      * 
      */
