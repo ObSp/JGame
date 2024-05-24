@@ -27,7 +27,11 @@ public class Camera extends GameObject {
     }
 
     public Vector2 GetInstancePositionRelativeToCameraPosition(Instance obj){
-        return obj.CFrame.Position.subtract(getActualPos(game.getTotalScreenSize()));
+        return GetVector2RelativeToCameraPosition(obj.CFrame.Position);
+    }
+
+    public Vector2 GetVector2RelativeToCameraPosition(Vector2 pos){
+        return pos.subtract(getActualPos(game.getTotalScreenSize()));
     }
 
     private Vector2 getActualPos(Vector2 size){

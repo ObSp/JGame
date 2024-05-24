@@ -12,8 +12,6 @@ public class Shop extends Model {
     public Shop(JGame game){
         super(game);
 
-        interactible = new ShopInteractible(game);
-
         model = new Image2D();
         model.ImagePath = Constants.SHOP_IMAGE_PATH;
         model.UpdateImagePath();
@@ -24,7 +22,7 @@ public class Shop extends Model {
         model.Name = "Shop";
         game.addInstance(model);
 
-        interactible.model.CFrame = model.CFrame;
+        interactible = new ShopInteractible(game, this);
 
         hitBoxSidesSolid = true;
 

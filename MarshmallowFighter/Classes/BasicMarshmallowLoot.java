@@ -1,7 +1,5 @@
 package MarshmallowFighter.Classes;
 
-import java.util.ArrayList;
-
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Image2D;
 import JGamePackage.JGame.Types.Vector2;
@@ -31,12 +29,11 @@ public class BasicMarshmallowLoot extends Interactible {
         prompt.addTag("Prompt");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onInteract() {
         game.removeInstance(model);
         game.removeInstance(prompt);
-        ((ArrayList<Interactible>) game.Globals.get("interactibles")).remove(this);
+        removeFromGlobals();
     }
 
     @Override

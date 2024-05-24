@@ -33,6 +33,11 @@ public abstract class Interactible {
         ((ArrayList<Interactible>) game.Globals.get("interactibles")).add(this);
     }
 
+    @SuppressWarnings("unchecked")
+    public void removeFromGlobals(){
+        ((ArrayList<Interactible>) game.Globals.get("interactibles")).remove(this);
+    }
+
     public abstract void onInteract();
 
     public abstract void PlayerEnteredBounds();
