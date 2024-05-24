@@ -20,7 +20,7 @@ public class Creator {
     static Vector2 firstClick = null;
     static Vector2 secondClick = null;
 
-    static ArrayList<Instance> insts = new ArrayList<>();
+    static ArrayList<Instance> insts;
 
     static Box2D ghost = new Box2D();
 
@@ -36,7 +36,7 @@ public class Creator {
     }
 
     static void init(){
-        game.Services.ParserService.ParseJSONToInstances(new File("MarshmallowFighter\\MapCreationTool\\stuff.json"));
+        insts = game.Services.ParserService.ParseJSONToInstances(new File("MarshmallowFighter\\MapCreationTool\\stuff.json"));
 
         game.Services.InputService.OnMouseClick.Connect(()->{
             if (firstClick != null && secondClick != null){

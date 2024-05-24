@@ -38,7 +38,7 @@ public class ParserService extends Service {
     }
 
     private Vector2 JSONObjectToVector2(JSONObject obj){
-        return new Vector2((int) obj.get("X"), (int) obj.get("Y"));
+        return new Vector2((int)((long) obj.get("X")), (int)((long) obj.get("Y")));
     }
 
 
@@ -69,14 +69,17 @@ public class ParserService extends Service {
                 inst.Velocity = JSONObjectToVector2((JSONObject) obj.get("Velocity"));
                 inst.AnchorPoint = JSONObjectToVector2((JSONObject) obj.get("AnchorPoint"));
 
-                inst.ZIndex = (int) obj.get("ZIndex");
+                inst.ZIndex = (int) (((long)obj.get("ZIndex")));
 
                 inst.Solid = (boolean) obj.get("Solid");
                 inst.Anchored = (boolean) obj.get("Anchored");
                 
-                inst.FillColor = new Color((int) obj.get("FillColor"));
+                inst.FillColor = new Color((int) (long) obj.get("FillColor"));
 
                 inst.Name = (String) obj.get("Name");
+
+                Parent.addInstance(inst);
+                instances.add(inst);
 
             }
 
@@ -89,7 +92,7 @@ public class ParserService extends Service {
 
 
 
-        return null;
+        return instances;
     }
 
     @SuppressWarnings("unchecked")
