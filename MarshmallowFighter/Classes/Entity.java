@@ -1,5 +1,6 @@
 package MarshmallowFighter.Classes;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.JGame;
@@ -110,7 +111,7 @@ public abstract class Entity {
             
             Vector2 posToCheck = new Vector2(
                 hitboxPos.X,
-                hitboxPos.Y+Constants.PLAYER_HITBOX_UP_SHIFT
+                hitboxPos.Y-Constants.PLAYER_HITBOX_UP_SHIFT
             );
 
             Vector2 sizeToCheck = new Vector2(

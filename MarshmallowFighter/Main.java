@@ -2,6 +2,7 @@ package MarshmallowFighter;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 import JGamePackage.JGame.*;
@@ -42,6 +43,8 @@ public class Main {
 
     static Shop shop;
 
+    static ArrayList<Instance> hitboxes;
+
     /**1: facing right, -1: facing left */
     static int plrDirection = 1;
 
@@ -59,6 +62,14 @@ public class Main {
         game.setBackground(new Color(87, 41, 75));
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
+
+        hitboxes = game.Services.ParserService.ParseJSONToInstances(new File(Constants.HITBOX_SAVE_PATH));
+
+        for (Instance hitB : hitboxes){
+            hitB.Solid = true;
+            hitB.SetTransparency(0);
+            game.addInstance(hitB);
+        }
 
         @SuppressWarnings("unused")
         var map = MapLoader.LoadMap(game, "MarshmallowFighter\\Media\\DATA.json");

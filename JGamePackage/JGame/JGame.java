@@ -8,6 +8,7 @@ import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.*;
+import JGamePackage.lib.ArrayTable;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +33,7 @@ public class JGame{
     private JFrame gameWindow = new JFrame(Title);
     private DrawGroup drawGroup = new DrawGroup();
 
-    public ArrayList<Instance> instances = new ArrayList<>();
+    public ArrayTable<Instance> instances = new ArrayTable<>();
 
     public Camera Camera;
 
@@ -138,7 +139,7 @@ public class JGame{
     }
 
     public void removeInstance(Instance x){
-        for (int i = instances.size()-1; i > -1; i--)
+        for (int i = instances.getLength()-1; i > -1; i--)
             if (instances.get(i)==x)
                 instances.remove(i);
         x.Parent = null;
@@ -205,8 +206,8 @@ public class JGame{
 
 
 class utilFuncs{
-    static Instance[] toInstArray(ArrayList<Instance> x){
-        Instance[] arr = new Instance[x.size()];
+    static Instance[] toInstArray(ArrayTable<Instance> x){
+        Instance[] arr = new Instance[x.getLength()];
         for (int i = 0; i<arr.length; i++){
             arr[i] = x.get(i);
         }

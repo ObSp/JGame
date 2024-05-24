@@ -1,7 +1,5 @@
 package MarshmallowFighter.Classes;
 
-import JGamePackage.lib.ArrayDictionary;
-
 public final class Constants {
 
     //--{PLAYER RELATED}--//
@@ -84,9 +82,8 @@ public final class Constants {
     public static final int INTERACTIBLE_MAX_SHOWN_AT_ONCE = 1;
 
     //--{MISC}--//
-    public static final ArrayDictionary<String, Object> Classes = new ArrayDictionary<>(new String[] {
-        "Model"
-    }, new Object[] {Model.class,});
+    public static final String HITBOX_SAVE_PATH = "MarshmallowFighter\\Media\\HITBOXES.json";
+
 
     //--{CLASSES}--//
     public class EntityStateTypes{

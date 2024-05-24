@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
@@ -36,7 +37,11 @@ public class Creator {
     }
 
     static void init(){
-        insts = game.Services.ParserService.ParseJSONToInstances(new File("MarshmallowFighter\\MapCreationTool\\stuff.json"));
+        insts = game.Services.ParserService.ParseJSONToInstances(new File("MarshmallowFighter\\Media\\HITBOXES.json"));
+
+        for (Instance i : insts){
+            game.addInstance(i);
+        }
 
         game.Services.InputService.OnMouseClick.Connect(()->{
             if (firstClick != null && secondClick != null){
@@ -59,10 +64,35 @@ public class Creator {
         });
         game.Services.InputService.OnKeyPress.Connect(e->{
             if (e.getKeyCode() == KeyEvent.VK_U){
+                if (history.size() == 0) return;
                 Instance last = history.getLast();
                 game.removeInstance(last);
                 insts.remove(last);
                 history.removeLast();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_T){
+                Instance cur = game.Services.InputService.GetMouseTarget();
+                if (cur == null) return;
+                cur.SetTransparency(cur.GetTransparency() != 0.0 ? 0.0 : 1);
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+                Instance cur = game.Services.InputService.GetMouseTarget();
+                if (cur == null) return;
+                game.removeInstance(cur);
+                insts.remove(cur);
+                history.remove(cur);
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_N){
+                Instance cur = game.Services.InputService.GetMouseTarget();
+                if (cur == null) return;
+
+                Scanner scan = new Scanner(System.in);
+                String name = scan.nextLine();
+                cur.Name = name;
+                scan.close();
             }
         });
 
@@ -87,7 +117,7 @@ public class Creator {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                game.Services.ParserService.ExportInstancesToJSON(listToArr(insts), new File("MarshmallowFighter\\MapCreationTool\\stuff.json"));
+                game.Services.ParserService.ExportInstancesToJSON(listToArr(insts), new File("MarshmallowFighter\\Media\\HITBOXES.json"));
             }
 
             @Override

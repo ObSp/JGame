@@ -78,7 +78,6 @@ public class ParserService extends Service {
 
                 inst.Name = (String) obj.get("Name");
 
-                Parent.addInstance(inst);
                 instances.add(inst);
 
             }

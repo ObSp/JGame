@@ -1,0 +1,80 @@
+[
+    {
+        "FillColor": -65536,
+        "AnchorPoint": {
+            "X": 0,
+            "Y": 0
+        },
+        "Anchored": true,
+        "MoveWithCamera": true,
+        "ZIndex": 0,
+        "Position": {
+            "X": 622,
+            "Y": 348
+        },
+        "Size": {
+            "X": 568,
+            "Y": 383
+        },
+        "ClassName": "Box2D",
+        "Rotation": 0.0,
+        "Velocity": {
+            "X": 0,
+            "Y": 0
+        },
+        "Solid": false,
+        "Name": "a"
+    },
+    {
+        "FillColor": -65536,
+        "AnchorPoint": {
+            "X": 0,
+            "Y": 0
+        },
+        "Anchored": true,
+        "MoveWithCamera": true,
+        "ZIndex": 0,
+        "Position": {
+            "X": 107,
+            "Y": 285
+        },
+        "Size": {
+            "X": 424,
+            "Y": 420
+        },
+        "ClassName": "Box2D",
+        "Rotation": 0.0,
+        "Velocity": {
+            "X": 0,
+            "Y": 0
+        },
+        "Solid": false,
+        "Name": "Box2D"
+    },
+    {
+        "FillColor": -65536,
+        "AnchorPoint": {
+            "X": 0,
+            "Y": 0
+        },
+        "Anchored": true,
+        "MoveWithCamera": true,
+        "ZIndex": 0,
+        "Position": {
+            "X": 1182,
+            "Y": 124
+        },
+        "Size": {
+            "X": 341,
+            "Y": 202
+        },
+        "ClassName": "Box2D",
+        "Rotation": 0.0,
+        "Velocity": {
+            "X": 0,
+            "Y": 0
+        },
+        "Solid": false,
+        "Name": "Box2D"
+    }
+]
