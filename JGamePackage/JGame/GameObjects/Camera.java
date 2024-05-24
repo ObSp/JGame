@@ -3,6 +3,7 @@ package JGamePackage.JGame.GameObjects;
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.*;
+import JGamePackage.JGame.Types.Enum;
 
 /**A class representing the end users' viewport of the screen.
  * Instances refer to this class while rendering to make sure they should render. <p>
@@ -38,6 +39,10 @@ public class Camera extends GameObject {
         return Position.subtract(getAnchorPointOffset(size));
     }
 
+    public Vector2 GetTopLeftCorner(){
+        return getActualPos(game.getTotalScreenSize());
+    }
+
     protected Vector2 getAnchorPointOffset(Vector2 screenSize){
         return new Vector2(getAnchorPointOffsetX(screenSize.X), getAnchorPointOffsetY(screenSize.Y));
     }
@@ -51,7 +56,7 @@ public class Camera extends GameObject {
     }
 
     public boolean isInstanceInViewport(Instance obj){
-        return overlaps(obj, obj.GetRenderPosition());
+        return overlaps(obj, obj.GetCornerPosition(Enum.InstanceCornerType.TopLeft));
     }
 
     public boolean isInstanceInViewport(Instance obj, Vector2 renderpos){

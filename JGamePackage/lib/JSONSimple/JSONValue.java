@@ -2,7 +2,7 @@
  * $Id: JSONValue.java,v 1.1 2006/04/15 14:37:04 platform Exp $
  * Created on 2006-4-15
  */
-package MarshmallowFighter.JSONParser;
+package JGamePackage.lib.JSONSimple;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,8 +14,7 @@ import java.util.List;
 // import java.util.List;
 import java.util.Map;
 
-import MarshmallowFighter.JSONParser.parser.JSONParser;
-import MarshmallowFighter.JSONParser.parser.ParseException;
+import JGamePackage.lib.JSONSimple.parser.*;
 
 
 /**
@@ -101,7 +100,7 @@ public class JSONValue {
 	}
 	
 	public static Object parseWithException(String s) throws ParseException{
-		JSONParser parser=new MarshmallowFighter.JSONParser.parser.JSONParser();
+		JSONParser parser = new JSONParser();
 		return parser.parse(s);
 	}
 	

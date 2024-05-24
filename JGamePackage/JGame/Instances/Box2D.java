@@ -16,7 +16,7 @@ public class Box2D extends Instance {
 
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.isInstanceInViewport(this, actualPos))
+        if (!Parent.Camera.isInstanceInViewport(this, actualPos) || transparency == 0.0)
             return;
 
 

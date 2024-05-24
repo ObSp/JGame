@@ -34,8 +34,9 @@ public class Image2D extends Instance{
 
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.isInstanceInViewport(this, actualPos))
+        if (!Parent.Camera.isInstanceInViewport(this, actualPos) || transparency == 0.0)
             return;
+        
         
         Graphics2D g2 = (Graphics2D) g;
         

@@ -21,26 +21,18 @@ public class Rectangle extends Player {
 
     @Override
     public void ability1() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ability1'");
     }
 
     @Override
     public void ability2() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ability2'");
     }
 
     @Override
     public void ability3() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ability3'");
     }
 
     @Override
     public void ult() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ult'");
     }
     
 }

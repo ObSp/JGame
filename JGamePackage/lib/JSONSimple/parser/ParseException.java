@@ -1,4 +1,4 @@
-package MarshmallowFighter.JSONParser.parser;
+package JGamePackage.lib.JSONSimple.parser;
 
 /**
  * ParseException explains why and where the error occurs in source JSON text.

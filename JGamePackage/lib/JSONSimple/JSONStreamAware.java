@@ -1,4 +1,4 @@
-package MarshmallowFighter.JSONParser;
+package JGamePackage.lib.JSONSimple;
 
 import java.io.IOException;
 import java.io.Writer;

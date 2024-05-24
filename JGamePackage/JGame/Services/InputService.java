@@ -101,7 +101,7 @@ public class InputService extends Service{
      * @return The Instance the mouse is currently focused on
      */
     public Instance GetMouseTarget(){
-        Vector2 mouseLoc = Parent.Camera.GetVector2RelativeToCameraPosition(GetMouseLocation());
+        Vector2 mouseLoc = GetMouseLocation();
         for (Instance i : Parent.instances){
             if (i.isCoordinateInBounds(mouseLoc)){
                 return i;
@@ -113,7 +113,8 @@ public class InputService extends Service{
 
     public Vector2 GetMouseLocation(){
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-        return new Vector2(mouseLoc.getX(), mouseLoc.getY()-20);
+        Vector2 topLeft = Parent.Camera.GetTopLeftCorner();
+        return topLeft.add(new Vector2(mouseLoc.getX(), mouseLoc.getY()-20));
     }
 
     public boolean IsMouseDown(){

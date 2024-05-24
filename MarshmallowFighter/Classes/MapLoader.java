@@ -10,9 +10,8 @@ import JGamePackage.JGame.Instances.Box2D;
 import JGamePackage.JGame.Instances.Image2D;
 import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.Vector2;
-import MarshmallowFighter.JSONParser.JSONArray;
-import MarshmallowFighter.JSONParser.JSONObject;
-import MarshmallowFighter.JSONParser.parser.JSONParser;
+import JGamePackage.lib.JSONSimple.*;
+import JGamePackage.lib.JSONSimple.parser.JSONParser;
 
 public class MapLoader {
 

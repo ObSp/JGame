@@ -103,7 +103,7 @@ public abstract class Instance {
      */
     public int ZIndex = 0;
 
-    private double transparency = 1;
+    protected double transparency = 1;
 
     public boolean wasDrawn = false;
 

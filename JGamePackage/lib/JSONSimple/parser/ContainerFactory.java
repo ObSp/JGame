@@ -1,4 +1,4 @@
-package MarshmallowFighter.JSONParser.parser;
+package JGamePackage.lib.JSONSimple.parser;
 
 import java.util.List;
 import java.util.Map;
