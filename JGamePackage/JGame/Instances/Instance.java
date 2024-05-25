@@ -451,6 +451,10 @@ public abstract class Instance {
         throw new Error("No Such Corner Type Exception: corner identifier "+corner+" is not a valid corner type.");
     }
 
+    public Vector2 GetCenterPosition(){
+        return topLeftCorner().add(Size.X, Size.Y);
+    }
+
     public void SetTopLeftCornerPosition(Vector2 pos){
         CFrame.Position.Y = pos.Y-getAnchorPointOffsetY();
         CFrame.Position.X = pos.X-getAnchorPointOffsetX();

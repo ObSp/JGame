@@ -89,7 +89,7 @@ public final class Constants {
     }, null, true);
     public static final int HomeAnimationTickBuffer = 20;
 
-    public static final Vector2 HOME_TELEPORT_INSIDE_POSITION = new Vector2(10000120, 10000000-100);
+    public static final Vector2 HOME_TELEPORT_INSIDE_POSITION = new Vector2(10000280, 9999765);
 
 
     //--{INTERACTIBLES}--//

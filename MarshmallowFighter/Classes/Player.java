@@ -68,7 +68,7 @@ public class Player extends Entity{
         Vector2 plrPos = getPositionIncludingReflectShift();
 
         for (Interactible v : interactibles){
-            Vector2 modelPos = v.model.CFrame.Position;
+            Vector2 modelPos = v.model.GetCenterPosition();
             if (Math.abs(plrPos.X-modelPos.X)<= v.InteractionDistanceX && Math.abs(plrPos.Y-modelPos.Y)<=v.InteractionDistanceY){
                 if (v.InteractionPromptVisible || shownMarshies>=Constants.INTERACTIBLE_MAX_SHOWN_AT_ONCE) continue;
                 v.InteractionPromptVisible = true;

@@ -10,7 +10,11 @@ import JGamePackage.JGame.Types.*;
 public class House extends Model {
 
     public Interactible enterInteractible;
+    public Interactible exitInteractible;
     private Player player;
+
+    private Vector2 posB4Tp;
+    private Color cB4Tp;
 
     public House(JGame game, Player plr) {
         super(game);
@@ -24,7 +28,7 @@ public class House extends Model {
         game.addInstance(model);
         game.OnTick.Connect(dt->updateAnimationState());
 
-        enterInteractible = new Interactible(game, "MarshmallowFighter\\Media\\Misc\\OpenText.png") {
+        enterInteractible = new Interactible(game, "MarshmallowFighter\\Media\\Misc\\EnterText.png") {
 
             @Override
             public void onInteract() {
@@ -48,11 +52,43 @@ public class House extends Model {
         enterInteractible.prompt.CFrame.Position = model.CFrame.Position.add(model.Size).add(-250, -100);
         enterInteractible.InteractionKey = KeyEvent.VK_F;
         enterInteractible.prompt.SetImagePath(enterInteractible.path);
-        enterInteractible.prompt.ZIndex = 2;
+        enterInteractible.prompt.ZIndex = 3;
+        enterInteractible.prompt.addTag("Prompt");
         enterInteractible.InteractionDistanceX = enterInteractible.InteractionDistanceY = 150;
 
         enterInteractible.model = new Image2D();
         enterInteractible.model.CFrame = enterInteractible.prompt.CFrame;
+
+        exitInteractible = new Interactible(game, "MarshmallowFighter\\Media\\Misc\\ExitText.png") {
+
+            @Override
+            public void onInteract() {
+                Exit();
+                game.removeInstance(exitInteractible.prompt);
+            }
+
+            @Override
+            public void PlayerEnteredBounds() {
+                game.addInstance(exitInteractible.prompt);
+            }
+
+            @Override
+            public void PlayerExitedBounds() {
+                game.removeInstance(exitInteractible.prompt);
+            }
+            
+        };
+        exitInteractible.prompt = new Image2D();
+        exitInteractible.prompt.Size = new Vector2(100);
+        exitInteractible.prompt.CFrame.Position = new Vector2(10000280, 9999765);
+        exitInteractible.InteractionKey = KeyEvent.VK_F;
+        exitInteractible.prompt.SetImagePath(exitInteractible.path);
+        exitInteractible.prompt.ZIndex = 3;
+        exitInteractible.prompt.addTag("Prompt");
+        exitInteractible.InteractionDistanceX = exitInteractible.InteractionDistanceY = 100;
+
+        exitInteractible.model = new Image2D();
+        exitInteractible.model.CFrame = exitInteractible.prompt.CFrame;
     }
 
     private void updateAnimationState(){
@@ -63,9 +99,17 @@ public class House extends Model {
     }
 
     public void Enter(){
-        player.model.CFrame.Position = Constants.HOME_TELEPORT_INSIDE_POSITION.clone();
+        cB4Tp = game.getWindow().getContentPane().getBackground();
+        posB4Tp = player.model.CFrame.Position.clone();
+        player.model.CFrame.Position = Constants.HOME_TELEPORT_INSIDE_POSITION.clone().add(player.model.FlipHorizontally ? 100 : 0, 0);
         game.Camera.Position = player.model.CFrame.Position.add(-1000);
         game.setBackground(new Color(38, 20, 33));
+    }
+
+    public void Exit(){
+        player.model.CFrame.Position = posB4Tp;
+        game.Camera.Position = player.model.CFrame.Position.add(1000);
+        game.setBackground(cB4Tp);
     }
     
 }
