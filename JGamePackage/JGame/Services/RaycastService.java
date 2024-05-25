@@ -25,8 +25,8 @@ public class RaycastService extends Service {
     }
 
     private Instance checkInstancesAtPoint(Vector2 p, RaycastParams params){
-        for (int i = game.instances.size()-1; i > -1; i--){
-            if (i >= game.instances.size()){
+        for (int i = game.instances.getLength()-1; i > -1; i--){
+            if (i >= game.instances.getLength()){
                 break;
             }
             Instance inst = game.instances.get(i);

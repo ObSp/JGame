@@ -1,7 +1,5 @@
 package JGamePackage.JGame;
 
-import java.util.ArrayList;
-
 import javax.swing.*;
 
 import JGamePackage.JGame.GameObjects.Camera;

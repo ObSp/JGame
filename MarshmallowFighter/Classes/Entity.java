@@ -1,6 +1,5 @@
 package MarshmallowFighter.Classes;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.JGame;

@@ -31,8 +31,8 @@ public class ShapecastService extends Service {
     }
 
     private Instance checkInstancesWithInstance(Instance p, RaycastParams params){
-        for (int i = game.instances.size()-1; i > -1; i--){
-            if (i >= game.instances.size()){
+        for (int i = game.instances.getLength()-1; i > -1; i--){
+            if (i >= game.instances.getLength()){
                 break;
             }
 
