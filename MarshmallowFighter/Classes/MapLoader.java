@@ -30,16 +30,25 @@ public class MapLoader {
         m.model.Associate = m;
         game.addInstance(m.model);
 
+        if (obj.containsKey("ZIndex")){
+            m.model.ZIndex = (int) (long) obj.get("ZIndex");
+        }
 
-        m.hitbox = new Box2D();
-        m.hitbox.Size = new Vector2(
-            (double) obj.get("HitboxScaleX")*(double) m.model.Size.X, 
-            (double) obj.get("HitboxScaleY") * (double) m.model.Size.Y
-        );
-        m.hitbox.CFrame.Position = m.model.CFrame.Position.add(
-            (int) (m.hitbox.Size.X/(long) obj.get("HitboxShiftRightDiv")), 
-            -m.hitbox.Size.Y
-        );
+        if (obj.containsKey("StaticZIndex")){
+            m.model.addTag("ZStatic");
+        }
+            
+
+
+        if ((boolean) obj.get("HasHitbox")){
+            m.hitbox = new Box2D();
+            m.hitbox.Size = new Vector2(
+                    (double) obj.get("HitboxScaleX") * (double) m.model.Size.X,
+                    (double) obj.get("HitboxScaleY") * (double) m.model.Size.Y);
+            m.hitbox.CFrame.Position = m.model.CFrame.Position.add(
+                    (int) (m.hitbox.Size.X / (long) obj.get("HitboxShiftRightDiv")),
+                    -m.hitbox.Size.Y - (int) (long) obj.get("HitboxShiftUp"));
+        }
         return m.model;
     }
 

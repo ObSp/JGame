@@ -42,7 +42,6 @@ public class BasicMarshmallow extends Entity {
             (double) model.Size.Y * Constants.BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT
         );
         hitbox.Solid = true;
-        //game.addInstance(hitbox);
 
         gameLoop();
     }
@@ -107,7 +106,7 @@ public class BasicMarshmallow extends Entity {
     protected void gameLoop(){
         game.OnTick.Connect(dt->{
             //hitbox
-            hitbox.CFrame.Position = model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft);
+            hitbox.CFrame.Position = model.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).add(0, -10);
 
             //moveRandom();
 

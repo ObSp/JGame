@@ -153,6 +153,117 @@ public abstract class Entity {
         return true;
     }
 
+    public boolean canMoveRight(){
+        Vector2 hitboxPos = hitbox.GetRenderPosition().add(hitbox.Size.X,0);
+
+        for (Instance inst : game.instances){
+            var temp = inst;
+            if (inst.Associate instanceof Entity)
+                inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
+
+            if (inst.Associate instanceof Model)
+                inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
+            if (!inst.Solid && temp==inst) continue;
+            
+            Vector2 posToCheck = new Vector2(
+                hitboxPos.X+Constants.PLAYER_HITBOX_RIGHT_SHIFT,
+                hitboxPos.Y
+            );
+
+            Vector2 sizeToCheck = new Vector2(
+                Constants.PLAYER_HITBOX_RIGHT_SHIFT,
+                hitbox.Size.Y
+            );
+
+            if (inst.overlaps(posToCheck, sizeToCheck))
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean canMoveLeft(){
+        Vector2 hitboxPos = hitbox.GetRenderPosition();
+
+        for (Instance inst : game.instances){
+            var temp = inst;
+            if (inst.Associate instanceof Entity)
+                inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
+
+            if (inst.Associate instanceof Model)
+                inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
+            if (!inst.Solid && temp==inst) continue;
+            
+            Vector2 posToCheck = new Vector2(
+                hitboxPos.X-Constants.PLAYER_HITBOX_LEFT_SHIFT,
+                hitboxPos.Y
+            );
+
+            Vector2 sizeToCheck = new Vector2(
+                Constants.PLAYER_HITBOX_LEFT_SHIFT,
+                hitbox.Size.Y
+            );
+
+            if (inst.overlaps(posToCheck, sizeToCheck))
+                return false;
+        }
+
+        return true;
+    }
+
+    public void translatePosition(int xoffset, int yoffset){
+        Vector2 hitboxPos = hitbox.GetRenderPosition();
+
+        int verticalShift = Constants.PLAYER_HITBOX_UP_SHIFT;
+        int horizontalShift = Constants.PLAYER_HITBOX_UP_SHIFT;
+
+        Vector2 horizontalCheckSize = new Vector2(Constants.PLAYER_HITBOX_LEFT_SHIFT,hitbox.Size.Y-10);
+
+        Vector2 verticalCheckSize = new Vector2(hitbox.Size.X, Constants.PLAYER_HITBOX_UP_SHIFT);
+
+        boolean moveHorizontal = true;
+        boolean moveVertical = true;
+
+        for (Instance inst : game.instances){
+            if (!moveHorizontal && !moveVertical) break; //no point running the loop after
+            var temp = inst;
+            if (inst.Associate instanceof Entity)
+                inst = ((Entity)inst.Associate).hitbox != null ? ((Entity)inst.Associate).hitbox : inst;
+
+            if (inst.Associate instanceof Model)
+                inst = ((Model)inst.Associate).hitbox != null ? ((Model)inst.Associate).hitbox : inst;
+            
+            if (!inst.Solid && temp==inst) continue;
+
+            //horizontal
+
+            if (moveHorizontal && xoffset != 0){ // only run this code if we haven't determined we can't move vertically yet and we're trying to move vertically
+                Vector2 checkPos = new Vector2(hitboxPos.X, hitboxPos.Y);
+                checkPos.X += xoffset < 0 ? -horizontalShift :horizontalShift+hitbox.Size.X;
+                if (inst.overlaps(checkPos, horizontalCheckSize))
+                    moveHorizontal = false;
+                
+            }
+
+            if (moveVertical && yoffset != 0){
+                Vector2 checkPos = new Vector2(hitboxPos.X,hitboxPos.Y);
+                checkPos.Y += yoffset < 0 ? verticalShift+20: -verticalShift-5;
+
+                if (inst.overlaps(checkPos, verticalCheckSize))
+                    moveVertical = false;
+            }
+
+        }
+
+
+        if (moveHorizontal) model.CFrame.Position.X += xoffset;
+        if (moveVertical) model.CFrame.Position.Y -= yoffset;
+
+
+    }
+
 
     /**Must implement animation behaviour
      * 

@@ -1,5 +1,7 @@
 package MarshmallowFighter.Classes;
 
+import JGamePackage.JGame.Types.Vector2;
+
 public final class Constants {
 
     //--{PLAYER RELATED}--//
@@ -31,6 +33,9 @@ public final class Constants {
 
     public static final int PLAYER_HITBOX_UP_SHIFT = 5;
     public static final int PLAYER_HITBOX_DOWN_SHIFT = 5;
+
+    public static final int PLAYER_HITBOX_LEFT_SHIFT = 5;
+    public static final int PLAYER_HITBOX_RIGHT_SHIFT = 5;
 
 
     //--{BasicMarshmallow}--//
@@ -66,7 +71,7 @@ public final class Constants {
     public static final int BASIC_MARSHMALLOW_LOOT_SIZE = 100;
 
     public static final double BASIC_MARSHMALLOW_HITBOX_WIDTH_PERCENT = .6;
-    public static final double BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT = .3;
+    public static final double BASIC_MARSHMALLOW_HITBOX_HEIGHT_PERCENT = .1;
 
 
     //--{SHOP}--//
@@ -75,6 +80,16 @@ public final class Constants {
     public static final double SHOP_HITBOX_HEIGHT_PERCENT = .1;
 
     public static final String SHOP_INTERACTIBLE_PATH = "MarshmallowFighter\\Media\\Misc\\OpenText.png";
+
+
+    //--{HOME}--//
+    public static final SpriteSheet HomeAnimationProgression = new SpriteSheet(new String[] {
+        "MarshmallowFighter\\Media\\Models\\House\\1.png", "MarshmallowFighter\\Media\\Models\\House\\2.png",
+        "MarshmallowFighter\\Media\\Models\\House\\3.png", "MarshmallowFighter\\Media\\Models\\House\\4.png"
+    }, null, true);
+    public static final int HomeAnimationTickBuffer = 20;
+
+    public static final Vector2 HOME_TELEPORT_INSIDE_POSITION = new Vector2(10000120, 10000000-100);
 
 
     //--{INTERACTIBLES}--//

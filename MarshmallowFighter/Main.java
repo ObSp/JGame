@@ -48,6 +48,8 @@ public class Main {
     /**1: facing right, -1: facing left */
     static int plrDirection = 1;
 
+    static House home;
+
     static Instance[] movementCastingBlacklist;
     static CollisionOptions colOpts;
 
@@ -81,16 +83,15 @@ public class Main {
         music.setInfiniteLoop(true);
 
         shop = new Shop(game);
-        for (int i = 0; i < 10; i++){
-            Image2D x = new BasicMarshmallow(game).model;
-            x.CFrame.Position.X = (int) (Math.random()*1001);
-            x.CFrame.Position.Y = (int) (Math.random()*1001);
-        }
 
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
         plr.model.ZIndex = 0;
 
+        home = new House(game, plr);
+
+        //tp player to house
+        //home.Enter(plr);
 
         movementCastingBlacklist = new Instance[] {plr.model};
         colOpts = new CollisionOptions(movementCastingBlacklist, true);
@@ -126,23 +127,12 @@ public class Main {
                 setFlipped(false);
             }
 
-
-            if (xInputOffset!=0){
-                player.CFrame.Position.X += xInputOffset;
+            if (yInputOffset != 0 || xInputOffset != 0){
+                plr.translatePosition(xInputOffset, yInputOffset);
             }
 
-            cam.Position.X = (int) Util.lerp(cam.Position.X, player.CFrame.Position.X, CAM_LERP_SPEED);
+            cam.Position.X = (int) Util.lerp(cam.Position.X, plr.getPositionIncludingReflectShift().X, CAM_LERP_SPEED);
             cam.Position.Y = (int) Util.lerp(cam.Position.Y, player.CFrame.Position.Y, CAM_LERP_SPEED);
-
-            if (yInputOffset!=0){
-
-                if (yInputOffset>0 && plr.canMoveUp()){
-                    player.CFrame.Position.Y -= yInputOffset;
-                }else if (yInputOffset < 0 && plr.canMoveDown()){
-                    player.CFrame.Position.Y -= yInputOffset;
-                }
-
-            }
         });
     }
 
@@ -164,7 +154,7 @@ public class Main {
         game.OnTick.Connect(dt->{
             int plrY = plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10;
             for (Instance inst : game.instances) {
-                if (inst == plr.model || inst.hasTag("Prompt"))
+                if (inst == plr.model || inst.hasTag("Prompt") || inst.hasTag("ZStatic"))
                     continue;
                 int xY = inst.GetRenderPosition().Y + inst.Size.Y;
                 if (xY > plrY) {

@@ -76,6 +76,7 @@ public class Player extends Entity{
                 shownMarshies++;
                 currentlyShownInteractible = v;
             } else if (v.InteractionPromptVisible) {
+                if (v==currentlyShownInteractible) currentlyShownInteractible = null;
                 v.InteractionPromptVisible = false;
                 v.PlayerExitedBounds();
                 shownMarshies--;

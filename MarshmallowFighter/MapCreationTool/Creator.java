@@ -12,6 +12,7 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
 import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.Vector2;
+import MarshmallowFighter.Classes.House;
 import MarshmallowFighter.Classes.MapLoader;
 
 public class Creator {
@@ -27,6 +28,8 @@ public class Creator {
 
     static ArrayList<Instance> history = new ArrayList<>();
 
+    static Scanner scan = new Scanner(System.in);
+
     public static void main(String[] args) {
         ghost.FillColor = Color.red;
 
@@ -38,6 +41,7 @@ public class Creator {
 
     static void init(){
         insts = game.Services.ParserService.ParseJSONToInstances(new File("MarshmallowFighter\\Media\\HITBOXES.json"));
+        new House(game, null);
 
         for (Instance i : insts){
             game.addInstance(i);
@@ -89,10 +93,15 @@ public class Creator {
                 Instance cur = game.Services.InputService.GetMouseTarget();
                 if (cur == null) return;
 
-                Scanner scan = new Scanner(System.in);
                 String name = scan.nextLine();
                 cur.Name = name;
-                scan.close();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_P){
+                int x = scan.nextInt();
+                int y = scan.nextInt();
+                game.Camera.Position = new Vector2(x, y);
+
             }
         });
 

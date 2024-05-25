@@ -1,13 +1,26 @@
 {
+    "_comments": "Any obj INCLUDING StaticZIndex key will have a ZStatic tag, disregarding the actual value of StaticZIndex field",
     "Map": [
         {
             "Type": "Model",
             "Position": {"X": 0, "Y": 0},
             "Size": {"X": 500, "Y": 500},
             "ImagePath": "MarshmallowFighter\\Media\\Models\\Tree.png",
+            "HasHitbox": true,
             "HitboxScaleX": 0.6,
-            "HitboxScaleY": 0.1,
-            "HitboxShiftRightDiv": 6
+            "HitboxScaleY": 0.05,
+            "HitboxShiftRightDiv": 6,
+            "HitboxShiftUp": 15
+        },
+
+        {
+            "Type": "Model",
+            "Position":{"X": 10000000, "Y": 10000000},
+            "Size":{"X":350, "Y": 560},
+            "ZIndex": -5,
+            "ImagePath": "MarshmallowFighter\\Media\\Models\\House\\Inside.png",
+            "HasHitbox":false,
+            "StaticZIndex": true 
         }
     ]
 }
