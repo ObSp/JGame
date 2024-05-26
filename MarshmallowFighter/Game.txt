@@ -1,6 +1,15 @@
 GAME IDEA:
 
-Open world (maybe not? too much work without an actual level editor?),
-Collect marshmallows,
-Sell,
-Repeat
+Game about trying to find the cause of the transformation of marshmallows into evil creatures
+
+
+GAME TIMELINE:
+
+You start inside the house. There is a book on the floor that you can pick up, but all the pages are missing.
+Eventually, you exit the house and are teleported to a sectioned-off area, where a group of marshmallows surround...
+something. You are given the ability to swing a sword and proceed to dispose of the marshmallows, discovering that
+they drop loot that you can pick up. Once all the marshmallows are gone, you open the thing in the middle to find a
+piece of paper. A page of your book! Inside, you find a journal entry of what appears to be someone investigating 
+the transformation of marshmallows. Great! Now you just need to find the rest of the pages and the mystery will be solved!
+Thus begins a journey of reclaiming page sites from the evils that have overtaken them, and transforming the marshmallows
+into the cute things they used to be.
