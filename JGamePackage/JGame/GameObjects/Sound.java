@@ -11,6 +11,7 @@ public class Sound extends GameObject{
     private File file;
     public double Volume = 1.0;
     public boolean Playing;
+    public final double Length;
 
     public Sound(File file){
         this.file = file;
@@ -20,9 +21,10 @@ public class Sound extends GameObject{
             sound = AudioSystem.getClip();
             sound.open(AudioSystem.getAudioInputStream(this.file));
         } catch (Exception e) {
-            e.printStackTrace();
-            return;
+            throw new Error(e);
         }
+
+        Length = (double) sound.getMicrosecondLength()*0.000001;
     }
 
     public Sound(String path){
@@ -82,5 +84,9 @@ public class Sound extends GameObject{
 
     public void SetFramePosition(int pos){
         this.sound.setFramePosition(pos);
+    }
+
+    public boolean isPlaying(){
+        return this.sound.isRunning();
     }
 }

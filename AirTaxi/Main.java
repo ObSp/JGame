@@ -3,14 +3,14 @@ package AirTaxi;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import AirTaxi.Classes.Constants;
+import AirTaxi.Classes.MusicQueue;
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.GameObjects.Camera;
 import JGamePackage.JGame.Instances.*;
@@ -21,7 +21,7 @@ import JGamePackage.lib.task;
 public class Main {
     static JGame game = new JGame(new StartArgs(true));
 
-    static Box2D plr = new Box2D();
+    static Image2D plr = new Image2D();
 
     static Camera cam = game.Camera;
 
@@ -35,9 +35,13 @@ public class Main {
 
     static int passengersDroppedOff = 0;
 
+    static Image2D background = new Image2D();
+
     static JFrame window;
 
     static ArrayList<Instance> obstacles = new ArrayList<>();
+
+    static MusicQueue queue = new MusicQueue(Constants.MusicQueue);
 
     static void showCursor(){
         window.setCursor(Cursor.getDefaultCursor());
@@ -51,22 +55,30 @@ public class Main {
         ));
     }
 
-    public static void main(String[] args) throws IOException {
-        ImageIO.read(new File("AirTaxi\\Media\\Building.png"));
+    public static void main(String[] args){
 
-        game.setBackground(new Color(249, 69, 87));
+        background.SetImagePath("AirTaxi\\Media\\Background.png");
+        background.MoveWithCamera = false;
+        background.Size = game.getTotalScreenSize().add(0, 200);
+        background.ZIndex = -2;
+        game.addInstance(background);
+
+        queue.Start();
+
+        //game.setBackground(new Color(249, 69, 87));
         game.setWindowTitle("Air Taxi");
         window = game.getWindow();
 
         hideCursor();
 
         cam.AnchorPoint = new Vector2(50); 
-        plr.Size = new Vector2(50, 20);
+        plr.Size = new Vector2(70);
         plr.FillColor = new Color(255, 185, 0);
         plr.AnchorPoint = new Vector2(0);
         plr.CFrame.Position = game.getTotalScreenSize().divide(2, 2);
         plr.Anchored = false;
         plr.WeightPercentage = 0;
+        plr.SetImagePath("AirTaxi\\Media\\Player.png");
         game.addInstance(plr);
 
         cam.Position.Y = plr.CFrame.Position.Y;
@@ -75,7 +87,7 @@ public class Main {
             plr.CFrame.Position.X += plrSpeed;
 
                         //collision check
-            if (game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}))!=null){
+            if (game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}, true))!=null){
                 gameOver();
             }
 
@@ -107,6 +119,11 @@ public class Main {
                 spawnObstacle();
             }
         });
+
+        game.Services.InputService.OnKeyPress.Connect(e->{
+            int kc = e.getKeyCode();
+            if (kc == KeyEvent.VK_F11) System.exit(0);
+        });
     }
 
     static void gameOver(){
@@ -124,12 +141,10 @@ public class Main {
     }
 
     static void setTopObstacle(Image2D obj){
-        System.out.println("top");
         obj.CFrame.Position.Y = (int) random(200, obj.Size.Y);
     }
 
     static void setBottomObstacle(Image2D obj){
-        System.out.println("bottom");
         Vector2 topLeftofCam = cam.GetTopLeftCorner();
         int bottomOfScreen = topLeftofCam.Y+game.getScreenHeight();
         obj.AnchorPoint.Y = 0;
