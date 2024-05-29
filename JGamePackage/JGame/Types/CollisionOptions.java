@@ -18,6 +18,11 @@ public class CollisionOptions {
         SolidsOnly = solidOnly;
     }
 
+    public CollisionOptions(Instance blacklist, boolean solidOnly){
+        Blacklist = new Instance[] {blacklist};
+        SolidsOnly = solidOnly;
+    }
+
     public CollisionOptions(boolean solidOnly){
         Blacklist = new Instance[0];
         SolidsOnly = solidOnly;

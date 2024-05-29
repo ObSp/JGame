@@ -25,6 +25,8 @@ public class JGame{
     private Signal<Double> ontick = new Signal<>();
     public final SignalWrapper<Double> OnTick = new SignalWrapper<>(ontick);
 
+    private StartArgs startArgs;
+
 
     public String Title = "JGame";
 
@@ -45,6 +47,12 @@ public class JGame{
     }
 
     public JGame(){
+        startArgs = new StartArgs();
+        staticConstruct();
+    }
+
+    public JGame(StartArgs args){
+        startArgs = args;
         staticConstruct();
     }
 
@@ -101,7 +109,9 @@ public class JGame{
      */
     public Promise start(){
         return new Promise(self ->{
-            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            if (startArgs.BorderlessFullscreen){
+                gameWindow.setUndecorated(true);
+            }
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
             gameWindow.getContentPane().setBackground(Color.white);
@@ -129,6 +139,15 @@ public class JGame{
     public void waitTicks(int ticksToWait){
         for (int t = 0; t < ticksToWait; t++)
             waitForTick();
+    }
+
+    public void waitSeconds(double seconds){
+        double start = (double) System.currentTimeMillis()/1000.0;
+        while (true){
+            waitForTick();
+            double curTime = (double) System.currentTimeMillis()/1000.0;
+            if (curTime-start > seconds) break;
+        }
     }
 
     public void addInstance(Instance x){

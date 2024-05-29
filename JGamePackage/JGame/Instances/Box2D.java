@@ -16,24 +16,30 @@ public class Box2D extends Instance {
 
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.isInstanceInViewport(this, actualPos) || transparency == 0.0)
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
             return;
 
 
 
         Graphics2D g2 = (Graphics2D) g;
+        int centerX = actualPos.X+(Size.X/2);
+        int centerY = actualPos.Y+(Size.Y/2);
+
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
             g2.fillRect(actualPos.X+BorderSizePixel, actualPos.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
         }
         
         //always making sure to rotate around center of the object
-        g2.rotate(CFrame.Rotation, actualPos.X+(Size.X/2), actualPos.Y+(Size.X/2));
+        g2.rotate(CFrame.Rotation, centerX, centerY);
 
         
 
         g2.setColor(FillColor);
         g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
+
+        //reset rotation and translation
+        g2.rotate(-CFrame.Rotation, centerX, centerY);
     }
 
     @Override

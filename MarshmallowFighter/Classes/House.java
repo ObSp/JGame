@@ -13,7 +13,7 @@ public class House extends Model {
     public Interactible exitInteractible;
     private Player player;
 
-    private Vector2 posB4Tp;
+    Vector2 posB4Tp;
     private Color cB4Tp;
 
     public House(JGame game, Player plr) {
@@ -34,6 +34,7 @@ public class House extends Model {
             public void onInteract() {
                 Enter();
                 game.removeInstance(enterInteractible.prompt);
+                super.onInteract();
             }
 
             @Override
@@ -65,6 +66,7 @@ public class House extends Model {
             public void onInteract() {
                 Exit();
                 game.removeInstance(exitInteractible.prompt);
+                super.onInteract();
             }
 
             @Override
@@ -107,7 +109,7 @@ public class House extends Model {
     }
 
     public void Exit(){
-        player.model.CFrame.Position = posB4Tp;
+        player.model.CFrame.Position = Constants.HOME_TELEPORT_EXIT_POSITION.clone();
         game.Camera.Position = player.model.CFrame.Position.add(1000);
         game.setBackground(cB4Tp);
     }

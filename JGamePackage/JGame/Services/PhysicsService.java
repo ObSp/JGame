@@ -38,17 +38,19 @@ public class PhysicsService extends Service {
             if (!colDir.isZero()){
                 for (int j = 0; j < instances.length; j++){
                     Instance ji = instances[j];
-                    if (ji == inst) continue;
+                    if (ji == inst || ji==null) continue;
     
                     if (ji.overlaps(inst) && ji.Solid){
                         /*Vector2 topRight = inst.GetCornerPosition(Enum.InstanceCornerType.TopLeft);
                         if (colDir.Y==-1){
                             inst.SetTopSidePosition(topRight.Y-inst.Size.Y-2);
                         }*/
-                        inst.CFrame.Position = inst.CFrame.Position.add(colDir.multiply(15));
+                        inst.CFrame.Position = inst.CFrame.Position.add(colDir.multiply(5));
                     }
                 }
             }
+
+            
 
             Vector2 vel = inst.Velocity;
 
@@ -57,15 +59,37 @@ public class PhysicsService extends Service {
             //                      up  down
             int yDir = vel.Y > -1 ? -1 : 1;
 
+
             if ((xDir == -1 && inst.collidingLeft()) || (xDir==1 && inst.collidingRight())) vel.X = 0;
             if ((yDir == 1 && inst.collidingTop()) || (yDir==-1 && inst.collidingBottom())) vel.Y = 0;
+
+            double posShift = getPositionShift(inst)*(dt*50);
 
             //touching ground
             if (!inst.inAir && vel.Y > 0){
                 vel.Y = 0;
+                posShift = 0;
             } else {
-                vel.Y += getPositionShift(inst)*(dt*50);
+
+                /*Vector2 desiredPosition = inst.CFrame.Position.add(vel.X, vel.Y+ (int) (getPositionShift(inst)*(dt*50)));
+                Vector2 sizeToCheck = new Vector2(inst.Size.X, desiredPosition.Y-inst.CFrame.Position.Y);
+                
+                Instance[] colliding = Parent.Services.CollisionService.GetInstancesInBox(desiredPosition, sizeToCheck, new CollisionOptions(inst, true));
+                if (colliding.length != 0){
+                    System.out.println(Arrays.toString(colliding));
+                    posShift = 0;
+                    int lowestY = colliding[0].GetCornerPosition(0).Y;
+                    for (Instance x : colliding){
+                        Vector2 p = x.GetCornerPosition(0); //top left
+                        if (p.Y < lowestY){
+                            lowestY = p.Y;
+                        }
+                    }
+                    inst.SetBottomSidePosition(lowestY);
+                }*/
             }
+
+            vel.Y += posShift;
 
 
             //inst.setPosition(new Vector2(inst.Position.X + vel.X, inst.Position.Y + vel.Y));

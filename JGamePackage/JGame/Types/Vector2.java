@@ -107,6 +107,10 @@ public class Vector2 {
         return new Vector2(X*mult, Y*mult);
     }
 
+    public Vector2 divide(int x, int y){
+        return new Vector2(X/x, Y/y);
+    }
+
     public Vector2 multiply(int x, int y){
         return new Vector2(X*x, Y*y);
     }
@@ -117,6 +121,21 @@ public class Vector2 {
 
     public int Magnitude(){
         return (int) Math.sqrt(Math.pow(X, 2)+Math.pow(Y, 2));
+    }
+
+    private double lerp1(double a, double b, double t){
+        return (1-t) * a + t*b;
+    }
+
+    public void lerp(Vector2 b, double t){
+        X = (int) lerp1(X, b.X, t);
+        Y = (int) lerp1(Y, b.Y, t);
+    }
+
+    public static Vector2 lerp(Vector2 a, Vector2 b, double t){
+        Vector2 n = a.clone();
+        n.lerp(b, t);
+        return n;
     }
 
     @Override

@@ -11,6 +11,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -23,6 +25,9 @@ public class InputService extends Service{
 
     private VoidSignal onclick = new VoidSignal();
     public VoidSignalWrapper OnMouseClick = new VoidSignalWrapper(onclick);
+
+    private VoidSignal windowClosing = new VoidSignal();
+    public VoidSignalWrapper GameClosing = new VoidSignalWrapper(windowClosing);
 
 
     private ArrayList<String> heldKeys = new ArrayList<>();
@@ -189,6 +194,40 @@ public class InputService extends Service{
             @Override
             public void mouseExited(MouseEvent e) {
             }
+        });
+
+        gameWindow.addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                windowClosing.Fire();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+            
         });
     
     }

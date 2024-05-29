@@ -3,6 +3,7 @@ package TwoPlayerFighter.Classes;
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Image2D;
 import JGamePackage.JGame.Services.InputService;
+import JGamePackage.lib.VoidSignal;
 
 public abstract class Player {
     static int playerCount = 0;
@@ -12,16 +13,24 @@ public abstract class Player {
 
     public int movementDirection = 0;
 
+    private int Health = 100;
+
     public boolean stunned = false;
+
+    public VoidSignal Died = new VoidSignal();
 
     protected InputService input;
 
     private static Player newSquare(JGame game){
-        return new Square(game);
+        Square sq = new Square(game);
+        sq.model.Name = "Player1";
+        return sq;
     }
 
     private static Player newRect(JGame game){
-        return new Rectangle(game);
+        Rectangle rect = new Rectangle(game);
+        rect.model.Name = "Player2";
+        return rect;
     }
 
     public static Player newPlayer(JGame game){
@@ -45,7 +54,19 @@ public abstract class Player {
     }
 
     public void jump(){
-        if (!model.inAir)
+        if (!model.inAir && !stunned)
             model.Velocity.Y = -30;
+    }
+
+    public void TakeDamage(int dmg){
+        if (Health <= 0) return;
+        Health -= dmg;
+        if (Health <= 0){
+            Died.Fire();
+        }
+    }
+
+    public int GetHealth(){
+        return Health;
     }
 }

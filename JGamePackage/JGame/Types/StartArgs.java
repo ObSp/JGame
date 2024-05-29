@@ -1,10 +1,15 @@
 package JGamePackage.JGame.Types;
 
-import java.awt.Color;
 
 public class StartArgs {
-    public boolean visible = false;
-    public Color BackgroundColor = Color.white;
+    public final boolean BorderlessFullscreen;
 
+    public StartArgs(boolean borderlessFullscreen){
+        BorderlessFullscreen = borderlessFullscreen;
+    }
+
+    public StartArgs(){
+        BorderlessFullscreen = false;
+    }
     
 }

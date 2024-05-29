@@ -2,7 +2,10 @@ package Tests;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
+import JGamePackage.JGame.Instances.Instance;
+import JGamePackage.JGame.Services.CollisionService;
 import JGamePackage.JGame.Services.InputService;
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.*;
 import JGamePackage.lib.Signal;
@@ -18,6 +21,7 @@ public class platformer {
     static JGame game = new JGame();
 
     static InputService input = game.Services.InputService;
+    static CollisionService col = game.Services.CollisionService;
 
     public static void main(String[] args) {
 
@@ -57,4 +61,5 @@ public class platformer {
             player.Velocity.Y = -30;
         });
     }
+
 }

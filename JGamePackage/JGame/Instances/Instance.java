@@ -230,7 +230,6 @@ public abstract class Instance {
         CollisionOptions opts = new CollisionOptions(bl, true);
         Instance hit = Parent.Services.CollisionService.CheckCollisionInBox(pos.add(0, 3), new Vector2(Size.X, 3), opts);
 
-
         return hit != null;
     }
 
@@ -390,6 +389,7 @@ public abstract class Instance {
         if (variable.equals("Anchored")) Anchored = (boolean) value;
         if (variable.equals("Rotation")) CFrame.Rotation = (double) value;
         if (variable.equals("Position")) CFrame.Position = (Vector2) value;
+        if (variable.equals("Transparency")) this.SetTransparency((double) value);
     }
 
     public Object getInstanceVariableByName(String variable){
@@ -402,6 +402,7 @@ public abstract class Instance {
         if (variable.equals("Anchored")) return Anchored;
         if (variable.equals("Rotation")) return CFrame.Rotation;
         if (variable.equals("Position")) return CFrame.Position;
+        if (variable.equals("Transparency")) return transparency;
         return null;
     }
 
@@ -452,7 +453,7 @@ public abstract class Instance {
     }
 
     public Vector2 GetCenterPosition(){
-        return topLeftCorner().add(Size.X, Size.Y);
+        return topLeftCorner().add(Size.X/2, Size.Y/2);
     }
 
     public void SetTopLeftCornerPosition(Vector2 pos){
@@ -468,6 +469,10 @@ public abstract class Instance {
         CFrame.Position.Y = y-getAnchorPointOffsetY();
     }
 
+    public void SetBottomSidePosition(int y){
+        CFrame.Position.Y = (y+getAnchorPointOffsetY())-Size.Y;
+    }
+
     //--TWEENING--//
     public Tween TweenPosition(Vector2 goal, TweenInfo tweenInfo){
         return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo);
@@ -479,6 +484,10 @@ public abstract class Instance {
 
     public Tween TweenRotation(Double goal, TweenInfo tweenInfo){
         return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo);
+    }
+
+    public Tween TweenTransparency(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Transparency", goal, tweenInfo);
     }
 
 

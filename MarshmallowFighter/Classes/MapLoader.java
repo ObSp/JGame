@@ -53,7 +53,8 @@ public class MapLoader {
     }
 
     @SuppressWarnings("unchecked")
-    public static ArrayList<Instance> LoadMap(JGame game, String jsonPath){
+    public static ArrayList<Instance> 
+    LoadMap(JGame game, String jsonPath){
         ArrayList<Instance> instances = new ArrayList<>();
 
         try {

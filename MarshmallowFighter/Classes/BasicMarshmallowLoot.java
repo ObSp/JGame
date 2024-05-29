@@ -31,6 +31,7 @@ public class BasicMarshmallowLoot extends Interactible {
 
     @Override
     public void onInteract() {
+        super.onInteract();
         game.removeInstance(model);
         game.removeInstance(prompt);
         removeFromGlobals();

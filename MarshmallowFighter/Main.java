@@ -6,15 +6,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import JGamePackage.JGame.*;
-import JGamePackage.JGame.GameObjects.Camera;
-import JGamePackage.JGame.GameObjects.Sound;
+import JGamePackage.JGame.GameObjects.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
-import JGamePackage.JGame.Types.CollisionOptions;
-import JGamePackage.JGame.Types.RaycastParams;
-import JGamePackage.JGame.Types.RaycastResult;
-import JGamePackage.JGame.Types.Vector2;
-import JGamePackage.lib.task;
+import JGamePackage.JGame.Types.*;
+import JGamePackage.lib.*;
 import MarshmallowFighter.Classes.*;
 
 /**NOTES:
@@ -48,6 +44,8 @@ public class Main {
     /**1: facing right, -1: facing left */
     static int plrDirection = 1;
 
+    static LoadingScreen loadingScreen = new LoadingScreen(game);
+
     static House home;
 
     static Instance[] movementCastingBlacklist;
@@ -60,7 +58,10 @@ public class Main {
 
     static double dtMult = 500;
 
+    static DataHandler dataHandler = new DataHandler(game);
+
     public static void main(String[] args) {
+        loadingScreen.ShowWithoutAnimation();
         game.setBackground(new Color(87, 41, 75));
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
@@ -87,11 +88,14 @@ public class Main {
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
         plr.model.ZIndex = 0;
-
+        
         home = new House(game, plr);
+        home.Enter();
 
-        //tp player to house
-        //home.Enter(plr);
+        SaveObject data = loadData();
+        if (data == null){
+            firstTimeScene();
+        }
 
         movementCastingBlacklist = new Instance[] {plr.model};
         colOpts = new CollisionOptions(movementCastingBlacklist, true);
@@ -101,9 +105,40 @@ public class Main {
         zindexManagement();
 
         plr.interactibleTriggered.Connect(interactible ->{
-            plr.MarshmallowLootCount++;
+            if (interactible instanceof BasicMarshmallowLoot){
+                plr.MarshmallowLootCount++;
+            }
             interactible.onInteract();
         });
+
+        input.GameClosing.Connect(()->saveData());
+
+        task.wait(3);
+        loadingScreen.Hide();
+    }
+
+    static SaveObject loadData(){
+        SaveObject data = dataHandler.ImportData(Constants.SAVE_DATA_PATH);
+        if (data==null) return null;
+
+        System.out.println(data);
+
+        plr.MarshmallowLootCount = data.MarshmallowsCollected;
+        plr.MarshmallowsKilled = data.MarshmallowsKilled;
+        //plr.model.CFrame.Position = data.SavedPosition;
+
+        return data;
+    }
+
+    static void saveData(){
+        dataHandler.ExportData(new SaveObject(plr.MarshmallowLootCount, plr.MarshmallowsKilled, plr.model.CFrame.Position), Constants.SAVE_DATA_PATH);
+    }
+
+    static void firstTimeScene(){
+       home.exitInteractible.onInteract = ()->{
+            plr.model.CFrame.Position = new Vector2(1000);
+            home.exitInteractible.onInteract = null;
+       };
     }
 
     static void gameLoop(){
@@ -154,7 +189,7 @@ public class Main {
         game.OnTick.Connect(dt->{
             int plrY = plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10;
             for (Instance inst : game.instances) {
-                if (inst == plr.model || inst.hasTag("Prompt") || inst.hasTag("ZStatic"))
+                if (inst == plr.model || inst==null || inst.hasTag("Prompt") || inst.hasTag("ZStatic"))
                     continue;
                 int xY = inst.GetRenderPosition().Y + inst.Size.Y;
                 if (xY > plrY) {

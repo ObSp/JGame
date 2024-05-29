@@ -19,8 +19,10 @@ public class DrawGroup extends JComponent {
         for (int i = 0; i < size-1; i++) {
 
             int mindex = i; 
-            for (int j = i+1; j<size; j++)
+            for (int j = i+1; j<size; j++){
+                if (instances[j]==null) continue;
                 if (instances[j].ZIndex<instances[mindex].ZIndex) mindex = j; 
+            }
             
             Instance itemAtIndex = instances[i]; 
             instances[i] = instances[mindex]; 
@@ -28,7 +30,7 @@ public class DrawGroup extends JComponent {
         }
 
         for (Instance x : instances){
-            if (x.Parent == null) continue;
+            if (x.Parent == null || x.GetTransparency() == 0.0) continue;
             x.paint(g);
         }
 

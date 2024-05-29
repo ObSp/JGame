@@ -11,6 +11,8 @@ public abstract class Interactible {
     protected String path;
     protected final JGame game;
 
+    public Runnable onInteract;
+
     public int InteractionKey = KeyEvent.VK_E;
 
     public boolean InteractionPromptVisible = false;
@@ -38,7 +40,9 @@ public abstract class Interactible {
         ((ArrayList<Interactible>) game.Globals.get("interactibles")).remove(this);
     }
 
-    public abstract void onInteract();
+    public void onInteract(){
+        if (onInteract != null) onInteract.run();
+    };
 
     public abstract void PlayerEnteredBounds();
 

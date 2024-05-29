@@ -34,14 +34,17 @@ public class Image2D extends Instance{
 
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.isInstanceInViewport(this, actualPos) || transparency == 0.0)
+        
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
             return;
         
         
         Graphics2D g2 = (Graphics2D) g;
+        int centerX = actualPos.X+(Size.X/2);
+        int centerY = actualPos.Y+(Size.Y/2);
         
 
-        g2.rotate(CFrame.Rotation, actualPos.X+(Size.X/2), actualPos.Y+(Size.X/2));
+        g2.rotate(CFrame.Rotation, centerX, centerY);
 
         if (!BackgroundTransparent){
             g2.setColor(this.FillColor);
@@ -49,6 +52,7 @@ public class Image2D extends Instance{
         }
 
         g2.drawImage(Image, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
+        g2.rotate(-CFrame.Rotation, centerX, centerY);
     }
 
     public void SetImagePath(String path){

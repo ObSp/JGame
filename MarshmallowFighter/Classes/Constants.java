@@ -91,10 +91,15 @@ public final class Constants {
 
     public static final Vector2 HOME_TELEPORT_INSIDE_POSITION = new Vector2(10000280, 9999765);
 
+    public static final Vector2 HOME_TELEPORT_EXIT_POSITION = new Vector2(-247, 112);
+
 
     //--{INTERACTIBLES}--//
     public static final String INTERACTIBLE_E_IMAGE_PATH = "MarshmallowFighter\\Media\\Misc\\PickupTextLoot.png";
     public static final int INTERACTIBLE_MAX_SHOWN_AT_ONCE = 1;
+
+    //--{SAVNG}--//
+    public static final String SAVE_DATA_PATH = "MarshmallowFighter\\Saves\\Save.json";
 
     //--{MISC}--//
     public static final String HITBOX_SAVE_PATH = "MarshmallowFighter\\Media\\HITBOXES.json";

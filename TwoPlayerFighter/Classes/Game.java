@@ -12,7 +12,7 @@ public class Game {
     public Player player1;
     public Player player2;
 
-    Sound gameMusic = new Sound(Constants.GAME_MUSIC_MATH);
+    Sound gameMusic = new Sound(Constants.GAME_MUSIC_PATH);
 
     private InputService input;
 
@@ -38,13 +38,24 @@ public class Game {
         player1 = Player.newPlayer(game);
         player2 = Player.newPlayer(game);
 
+        Controls p1C = Constants.PLAYER_1_CONTROLS;
+        Controls p2C = Constants.PLAYER_2_CONTROLS;
+
         game.Services.InputService.OnKeyPress.Connect(e->{
             int kc = e.getKeyCode();
-            if (Constants.PLAYER_1_CONTROLS.isKeyCodeJump(e.getKeyCode())){
+            if (p1C.isKeyCodeJump(e.getKeyCode())){
                 player1.jump();
-            } else if (Constants.PLAYER_2_CONTROLS.isKeyCodeJump(kc)){
+            } else if (p2C.isKeyCodeJump(kc)){
                 player2.jump();
             }
+
+            if (kc == p1C.ability1){
+                player1.ability1();
+            } else if (kc == p2C.ability1){
+                player2.ability1();
+            }
+
+            
         });
 
         game.OnTick.Connect(dt->{
@@ -53,24 +64,16 @@ public class Game {
     }
 
     public void movement(double dt){
+        player1.movementDirection = input.IsKeyDown(Constants.PLAYER_1_CONTROLS.left) ? -1 : (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.right) ? 1 : 0);
+
         if (!player1.stunned){
-            if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.left)){
-                player1.model.Velocity.X = -(int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
-            } else if (input.IsKeyDown(Constants.PLAYER_1_CONTROLS.right)){
-                player1.model.Velocity.X = (int) (dt*(Constants.SQUARE_MOVEMENT_SPEED*100));
-            } else {
-                player1.model.Velocity.X = 0;
-            }
+            player1.model.Velocity.X = (int) (player1.movementDirection*(dt*(Constants.SQUARE_MOVEMENT_SPEED*100)));
         }
 
+        player2.movementDirection = input.IsKeyDown(Constants.PLAYER_2_CONTROLS.left) ? -1 : (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.right) ? 1 : 0);
+
         if (!player2.stunned){
-            if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.left)){
-                player2.model.Velocity.X = -(int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
-            } else if (input.IsKeyDown(Constants.PLAYER_2_CONTROLS.right)){
-                player2.model.Velocity.X = (int) (dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100));
-            } else {
-                player2.model.Velocity.X = 0;
-            }
+            player2.model.Velocity.X = (int) (player2.movementDirection*(dt*(Constants.RECTANGLE_MOVEMENT_SPEED*100)));
         }
             
     }

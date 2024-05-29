@@ -15,6 +15,7 @@ public class ServiceContainer {
     public final RaycastService RaycastService;
     public final ShapecastService ShapecastService;
     public final CollisionService CollisionService;
+    public final DebrisService DebrisService;
 
 
     public ServiceContainer(JGame parent){
@@ -26,5 +27,6 @@ public class ServiceContainer {
         RaycastService = new RaycastService(parent);
         ShapecastService = new ShapecastService(parent);
         CollisionService = new CollisionService(parent);
+        DebrisService = new DebrisService(parent);
     }
 }

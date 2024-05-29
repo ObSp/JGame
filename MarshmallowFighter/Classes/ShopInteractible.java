@@ -34,6 +34,7 @@ public class ShopInteractible extends Interactible {
     }
 
     public void onInteract(){
+        super.onInteract();
         game.removeInstance(prompt);
         removeFromGlobals();
     }

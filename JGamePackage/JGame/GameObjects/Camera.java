@@ -59,7 +59,7 @@ public class Camera extends GameObject {
         return overlaps(obj, obj.GetCornerPosition(Enum.InstanceCornerType.TopLeft));
     }
 
-    public boolean isInstanceInViewport(Instance obj, Vector2 renderpos){
+    public boolean areBoundsInViewport(Instance obj, Vector2 renderpos){
         return overlaps(obj, renderpos);
     }
 
