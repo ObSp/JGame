@@ -25,7 +25,7 @@ public class Main {
 
     static Camera cam = game.Camera;
 
-    static double plrPositionLerpSpeed = .1;
+    static double plrPositionLerpSpeed = .05;
 
     static double obstacleSpawnBufferSeconds = 3;
 
@@ -67,6 +67,7 @@ public class Main {
 
         //game.setBackground(new Color(249, 69, 87));
         game.setWindowTitle("Air Taxi");
+        game.setWindowIcon("AirTaxi\\Media\\Player.png");
         window = game.getWindow();
 
         hideCursor();
