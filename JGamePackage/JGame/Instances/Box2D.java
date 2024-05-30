@@ -2,6 +2,7 @@ package JGamePackage.JGame.Instances;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import JGamePackage.JGame.Types.Vector2;
 
@@ -25,21 +26,22 @@ public class Box2D extends Instance {
         int centerX = actualPos.X+(Size.X/2);
         int centerY = actualPos.Y+(Size.Y/2);
 
+        AffineTransform previous = g2.getTransform();
+        AffineTransform rotated = new AffineTransform();
+        rotated.rotate(CFrame.Rotation, centerX, centerY);
+
+        g2.transform(rotated);
+
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
             g2.fillRect(actualPos.X+BorderSizePixel, actualPos.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
         }
         
-        //always making sure to rotate around center of the object
-        g2.rotate(CFrame.Rotation, centerX, centerY);
-
-        
-
         g2.setColor(FillColor);
         g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
 
         //reset rotation and translation
-        g2.rotate(-CFrame.Rotation, centerX, centerY);
+        g2.setTransform(previous);
     }
 
     @Override

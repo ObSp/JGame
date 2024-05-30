@@ -35,7 +35,7 @@ public class DrawGroup extends JPanel {
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (Instance x : instances){
-            if (x.Parent == null || x.GetTransparency() == 0.0) continue;
+            if (x==null || x.Parent == null || x.GetTransparency() == 0.0) continue;
             x.paint(g);
         }
     }

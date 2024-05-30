@@ -17,6 +17,21 @@ public class MusicQueue {
         }
     }
 
+    public void Pause(){
+        if (cursound==null) return;
+        cursound.Pause();
+    }
+
+    public void Continue(){
+        if (cursound==null) return;
+        cursound.UnPause();
+    }
+
+    public void StopCurrent(){
+        if (cursound==null) return;
+        cursound.Stop();
+    }
+
     public void Start(){
         task.spawn(()->{
             while (true){
