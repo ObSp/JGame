@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import JGamePackage.JGame.Types.Vector2;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public class Image2D extends Instance{
     /**The path to the Image's file location. Note that changing this doesn't affect anything, to 
@@ -42,17 +43,21 @@ public class Image2D extends Instance{
         Graphics2D g2 = (Graphics2D) g;
         int centerX = actualPos.X+(Size.X/2);
         int centerY = actualPos.Y+(Size.Y/2);
-        
 
-        g2.rotate(CFrame.Rotation, centerX, centerY);
+        AffineTransform previous = g2.getTransform();
+        AffineTransform rotated = new AffineTransform();
+        rotated.rotate(CFrame.Rotation, centerX, centerY);
+
+        g2.transform(rotated);
 
         if (!BackgroundTransparent){
-            g2.setColor(this.FillColor);
-            g2.fillRect(CFrame.Position.X, CFrame.Position.Y, Size.X, Size.Y);
+            g2.setColor(FillColor);
+            g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
         }
 
         g2.drawImage(Image, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
-        g2.rotate(-CFrame.Rotation, centerX, centerY);
+
+        g2.setTransform(previous);
     }
 
     public void SetImagePath(String path){

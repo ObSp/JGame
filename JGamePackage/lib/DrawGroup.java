@@ -2,11 +2,11 @@ package JGamePackage.lib;
 
 import java.awt.*;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import JGamePackage.JGame.Instances.Instance;
 
-public class DrawGroup extends JComponent {
+public class DrawGroup extends JPanel {
     public Instance[] instances;
 
     public DrawGroup(){
@@ -14,7 +14,9 @@ public class DrawGroup extends JComponent {
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
         int size = instances.length;
         for (int i = 0; i < size-1; i++) {
 
@@ -29,18 +31,12 @@ public class DrawGroup extends JComponent {
             instances[mindex] = itemAtIndex;
         }
 
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+
         for (Instance x : instances){
             if (x.Parent == null || x.GetTransparency() == 0.0) continue;
             x.paint(g);
         }
-
-        /* for (int i = 0; i < instances.size(); i++){
-            JComponent j = instances.get(i);
-            if (j == null)
-                continue;
-            j.paint(g);
-        }
-         * 
-         */
     }
 }

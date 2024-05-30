@@ -9,7 +9,6 @@ import JGamePackage.lib.*;
 import JGamePackage.lib.ArrayTable;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 
 public class JGame{
@@ -113,15 +112,12 @@ public class JGame{
                 gameWindow.setUndecorated(true);
             }
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-            gameWindow.getContentPane().setBackground(Color.white);
-
             gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Files\\icon.png").getImage());
+
+            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             gameWindow.add(drawGroup);
             gameWindow.setVisible(true);
-
-            task.wait(1);
             self.resolve();
 
             run();
@@ -183,7 +179,7 @@ public class JGame{
     public JFrame getWindow(){
         if (this.gameWindow == null){
             while (gameWindow == null){
-                System.out.print("");
+               this.waitForTick();
             }
         }
         return gameWindow;
@@ -194,8 +190,7 @@ public class JGame{
      * @return : The current size of the {@code JFrame window} as a {@code Vector2}
      */
     public Vector2 getTotalScreenSize(){
-        Dimension s = gameWindow.getSize();
-        return new Vector2((int)s.getWidth(), (int)s.getHeight());
+        return new Vector2(getScreenWidth(), getScreenHeight());
     }
 
     public int getScreenHeight(){
@@ -215,7 +210,7 @@ public class JGame{
     }
 
     public void setBackground(Color c){
-        gameWindow.getContentPane().setBackground(c);
+        this.drawGroup.setBackground(c);
     }
 
 }

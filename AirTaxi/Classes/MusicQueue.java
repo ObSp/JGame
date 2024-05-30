@@ -46,6 +46,5 @@ public class MusicQueue {
         cursound.SetFramePosition(0);
         cursound.Play();
         task.wait(cursound.Length);
-        cursound.Stop();
     }
 }
