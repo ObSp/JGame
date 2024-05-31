@@ -130,7 +130,7 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
         try {
             o = (E) SELF_TABLE[i];
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new Error("Table does not contain the index of " + i);
+            throw new ArrayIndexOutOfBoundsException("Table does not contain the index of " + i);
         }
 
         return o;

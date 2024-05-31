@@ -15,10 +15,11 @@ public class DrawGroup extends JPanel {
 
     @Override
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
+        
 
         int size = instances.length;
         for (int i = 0; i < size-1; i++) {
+            if (instances[i] == null) continue;
 
             int mindex = i; 
             for (int j = i+1; j<size; j++){

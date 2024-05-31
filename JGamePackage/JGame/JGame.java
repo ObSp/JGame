@@ -33,6 +33,7 @@ public class JGame{
     private DrawGroup drawGroup = new DrawGroup();
 
     public ArrayTable<Instance> instances = new ArrayTable<>();
+    private ArrayTable<Instance> instancesToRemove = new ArrayTable<>();
 
     public Camera Camera;
 
@@ -56,8 +57,10 @@ public class JGame{
     }
 
     private void render(){
-        drawGroup.instances = utilFuncs.toInstArray(instances);
-        gameWindow.repaint();
+        synchronized (instances){
+            drawGroup.instances = utilFuncs.toInstArray(instances);
+            gameWindow.repaint();
+        }
     }
 
     private void tick(double dtSeconds){
@@ -67,6 +70,8 @@ public class JGame{
             Services.PhysicsService.runPhysics(dtSeconds);
 
         render();
+
+
     }
 
     private double curSeconds(){
@@ -80,8 +85,9 @@ public class JGame{
         while (true) {
             double curSecs = curSeconds();
             if (curSecs-lastTick>=TickSpeed){
-                tick(curSecs-lastTick);
+                var temp = curSecs-lastTick;
                 lastTick = curSecs;
+                tick(temp);
             }
         }
     }

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.GameObjects.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.*;
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.lib.AbstractConnection;
 import JGamePackage.lib.Signal;
 import JGamePackage.lib.task;
@@ -46,6 +48,8 @@ public class Main {
 
     static BlackScreen blackScreen = new BlackScreen(game);
 
+    static Font font;
+
     //menu stuff
     static boolean playing = false;
 
@@ -56,8 +60,14 @@ public class Main {
 
     static Sound backgroundMusic = new Sound("AirTaxi\\Media\\Music\\Music1.wav");
 
+    static ArrayList<Instance> taxiStations = new ArrayList<>();
+
 
     static Signal<Double>.Connection gameLoop;
+
+
+    //config:
+    static double TaxiStationChance = .9;
 
 
     //for fps stuff
@@ -79,11 +89,11 @@ public class Main {
 
     public static void main(String[] args){
 
-        background.SetImagePath("AirTaxi\\Media\\BetterBG.png");
-        background.Size = game.getTotalScreenSize().add(-0, -0);
-        background.ZIndex = -4;
-        background.MoveWithCamera = false;
-        game.addInstance(background);
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("AirTaxi\\Media\\Fonts\\PixeloidSans-mLxMm.ttf"));
+        } catch(Exception e){
+            throw new Error(e);
+        }
 
         foreground = new Image2D();
         foreground.SetImagePath("AirTaxi\\Media\\bg-foreground.png");
@@ -186,10 +196,10 @@ public class Main {
         passengerCounter.AnchorPoint = new Vector2(50);
         passengerCounter.CFrame.Position = new Vector2(150, 112);
         passengerCounter.Size = new Vector2(50);
-        //passengerCounter.BackgroundTransparent = false;
 
         passengerCounter.TextColor = Color.white;
-        passengerCounter.Font = new Font("Arial", Font.BOLD, 50);
+        passengerCounter.Font = font.deriveFont(50f);
+        passengerCounter.HorizontalOffsetPercentage = 0;
 
         passengerCounter.Text = "0";
         passengerCounter.ZIndex = 5;
@@ -208,9 +218,18 @@ public class Main {
         gameLoop = game.OnTick.Connect(dt->{
             plr.CFrame.Position.X += plrSpeed;
 
-                        //collision check
-            if (game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}, true))!=null){
-                playing = false;
+            //collision check
+            Instance col = game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}, true));
+            
+            if (col != null){
+                if (col.Name == "Station"){
+                    curPassengers++;
+                    passengerCounter.Text = curPassengers+"";
+                    col.Solid = false;
+                    new Sound("AirTaxi\\Media\\SFX\\pickedUp.wav").Play();
+                } else {
+                    playing = false;
+                }
             }
 
             Vector2 mousePos = game.Services.InputService.GetMouseLocation();
@@ -234,6 +253,14 @@ public class Main {
                         game.removeInstance(obs);
                     }
                 }
+
+                for (int i = taxiStations.size()-1; i > -1; i--){
+                    Instance station = taxiStations.get(i);
+                    if (station.GetRenderPosition().X+station.Size.X < 0){
+                        taxiStations.remove(i);
+                        game.removeInstance(station);
+                    }
+                }
             }
 
             elapsedTicks++;
@@ -242,6 +269,7 @@ public class Main {
                 fps = elapsedTicks/elapsedTime;
                 elapsedTicks = 0;
                 elapsedTime = 0;
+                System.out.println(fps);
             }
         });
 
@@ -269,6 +297,7 @@ public class Main {
         explosion.Size = new Vector2();
         explosion.AnchorPoint = new Vector2(50);
         explosion.CFrame.Position = plr.GetCenterPosition();
+        explosion.ZIndex = 3;
         game.addInstance(explosion);
 
         new Sound("AirTaxi\\Media\\SFX\\explosion.wav").Play();
@@ -281,6 +310,10 @@ public class Main {
             game.removeInstance(obs);
         }
         obstacles.clear();
+        for (Instance station : taxiStations){
+            game.removeInstance(station);
+        }
+        taxiStations.clear();
 
         //reset values
         obstacleSpawnBufferSeconds = 3;
@@ -332,13 +365,37 @@ public class Main {
         obj.Solid = true;
         obstacles.add(obj);
 
-
+        boolean top = true;
 
         if (Math.random()>=.5){
             setTopObstacle(obj);
         } else {
             setBottomObstacle(obj);
+            top = false;
         }
+
+        if (Math.random()<=TaxiStationChance){//spawn taxi station
+            Image2D station = new Image2D();
+            station.SetImagePath("AirTaxi\\Media\\StationEmpty.png");
+            station.BackgroundTransparent = false;
+            station.CFrame.Rotation = top ? Math.toRadians(180) : 0;
+            station.AnchorPoint = new Vector2(50, 0);
+            station.Size = new Vector2(80);
+            station.CFrame.Position.X = obj.CFrame.Position.X+(obj.Size.X/2);
+            station.CFrame.Position.Y = !top ? 
+                obj.GetCornerPosition(Enum.InstanceCornerType.TopLeft).Y-station.Size.Y : 
+                obj.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
+
+            station.Name = "Station";
+            station.Solid = true;
+            station.FillColor = new Color(3, 111, 252);
+            station.SetTransparency(.5);
+            station.ZIndex = 1;
+            game.addInstance(station);
+            taxiStations.add(station);
+        }
+
+
         game.addInstance(obj);
     }
 
