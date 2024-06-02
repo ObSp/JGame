@@ -64,5 +64,10 @@ public class Text2D extends Instance {
         g2.setTransform(previous);
     }
 
+    @Override
+    public Text2D clone(){
+        return null;
+    }
+
     
 }

@@ -24,6 +24,8 @@ public class BlackScreen {
     }
 
     public void Show(){
+        if (screen.Size.X == 0)
+            screen.Size = game.getTotalScreenSize();
         screen.SetTransparency(0.0);
         game.addInstance(screen);
         screen.TweenTransparency(1.0, tweenInfo);

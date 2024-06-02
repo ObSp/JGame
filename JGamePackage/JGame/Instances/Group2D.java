@@ -73,5 +73,10 @@ public class Group2D extends Instance{
         System.out.println(velpos);
         MoveTo(velpos);
     }
+
+    @Override
+    public Group2D clone(){
+        return null;
+    }
     
 }

@@ -64,6 +64,7 @@ public class Image2D extends Instance{
         try {
             this.Image = ImageIO.read(new File(path));
             RealPath = path;
+            ImagePath = path;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,6 +86,31 @@ public class Image2D extends Instance{
     @Override
     public void setPosition(Vector2 velpos){
         CFrame.Position = velpos;
+    }
+
+    @Override
+    public Image2D clone(){
+        Image2D b = new Image2D();
+
+        b.CFrame = this.CFrame.clone();
+        b.FillColor = new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), FillColor.getAlpha());
+        b.AnchorPoint = this.AnchorPoint.clone();
+        b.Size = this.Size.clone();
+        b.Anchored = this.Anchored;
+        b.Associate = this.Associate;
+        b.MoveWithCamera = this.MoveWithCamera;
+        b.Name = new String(this.Name);
+        b.transparency = this.transparency;
+        b.Tags = this.Tags.clone();
+        b.Solid = this.Solid;
+        b.WeightPercentage = this.WeightPercentage;
+        b.ZIndex = this.ZIndex;
+        b.SetImagePath(ImagePath);
+        b.FlipHorizontally = FlipHorizontally;
+        b.FlipVertically = FlipVertically;
+        b.BackgroundTransparent = BackgroundTransparent;
+
+        return b;
     }
     
 }

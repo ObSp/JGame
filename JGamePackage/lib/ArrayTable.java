@@ -325,4 +325,14 @@ public class ArrayTable<E extends Object> implements Iterator<E>, Iterable<E> {
         return this;
     }
 
+    @Override
+    public ArrayTable<E> clone(){
+        ArrayTable<E> tbl = new ArrayTable<>();
+
+        for (E o : SELF_TABLE)
+            tbl.add(o);
+
+        return tbl;
+    }
+
 }

@@ -45,6 +45,7 @@ public class Main {
     static ArrayList<Instance> obstacles = new ArrayList<>();
 
     static Image2D foreground = new Image2D();
+    static Image2D foreground2 = new Image2D();
 
     static BlackScreen blackScreen = new BlackScreen(game);
 
@@ -88,6 +89,7 @@ public class Main {
     }
 
     public static void main(String[] args){
+        game.runPhysics = false;
 
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("AirTaxi\\Media\\Fonts\\PixeloidSans-mLxMm.ttf"));
@@ -95,14 +97,20 @@ public class Main {
             throw new Error(e);
         }
 
+        int fg_mult = 13;
+
         foreground = new Image2D();
         foreground.SetImagePath("AirTaxi\\Media\\bg-foreground.png");
-        foreground.Size = new Vector2(game.getScreenWidth()*2, 1000);
+        foreground.Size = new Vector2(fg_mult*128, fg_mult*64);
         foreground.ZIndex = -3;
         foreground.MoveWithCamera = false;
         foreground.AnchorPoint.Y = 100;
-        foreground.CFrame.Position.Y = game.getScreenHeight()+500;
+        foreground.CFrame.Position.Y = game.getScreenHeight();
         game.addInstance(foreground);
+
+        foreground2 = foreground.clone();
+        foreground2.CFrame.Position.X = foreground.Size.X;
+        game.addInstance(foreground2);
 
         queue.Start();
 
@@ -122,7 +130,6 @@ public class Main {
     }
 
     static void showMenu(){
-        hideCursor();
         showCursor();
         cam.AnchorPoint = new Vector2();
         cam.Position = new Vector2();
@@ -217,6 +224,19 @@ public class Main {
 
         gameLoop = game.OnTick.Connect(dt->{
             plr.CFrame.Position.X += plrSpeed;
+
+            foreground.CFrame.Position.X-=plrSpeed/2;
+            foreground2.CFrame.Position.X-=plrSpeed/2;
+
+            int rightSideOfScreen = cam.GetTopLeftCorner().X + game.getScreenWidth();
+
+            if (foreground.GetRenderPosition().X+foreground.Size.X < 0){
+                foreground.CFrame.Position.X = rightSideOfScreen;
+            }
+
+            if (foreground2.GetRenderPosition().X+foreground.Size.X < 0){
+                foreground2.CFrame.Position.X = rightSideOfScreen;
+            }
 
             //collision check
             Instance col = game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}, true));

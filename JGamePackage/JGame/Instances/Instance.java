@@ -370,6 +370,8 @@ public abstract class Instance {
 
 
     abstract public void paint(Graphics g);
+
+    abstract public Instance clone();
     
     /**An internal method used by the physics handler to move instances, letting them handle the new position on their own
      * 

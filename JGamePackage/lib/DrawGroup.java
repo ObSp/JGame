@@ -15,7 +15,6 @@ public class DrawGroup extends JPanel {
 
     @Override
     public void paintComponent(Graphics g){
-        
 
         int size = instances.length;
         for (int i = 0; i < size-1; i++) {

@@ -26,6 +26,8 @@ public class JGame{
 
     private StartArgs startArgs;
 
+    public boolean runPhysics = true;
+
 
     public String Title = "JGame";
 
@@ -34,6 +36,8 @@ public class JGame{
 
     public ArrayTable<Instance> instances = new ArrayTable<>();
     private ArrayTable<Instance> instancesToRemove = new ArrayTable<>();
+
+    public Instance[] instanceArray;
 
     public Camera Camera;
 
@@ -58,7 +62,8 @@ public class JGame{
 
     private void render(){
         synchronized (instances){
-            drawGroup.instances = utilFuncs.toInstArray(instances);
+            instanceArray = utilFuncs.toInstArray(instances);
+            drawGroup.instances = instanceArray;
             gameWindow.repaint();
         }
     }
@@ -66,7 +71,7 @@ public class JGame{
     private void tick(double dtSeconds){
         TickCount++;
         ontick.Fire(dtSeconds);
-        if (this.Services != null)
+        if (this.Services != null && runPhysics)
             Services.PhysicsService.runPhysics(dtSeconds);
 
         render();

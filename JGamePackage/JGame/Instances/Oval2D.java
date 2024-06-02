@@ -28,5 +28,10 @@ public class Oval2D extends Instance {
 
         g2.setTransform(previous);
     }
+
+    @Override
+    public Oval2D clone(){
+        return null;
+    }
     
 }
