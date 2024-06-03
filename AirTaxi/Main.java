@@ -105,6 +105,7 @@ public class Main {
         foreground.ZIndex = -3;
         foreground.MoveWithCamera = false;
         foreground.AnchorPoint.Y = 100;
+        foreground.AnchorPoint.X = 0;
         foreground.CFrame.Position.Y = game.getScreenHeight();
         game.addInstance(foreground);
 
@@ -120,6 +121,7 @@ public class Main {
 
         plr.SetImagePath("AirTaxi\\Media\\Player.png");
         plr.Size = new Vector2(70);
+        plr.AnchorPoint = new Vector2(50);
 
         game.Services.InputService.OnKeyPress.Connect(e->{
             int kc = e.getKeyCode();
@@ -167,8 +169,10 @@ public class Main {
         });
 
         while (!playing){
+            
             game.waitForTick();
         }
+
 
         new Sound("AirTaxi\\Media\\SFX\\blipSelect.wav").Play();
         blackScreen.Show();
@@ -222,24 +226,32 @@ public class Main {
             task.spawn(()->blackScreen.Hide());
         }
 
+        int screenHeight = game.getScreenHeight();
+        int screenWidth = game.getScreenWidth();
+
         gameLoop = game.OnTick.Connect(dt->{
             plr.CFrame.Position.X += plrSpeed;
 
-            foreground.CFrame.Position.X-=plrSpeed/2;
-            foreground2.CFrame.Position.X-=plrSpeed/2;
+            int foregroundMove = (int) (plrSpeed/1.6);
 
-            int rightSideOfScreen = cam.GetTopLeftCorner().X + game.getScreenWidth();
+            foreground.CFrame.Position.X -= foregroundMove;
+            foreground2.CFrame.Position.X -= foregroundMove;
+
 
             if (foreground.GetRenderPosition().X+foreground.Size.X < 0){
-                foreground.CFrame.Position.X = rightSideOfScreen;
+                foreground.CFrame.Position.X = foreground2.CFrame.Position.X + screenWidth;
             }
 
             if (foreground2.GetRenderPosition().X+foreground.Size.X < 0){
-                foreground2.CFrame.Position.X = rightSideOfScreen;
+                foreground2.CFrame.Position.X = foreground.CFrame.Position.X + screenWidth;
             }
 
             //collision check
-            Instance col = game.Services.CollisionService.CheckCollisionInBox(plr.GetCornerPosition(0), plr.Size, new CollisionOptions(new Instance[] {plr}, true));
+            Instance col = game.Services.CollisionService.CheckCollisionInBox(
+                plr.GetCornerPosition(0), 
+                plr.Size.add(-15), 
+                new CollisionOptions(new Instance[] {plr}, true)
+            );
             
             if (col != null){
                 if (col.Name == "Station"){

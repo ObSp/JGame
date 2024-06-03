@@ -35,6 +35,7 @@ public class JGame{
     private DrawGroup drawGroup = new DrawGroup();
 
     public ArrayTable<Instance> instances = new ArrayTable<>();
+    @SuppressWarnings("unused")
     private ArrayTable<Instance> instancesToRemove = new ArrayTable<>();
 
     public Instance[] instanceArray;
@@ -43,6 +44,8 @@ public class JGame{
 
 
     public ServiceContainer Services;
+
+    private final Object waitMutex = new Object();
 
     private void staticConstruct(){
         Promise.await(this.start());
@@ -76,7 +79,9 @@ public class JGame{
 
         render();
 
-
+        synchronized (waitMutex){
+            waitMutex.notify();
+        }
     }
 
     private double curSeconds(){
@@ -138,8 +143,9 @@ public class JGame{
 
     public void waitForTick(){
         int lastTick = this.TickCount;
-        while (this.TickCount == lastTick) {
-            System.out.print("");
+        synchronized (waitMutex){
+            while (this.TickCount == lastTick)
+                try {waitMutex.wait();} catch (InterruptedException e) {}
         }
     }
 

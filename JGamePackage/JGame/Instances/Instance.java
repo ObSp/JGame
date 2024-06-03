@@ -30,6 +30,11 @@ public abstract class Instance {
      */
     public CFrame CFrame = new CFrame();
 
+     /**Allows the setting of Render Position per frame. This will be erased after rendering.
+     * 
+     */
+    public Vector2 RenderPosition;
+
     /**The Anchor Point of the Instance, specifying where the center of the object is located. 
      * The most common anchor points are listed here: <p>
      * {@code (0,0)} - The top left corner <p>

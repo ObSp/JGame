@@ -16,7 +16,7 @@ public class Box2D extends Instance {
     
     public void paint(Graphics g) {
 
-        Vector2 actualPos = GetRenderPosition();
+        Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
         
         if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
             return;

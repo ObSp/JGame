@@ -9,12 +9,9 @@ import JGamePackage.JGame.Instances.Instance;
 public class DrawGroup extends JPanel {
     public Instance[] instances;
 
-    public DrawGroup(){
-        instances = new Instance[0];
-    }
-
     @Override
     public void paintComponent(Graphics g){
+        if (instances == null) return;
 
         int size = instances.length;
         for (int i = 0; i < size-1; i++) {

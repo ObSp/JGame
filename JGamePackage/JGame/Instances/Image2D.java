@@ -33,7 +33,7 @@ public class Image2D extends Instance{
     public void paint(Graphics g) {
         if (Image == null) return;
 
-        Vector2 actualPos = GetRenderPosition();
+        Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
         
         
         if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
@@ -56,6 +56,10 @@ public class Image2D extends Instance{
         }
 
         g2.drawImage(Image, actualPos.X, actualPos.Y, FlipHorizontally ? -Size.X : Size.X, FlipVertically ? -Size.Y : Size.Y, null);
+
+        if (RenderPosition != null){
+            RenderPosition = null;
+        }
 
         g2.setTransform(previous);
     }
