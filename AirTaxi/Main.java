@@ -38,14 +38,15 @@ public class Main {
 
     static int passengersDroppedOff = 0;
 
-    static Image2D background = new Image2D();
-
     static JFrame window;
 
     static ArrayList<Instance> obstacles = new ArrayList<>();
 
     static Image2D foreground = new Image2D();
     static Image2D foreground2 = new Image2D();
+    static Image2D middleground = new Image2D();
+    static Image2D middleground2 = new Image2D();
+    static Image2D background = new Image2D();
 
     static BlackScreen blackScreen = new BlackScreen(game);
 
@@ -99,10 +100,9 @@ public class Main {
 
         int fg_mult = 13;
 
-        foreground = new Image2D();
         foreground.SetImagePath("AirTaxi\\Media\\bg-foreground.png");
         foreground.Size = new Vector2(fg_mult*128, fg_mult*64);
-        foreground.ZIndex = -3;
+        foreground.ZIndex = -1;
         foreground.MoveWithCamera = false;
         foreground.AnchorPoint.Y = 100;
         foreground.AnchorPoint.X = 0;
@@ -112,6 +112,32 @@ public class Main {
         foreground2 = foreground.clone();
         foreground2.CFrame.Position.X = foreground.Size.X;
         game.addInstance(foreground2);
+
+        double ml_mult = 10;
+
+        middleground.SetImagePath("AirTaxi\\Media\\bg-middleground.png");
+        middleground.Size = new Vector2(200*ml_mult, 112*ml_mult);
+        middleground.ZIndex = -2;
+        middleground.MoveWithCamera = false;
+        middleground.AnchorPoint.Y = 100;
+        middleground.AnchorPoint.X = 0;
+        middleground.CFrame.Position.Y = game.getScreenHeight();
+        game.addInstance(middleground);
+
+        middleground2 = middleground.clone();
+        middleground2.CFrame.Position.X = middleground.Size.X;
+        game.addInstance(middleground2);
+
+        double bg_mult = 10;
+
+        background.SetImagePath("AirTaxi\\Media\\Background.png");
+        background.Size = new Vector2(200*bg_mult, 112*bg_mult);
+        background.ZIndex = -3;
+        background.AnchorPoint.Y = 100;
+        background.AnchorPoint.X = 0;
+        background.CFrame.Position.Y = game.getScreenHeight();
+        background.MoveWithCamera = false;
+        game.addInstance(background);
 
         queue.Start();
 
@@ -208,7 +234,7 @@ public class Main {
         passengerCounter.CFrame.Position = new Vector2(150, 112);
         passengerCounter.Size = new Vector2(50);
 
-        passengerCounter.TextColor = Color.white;
+        passengerCounter.TextColor = Color.black;
         passengerCounter.Font = font.deriveFont(50f);
         passengerCounter.HorizontalOffsetPercentage = 0;
 
@@ -226,7 +252,7 @@ public class Main {
             task.spawn(()->blackScreen.Hide());
         }
 
-        int screenHeight = game.getScreenHeight();
+        //int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
 
         gameLoop = game.OnTick.Connect(dt->{
@@ -246,6 +272,17 @@ public class Main {
                 foreground2.CFrame.Position.X = foreground.CFrame.Position.X + screenWidth;
             }
 
+            int middlegroundMove = (int) (plrSpeed/3);
+            middleground.CFrame.Position.X -= middlegroundMove;
+            middleground2.CFrame.Position.X -= middlegroundMove;
+            
+            if (middleground.GetRenderPosition().X+middleground.Size.X < 0){
+                middleground.CFrame.Position.X = middleground2.CFrame.Position.X + screenWidth;
+            }
+
+            if (middleground2.GetRenderPosition().X+middleground.Size.X < 0){
+                middleground2.CFrame.Position.X = foreground.CFrame.Position.X + screenWidth;
+            }
             //collision check
             Instance col = game.Services.CollisionService.CheckCollisionInBox(
                 plr.GetCornerPosition(0), 
@@ -270,10 +307,7 @@ public class Main {
 
             plrPos.Y = (int) lerp(plrPos.Y, mousePos.Y, plrPositionLerpSpeed);
 
-                                            //add 150 regardless of mousePos.X so no weird jittering occurs when moving the mouse horizontally
             plr.CFrame.LookAt(new Vector2(plrPos.X+150, mousePos.Y));
-                                                            //adding 500 to make it on the left side of the screen
-            //cam.Position.X =  (int) lerp(cam.Position.X, plrPos.X+600, CAM_LERP_SPEED);
 
             cam.Position.X = plrPos.X+600;
 
@@ -301,7 +335,7 @@ public class Main {
                 fps = elapsedTicks/elapsedTime;
                 elapsedTicks = 0;
                 elapsedTime = 0;
-                System.out.println(fps);
+                //System.out.println(fps);
             }
         });
 

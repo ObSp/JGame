@@ -227,7 +227,7 @@ public class JGame{
     }
 
     public void setBackground(Color c){
-        this.drawGroup.setBackground(c);
+        this.gameWindow.getContentPane().setBackground(c);
     }
 
 }

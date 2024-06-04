@@ -88,6 +88,12 @@ public class Main {
         plr = new Player(game);
         plrPos = plr.model.CFrame.Position;
         plr.model.ZIndex = 0;
+
+        for (int i = 0; i < 15; i++){
+            BasicMarshmallow mallow = new BasicMarshmallow(game);
+            mallow.model.CFrame.Position.X = (int) (Math.random()*2000);
+            mallow.model.CFrame.Position.Y = (int) (Math.random()*2000);
+        }
         
         home = new House(game, plr);
         home.Enter();
