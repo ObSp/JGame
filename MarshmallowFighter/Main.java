@@ -62,7 +62,7 @@ public class Main {
 
     public static void main(String[] args) {
         loadingScreen.ShowWithoutAnimation();
-        game.setBackground(new Color(87, 41, 75));
+        game.BackgroundColor = new Color(87, 41, 75);
         game.setWindowTitle("Marshmallow Fighter");
         game.setWindowIcon("MarshmallowFighter\\Media\\BasicMarshmallowStates\\idle1.png");
 

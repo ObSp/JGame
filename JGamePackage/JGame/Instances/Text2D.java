@@ -66,7 +66,30 @@ public class Text2D extends Instance {
 
     @Override
     public Text2D clone(){
-        return null;
+        Text2D t = new Text2D();
+
+        t.CFrame = this.CFrame.clone();
+        t.FillColor = new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), FillColor.getAlpha());
+        t.AnchorPoint = this.AnchorPoint.clone();
+        t.Size = this.Size.clone();
+        t.Anchored = this.Anchored;
+        t.Associate = this.Associate;
+        t.MoveWithCamera = this.MoveWithCamera;
+        t.Name = new String(this.Name);
+        t.transparency = this.transparency;
+        t.Tags = this.Tags.clone();
+        t.Solid = this.Solid;
+        t.WeightPercentage = this.WeightPercentage;
+        t.ZIndex = this.ZIndex;
+
+        t.Font = this.Font;
+        t.HorizontalOffsetPercentage = this.HorizontalOffsetPercentage;
+        t.VerticalOffsetPercentage = this.VerticalOffsetPercentage;
+        t.Text = new String(this.Text);
+        t.TextColor = this.TextColor;
+        t.BackgroundTransparent = this.BackgroundTransparent;
+
+        return t;
     }
 
     

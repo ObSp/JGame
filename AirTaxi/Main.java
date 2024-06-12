@@ -36,6 +36,8 @@ public class Main {
 
     static int curPassengers = 0;
 
+    static int traveledPixels = 0;
+
     static int passengersDroppedOff = 0;
 
     static JFrame window;
@@ -69,7 +71,7 @@ public class Main {
 
 
     //config:
-    static double TaxiStationChance = .9;
+    static double TaxiStationChance = .6;
 
 
     //for fps stuff
@@ -234,7 +236,7 @@ public class Main {
         passengerCounter.CFrame.Position = new Vector2(150, 112);
         passengerCounter.Size = new Vector2(50);
 
-        passengerCounter.TextColor = Color.black;
+        passengerCounter.TextColor = new Color(0,148,244);
         passengerCounter.Font = font.deriveFont(50f);
         passengerCounter.HorizontalOffsetPercentage = 0;
 
@@ -242,6 +244,22 @@ public class Main {
         passengerCounter.ZIndex = 5;
         passengerCounter.MoveWithCamera = false;
         game.addInstance(passengerCounter);
+
+        Image2D scoreIcon = new Image2D();
+        scoreIcon.SetImagePath("AirTaxi\\Media\\DistanceIcon.png");
+        scoreIcon.MoveWithCamera = false;
+        scoreIcon.AnchorPoint = new Vector2(50);
+        scoreIcon.Size = new Vector2(50);
+        scoreIcon.CFrame.Position = new Vector2(100, 175);
+        scoreIcon.ZIndex = 5;
+        game.addInstance(scoreIcon);
+
+        Text2D scoreCounter = passengerCounter.clone();
+        scoreCounter.CFrame.Position.Y = 187;
+        scoreCounter.TextColor = new Color(237, 28, 36);
+        scoreCounter.Text = "0";
+        game.addInstance(scoreCounter);
+
         
         game.addInstance(plr);
 
@@ -255,8 +273,13 @@ public class Main {
         //int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
 
+
+
         gameLoop = game.OnTick.Connect(dt->{
             plr.CFrame.Position.X += plrSpeed;
+            traveledPixels += plrSpeed;
+
+            scoreCounter.Text = traveledPixels/100 + "m";
 
             int foregroundMove = (int) (plrSpeed/1.6);
 
@@ -292,7 +315,7 @@ public class Main {
             
             if (col != null){
                 if (col.Name == "Station"){
-                    curPassengers++;
+                    curPassengers+= random(1, 15);
                     passengerCounter.Text = curPassengers+"";
                     col.Solid = false;
                     new Sound("AirTaxi\\Media\\SFX\\pickedUp.wav").Play();
@@ -352,10 +375,19 @@ public class Main {
 
         game.removeInstance(passengerCounter);
         game.removeInstance(personSilhuette);
-        gameOver();
+        game.removeInstance(scoreCounter);
+        game.removeInstance(scoreIcon);
+        int finalScore = (traveledPixels/100)*(curPassengers/10);
+        int distanceTraveled = traveledPixels/100;
+        int passengers = curPassengers;
+        System.out.println("FINAL SCORE: "+(traveledPixels/100)*(curPassengers/10));
+        System.out.println("Distance Traveled: "+scoreCounter.Text);
+        System.out.println("Passengers Picked Up: "+curPassengers);
+        System.out.println();
+        gameOver(finalScore, distanceTraveled, passengers);
     }
 
-    static void gameOver(){
+    static void gameOver(int score, int traveled, int passengers){
         gameLoop.Disconnect();
 
         //game over anim
@@ -386,7 +418,33 @@ public class Main {
         plrSpeed = 10;
         curPassengers = 0;
         passengersDroppedOff = 0;
+        traveledPixels = 0;
 
+        Text2D info = new Text2D();
+        info.TextColor = Color.white;
+        info.Font = font.deriveFont(40f);
+        info.ZIndex = 100;
+        info.MoveWithCamera = false;
+        info.HorizontalOffsetPercentage = .5;
+
+        info.AnchorPoint = new Vector2(50);
+        info.CFrame.Position = game.getTotalScreenSize().divide(2, 2); //middle
+
+        info.Text = "FINAL SCORE: "+score;
+        info.Text += ", Total Distance Traveled: "+traveled+"m";
+        info.Text += ", Passengers Picked Up: "+passengers;
+
+
+        game.addInstance(info);
+
+        info.SetTransparency(0);
+        info.TweenTransparency(1.0, null);
+
+        game.waitSeconds(5);
+
+        info.TweenTransparency(0.0, null);
+
+        game.removeInstance(info);
         showMenu();
         
     }

@@ -29,6 +29,8 @@ public class InputService extends Service{
     private VoidSignal windowClosing = new VoidSignal();
     public VoidSignalWrapper GameClosing = new VoidSignalWrapper(windowClosing);
 
+    public int CloseHotKey = KeyEvent.VK_DELETE;
+
 
     private ArrayList<String> heldKeys = new ArrayList<>();
 
@@ -139,6 +141,9 @@ public class InputService extends Service{
             @Override
             public void keyPressed(KeyEvent e) {
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
+
+                if (e.getKeyCode() == CloseHotKey) System.exit(0);
+
                 //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
                 onkeypress.Fire(e);

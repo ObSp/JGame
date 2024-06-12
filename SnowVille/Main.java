@@ -7,10 +7,9 @@ import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.*;
 import JGamePackage.lib.*;
-import JGamePackage.lib.Signal;
 import Scenes.*;
 
-@SuppressWarnings("unused")
+
 public class Main {
 
     static JGame game = new JGame();

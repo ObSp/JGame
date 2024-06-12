@@ -4,13 +4,22 @@ import java.awt.*;
 
 import javax.swing.JPanel;
 
+import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Instance;
 
 public class DrawGroup extends JPanel {
     public Instance[] instances;
+    private JGame game;
+
+    public DrawGroup(JGame g){
+        game = g;
+    }
 
     @Override
     public void paintComponent(Graphics g){
+        g.setColor(game.BackgroundColor);
+        g.fillRect(0, 0, game.getScreenWidth(), game.getScreenHeight());
+
         if (instances == null) return;
 
         int size = instances.length;

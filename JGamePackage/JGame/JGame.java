@@ -10,8 +10,29 @@ import JGamePackage.lib.ArrayTable;
 
 import java.awt.Color;
 
-
+/**The main class of the {@code JGame} game framework. It contains basic
+ * functions and is in charge of the main game loop. All complicated actions
+ * and functions are located under a {@code Service} inside the JGame's 
+ * {@code ServiceContainer} such as {@code InputService}, {@code CollisionService},
+ * and {@code TweenService}.
+ * 
+ * <h2>Information About Threads</h2>
+ * In most implementations of this class, there will be 3 threads running at the same time.
+ * The first will be the class using {@JGame} and any other class not part of the JGame framework.<p>
+ * The second thread will be the {@code JST}, or JGame Service Thread. All {@code Services} run
+ * in this thread to make sure not to disturb the main rendering thread.<p>
+ * The third thread running will be the {@code JRT}, or JGame Render Thread. This thread
+ * takes care of the render and tick loops.<p>
+ * <b>NOTE:</b> <p>
+ * All connections connected to {@code JGame.OnTick} will run in the {@code JRT}. Unless you are intentionally
+ * halting the rendering loop, there should be no halting in those connections as they will effectively freeze
+ * the game.
+ * 
+ * 
+ * 
+ */
 public class JGame{
+    Thread x;
     public int TickCount = 0;
 
     public double TickSpeed = .016; //exactly 60 fps
@@ -28,11 +49,13 @@ public class JGame{
 
     public boolean runPhysics = true;
 
+    public Color BackgroundColor = Color.white;
+
 
     public String Title = "JGame";
 
     private JFrame gameWindow = new JFrame(Title);
-    private DrawGroup drawGroup = new DrawGroup();
+    private DrawGroup drawGroup = new DrawGroup(this);
 
     public ArrayTable<Instance> instances = new ArrayTable<>();
     @SuppressWarnings("unused")
@@ -49,8 +72,8 @@ public class JGame{
 
     private void staticConstruct(){
         Promise.await(this.start());
-        Services = new ServiceContainer(this);
         Camera = new Camera(this);
+        Services = new ServiceContainer(this);
     }
 
     public JGame(){
@@ -224,10 +247,6 @@ public class JGame{
 
     public void setWindowIcon(String path){
         gameWindow.setIconImage(new ImageIcon(path).getImage());
-    }
-
-    public void setBackground(Color c){
-        this.gameWindow.getContentPane().setBackground(c);
     }
 
 }

@@ -101,17 +101,17 @@ public class House extends Model {
     }
 
     public void Enter(){
-        cB4Tp = game.getWindow().getContentPane().getBackground();
+        cB4Tp = game.BackgroundColor;
         posB4Tp = player.model.CFrame.Position.clone();
         player.model.CFrame.Position = Constants.HOME_TELEPORT_INSIDE_POSITION.clone().add(player.model.FlipHorizontally ? 100 : 0, 0);
         game.Camera.Position = player.model.CFrame.Position.add(-1000);
-        game.setBackground(new Color(38, 20, 33));
+        game.BackgroundColor = new Color(38, 20, 33);
     }
 
     public void Exit(){
         player.model.CFrame.Position = Constants.HOME_TELEPORT_EXIT_POSITION.clone();
         game.Camera.Position = player.model.CFrame.Position.add(1000);
-        game.setBackground(cB4Tp);
+        game.BackgroundColor = cB4Tp;
     }
     
 }
