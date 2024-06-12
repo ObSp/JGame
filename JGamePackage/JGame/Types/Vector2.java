@@ -103,24 +103,46 @@ public class Vector2 {
         return new Vector2(X*other.X, Y*other.Y);
     }
 
-    public Vector2 multiply(int mult){
-        return new Vector2(X*mult, Y*mult);
-    }
-
     public Vector2 divide(int x, int y){
         return new Vector2(X/x, Y/y);
+    }
+
+    public Vector2 divide(int n){
+        return new Vector2(X/n, Y/n);
+    }
+
+    public Vector2 divide(double x, double y){
+        return new Vector2((double) X/x, (double) Y/y);
+    }
+
+    public Vector2 divide(double n){
+        return new Vector2((double) X/n, (double) Y/n);
     }
 
     public Vector2 multiply(int x, int y){
         return new Vector2(X*x, Y*y);
     }
 
+    public Vector2 multiply(int n){
+        return new Vector2(X/n, Y/n);
+    }
+
     public boolean isZero(){
         return X==0 && Y==0;
     }
 
-    public int Magnitude(){
-        return (int) Math.sqrt(Math.pow(X, 2)+Math.pow(Y, 2));
+    public double Magnitude(){
+        return Math.sqrt(X*X + Y*Y);
+    }
+
+    /** Returns a {@code Vector2Double} with the same direction as this Vector2 but with a length of 1.
+     * 
+     * @return A {@code Vector2Double} with the same direction as this Vector2 but with a length of 1
+     */
+    public Vector2Double Normalized(){
+        Vector2Double res = new Vector2Double(X, Y);
+        res.Normalize();
+        return res;
     }
 
     private double lerp1(double a, double b, double t){
@@ -148,6 +170,10 @@ public class Vector2 {
         return new Vector2(X, Y);
     }
 
+    public Vector2Double ToVector2Double(){
+        return new Vector2Double(X, Y);
+    }
+
     @Override
     public boolean equals(Object obj){
         if (this == obj) return true;
@@ -158,5 +184,4 @@ public class Vector2 {
 
         return X==other.X && Y == other.Y;
     }
-
 }

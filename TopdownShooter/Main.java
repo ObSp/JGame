@@ -17,6 +17,7 @@ public class Main {
     //gun stuff
     static Box2D gun = new Box2D();
     static double gunRotationRadius = 45;
+    static double BulletVelocity = 10;
 
     public static void main(String[] args) {
         game.BackgroundColor = new Color(168, 30, 44);
@@ -66,7 +67,7 @@ public class Main {
 
     static void shoot(){
         Bullet bullet = new Bullet(game, gun.Size.divide(2, 2), gun.CFrame.clone());
-        bullet.Fire(input.GetMouseLocation());
+        bullet.Fire(input.GetMouseLocation(), BulletVelocity);
     }
 
     static double lerp(double a, double b, double t){
