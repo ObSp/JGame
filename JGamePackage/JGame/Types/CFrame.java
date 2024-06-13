@@ -65,4 +65,9 @@ public class CFrame {
     public CFrame clone(){
         return new CFrame(Position.clone(), Rotation);
     }
+
+    @Override
+    public String toString(){
+        return "Position: "+Position+"  Rotation: "+Rotation;
+    }
 }

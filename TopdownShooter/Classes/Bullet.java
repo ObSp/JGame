@@ -11,6 +11,9 @@ import JGamePackage.lib.Signal.Connection;
 
 @SuppressWarnings("rawtypes")
 public class Bullet {
+    static double maxDistance = 1000;
+
+
     Box2D model = new Box2D();
     private Connection tickConnection;
     private JGame game;
@@ -27,18 +30,25 @@ public class Bullet {
 
     public void Fire(Vector2 target, double Velocity){
         game.addInstance(model);
-        dir = target.Normalized().multiply(Velocity);
+        dir = target.subtract(model.CFrame.Position).Normalized().multiply(Velocity);
+
         double origMag = target.Magnitude();
-        System.out.println(dir);
 
         Vector2Double pos = model.CFrame.Position.ToVector2Double();
 
         tickConnection = game.OnTick.Connect(dt->{
             pos.X += dir.X;
             pos.Y += dir.Y;
-            System.out.println(pos);
             model.CFrame.Position.X = (int) pos.X;
             model.CFrame.Position.Y = (int) pos.Y;
+            if (Math.abs(pos.Magnitude()-origMag) > maxDistance){
+                tickConnection.Disconnect();
+                game.removeInstance(model);
+            }
         });
+    }
+
+    private double abs(double a){
+        return a >= 0 ? a : -a;
     }
 }

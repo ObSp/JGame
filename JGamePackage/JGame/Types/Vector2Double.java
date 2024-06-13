@@ -38,7 +38,7 @@ public class Vector2Double {
     }
 
     public Vector2Double multiply(double n){
-        return new Vector2Double(X/n, Y/n);
+        return new Vector2Double(X*n, Y*n);
     }
 
 
