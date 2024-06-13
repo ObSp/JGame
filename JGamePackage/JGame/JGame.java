@@ -73,7 +73,10 @@ public class JGame{
     private void staticConstruct(){
         Promise.await(this.start());
         Camera = new Camera(this);
-        Services = new ServiceContainer(this);
+        task.spawn(()->Services = new ServiceContainer(this));
+        while (this.Services == null) {
+            waitForTick();
+        }
     }
 
     public JGame(){

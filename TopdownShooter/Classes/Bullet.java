@@ -3,7 +3,7 @@ package TopdownShooter.Classes;
 import java.awt.Color;
 
 import JGamePackage.JGame.JGame;
-import JGamePackage.JGame.Instances.Box2D;
+import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.CFrame;
 import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.JGame.Types.Vector2Double;
@@ -21,9 +21,10 @@ public class Bullet {
     public Vector2Double dir;
 
     public Bullet(JGame game, Vector2 size, CFrame cframe){
+
         model.Size = size;
         model.CFrame = cframe;
-        model.FillColor = new Color(245, 191, 66);
+        model.FillColor = new Color(255, 255, 255);
 
         this.game = game;
     }
@@ -46,9 +47,5 @@ public class Bullet {
                 game.removeInstance(model);
             }
         });
-    }
-
-    private double abs(double a){
-        return a >= 0 ? a : -a;
     }
 }

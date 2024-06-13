@@ -26,6 +26,7 @@ public class Image2D extends Instance{
 
     public Image2D(){
         Name = "Image";
+        UpdateImagePath();
     }
 
 
@@ -38,6 +39,12 @@ public class Image2D extends Instance{
         
         if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
             return;
+
+        if (!ImagePath.equals(RealPath))
+            {
+                this.SetImagePath(ImagePath);
+                System.out.println("changed");
+            }
         
         
         Graphics2D g2 = (Graphics2D) g;
