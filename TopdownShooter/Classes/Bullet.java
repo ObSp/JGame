@@ -42,6 +42,10 @@ public class Bullet {
             pos.Y += dir.Y;
             model.CFrame.Position.X = (int) pos.X;
             model.CFrame.Position.Y = (int) pos.Y;
+
+            //collision
+            
+
             if (Math.abs(pos.Magnitude()-origMag) > maxDistance){
                 tickConnection.Disconnect();
                 game.removeInstance(model);
