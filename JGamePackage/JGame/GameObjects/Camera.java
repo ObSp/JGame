@@ -47,12 +47,12 @@ public class Camera extends GameObject {
         return new Vector2(getAnchorPointOffsetX(screenSize.X), getAnchorPointOffsetY(screenSize.Y));
     }
 
-    protected int getAnchorPointOffsetX(int xSize){
-        return (int) ((double)xSize*(((double)AnchorPoint.X)/100.0));
+    protected double getAnchorPointOffsetX(double xSize){
+        return (double)xSize*(AnchorPoint.X/100.0);
     }
 
-    protected int getAnchorPointOffsetY(int ySize){
-        return (int) ((double)ySize*(((double)AnchorPoint.Y)/100.0));
+    protected double getAnchorPointOffsetY(double ySize){
+        return (double)ySize*(AnchorPoint.Y/100.0);
     }
 
     public boolean isInstanceInViewport(Instance obj){
@@ -70,16 +70,16 @@ public class Camera extends GameObject {
 
         Vector2 screenSize = game.getTotalScreenSize();
 
-        int left = 0;
-        int top = 0;
-        int right = left + screenSize.X;
-        int bottom = top + screenSize.Y;
+        double left = 0;
+        double top = 0;
+        double right = left + screenSize.X;
+        double bottom = top + screenSize.Y;
 
         Vector2 topLeft = renderpos;
-        int otherLeft = topLeft.X;
-        int otherRight = topLeft.X+other.Size.X;
-        int otherTop = topLeft.Y;
-        int otherBottom = otherTop+other.Size.Y;
+        double otherLeft = topLeft.X;
+        double otherRight = topLeft.X+other.Size.X;
+        double otherTop = topLeft.Y;
+        double otherBottom = otherTop+other.Size.Y;
 
         boolean visibleLeft = otherRight > left;
         boolean visibleRight = otherLeft < right;

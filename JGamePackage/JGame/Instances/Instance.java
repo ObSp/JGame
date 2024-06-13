@@ -116,19 +116,19 @@ public abstract class Instance {
 
     /**A signal fired when the user left-clicks on this Instance
      */
-    public BiSignal<Integer, Integer> MouseButton1Down = new BiSignal<>();
+    public BiSignal<Double, Double> MouseButton1Down = new BiSignal<>();
 
     /**A signal fired when the user left-clicks on this Instance
      */
-    public BiSignal<Integer, Integer> MouseButton1Up = new BiSignal<>();
+    public BiSignal<Double, Double> MouseButton1Up = new BiSignal<>();
 
     /**A signal fired when the mouse pointer enters this Instance
      */
-    public BiSignal<Integer, Integer> MouseEntered = new BiSignal<>();
+    public BiSignal<Double, Double> MouseEntered = new BiSignal<>();
 
     /**A signal fired when the mouse pointer exits this Instance
      */
-    public BiSignal<Integer, Integer> MouseExited = new BiSignal<>();
+    public BiSignal<Double, Double> MouseExited = new BiSignal<>();
 
     public boolean inAir = false;
     public double timeInAir = 0.0;
@@ -293,15 +293,15 @@ public abstract class Instance {
     public boolean overlaps(Instance other){
         if (other==null) return false;
 
-        int leftCorner = topLeftCorner().X;
-        int top = topLeftCorner().Y;
-        int rightCorner = topRightCorner().X;
-        int bottom = bottomLeftCorner().Y;
+        double leftCorner = topLeftCorner().X;
+        double top = topLeftCorner().Y;
+        double rightCorner = topRightCorner().X;
+        double bottom = bottomLeftCorner().Y;
 
-        int otherLeft = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).X;
-        int otherTop = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).Y;
-        int otherRight = other.GetCornerPosition(Enum.InstanceCornerType.TopRight).X;
-        int otherBottom = other.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
+        double otherLeft = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).X;
+        double otherTop = other.GetCornerPosition(Enum.InstanceCornerType.TopLeft).Y;
+        double otherRight = other.GetCornerPosition(Enum.InstanceCornerType.TopRight).X;
+        double otherBottom = other.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
 
 
         return 
@@ -316,15 +316,15 @@ public abstract class Instance {
     }
     
     public boolean overlaps(Vector2 pos, Vector2 size){
-        int leftCorner = topLeftCorner().X;
-        int top = topLeftCorner().Y;
-        int rightCorner = topRightCorner().X;
-        int bottom = bottomLeftCorner().Y;
+        double leftCorner = topLeftCorner().X;
+        double top = topLeftCorner().Y;
+        double rightCorner = topRightCorner().X;
+        double bottom = bottomLeftCorner().Y;
 
-        int otherLeft = pos.X;
-        int otherTop = pos.Y;
-        int otherRight = pos.X+size.X;
-        int otherBottom = pos.Y + size.Y;
+        double otherLeft = pos.X;
+        double otherTop = pos.Y;
+        double otherRight = pos.X+size.X;
+        double otherBottom = pos.Y + size.Y;
 
 
         return 
@@ -343,14 +343,14 @@ public abstract class Instance {
 
         if (coord.equals(CFrame.Position)) return true;
 
-        int x = coord.X;
-        int y = coord.Y;
+        double x = coord.X;
+        double y = coord.Y;
 
         //distance between top left corner and anchor point percentage
-        int leftSide = topLeftCorner().X;
-        int rightSide = topRightCorner().X;
-        int top = topLeftCorner().Y;
-        int bottom = bottomLeftCorner().Y;
+        double leftSide = topLeftCorner().X;
+        double rightSide = topRightCorner().X;
+        double top = topLeftCorner().Y;
+        double bottom = bottomLeftCorner().Y;
 
         return (leftSide<x && x <rightSide && y<bottom && y>top);
 

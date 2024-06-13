@@ -5,8 +5,8 @@ package JGamePackage.JGame.Types;
  * 
  */
 public class Vector2 {
-    public int X;
-    public int Y;
+    public double X;
+    public double Y;
 
 
     //static stuff
@@ -33,15 +33,15 @@ public class Vector2 {
 
         String[] split = stripped.split(",");
 
-        int xCoord = Integer.parseInt(split[0]);
-        int yCoord = Integer.parseInt(split[1]);
+        double xCoord = Double.parseDouble(split[0]);
+        double yCoord = Double.parseDouble(split[1]);
 
 
         return new Vector2(xCoord, yCoord);
     }
 
 
-    /**Creates a new Vector2 with the specified X and Y coordinate points as ints.
+    /**Creates a new Vector2 with the specified X and Y coordinate points as doubles.
      * 
      * @param x
      * @param y
@@ -51,14 +51,14 @@ public class Vector2 {
         Y=y;
     }
 
-    /**Creates a new Vector2 with the specified X and Y coordinate points as inst by casting from double to int.
+    /**Creates a new Vector2 with the specified X and Y coordinate points.
      * 
      * @param x
      * @param y
      */
     public Vector2(double x, double y){
-        X=(int) x;
-        Y= (int) y;
+        X= x;
+        Y= y;
     }
 
     /**Creates a new Vector2 with the X and Y coordinates set to 0
@@ -73,7 +73,7 @@ public class Vector2 {
      * 
      * @param n : The number to set the X and Y coordinates to
      */
-    public Vector2(int n){
+    public Vector2(double n){
         X = n;
         Y = n;
     }
@@ -83,11 +83,11 @@ public class Vector2 {
         return new Vector2(X+other.X, Y+other.Y);
     }
 
-    public Vector2 add(int n){
+    public Vector2 add(double n){
         return new Vector2(X+n, Y+n);
     }
 
-    public Vector2 add(int x, int y){
+    public Vector2 add(double x, double y){
         return new Vector2(X+x, Y+y);
     }
 
@@ -95,7 +95,7 @@ public class Vector2 {
         return new Vector2(X-other.X, Y-other.Y);
     }
 
-    public Vector2 subtract(int n){
+    public Vector2 subtract(double n){
         return new Vector2(X-n, Y-n);
     }
 
@@ -103,28 +103,24 @@ public class Vector2 {
         return new Vector2(X*other.X, Y*other.Y);
     }
 
-    public Vector2 divide(int x, int y){
+    public Vector2 divide(double x, double y){
         return new Vector2(X/x, Y/y);
     }
 
-    public Vector2 divide(int n){
+    public Vector2 divide(double n){
         return new Vector2(X/n, Y/n);
     }
 
-    public Vector2 divide(double x, double y){
-        return new Vector2((double) X/x, (double) Y/y);
-    }
-
-    public Vector2 divide(double n){
-        return new Vector2((double) X/n, (double) Y/n);
-    }
-
-    public Vector2 multiply(int x, int y){
+    public Vector2 multiply(double x, double y){
         return new Vector2(X*x, Y*y);
     }
 
-    public Vector2 multiply(int n){
-        return new Vector2(X/n, Y/n);
+    public Vector2 multiply(double n){
+        return new Vector2(X*n, Y*n);
+    }
+
+    public Vector2 abs(){
+        return new Vector2(Math.abs(X), Math.abs(Y));
     }
 
     public boolean isZero(){
@@ -135,14 +131,28 @@ public class Vector2 {
         return Math.sqrt(X*X + Y*Y);
     }
 
-    /** Returns a {@code Vector2Double} with the same direction as this Vector2 but with a length of 1.
+    /** Returns a {@code Vector2} with the same direction as this Vector2 but with a length of 1.
      * 
-     * @return A {@code Vector2Double} with the same direction as this Vector2 but with a length of 1
+     * @return A {@code Vector2} with the same direction as this Vector2 but with a length of 1
      */
-    public Vector2Double Normalized(){
-        Vector2Double res = new Vector2Double(X, Y);
+    public Vector2 Normalized(){
+        Vector2 res = new Vector2(X, Y);
         res.Normalize();
         return res;
+    }
+
+    /**Make this Vector2Double have a Magnitude of 1.0;
+     * 
+     */
+    public void Normalize(){
+        double mag = Magnitude();
+        if (mag > 1E-05){
+            this.X /= mag;
+            this.Y /= mag;
+        } else {
+            this.X = 0;
+            this.Y = 0;
+        }
     }
 
     private double lerp1(double a, double b, double t){
@@ -150,8 +160,8 @@ public class Vector2 {
     }
 
     public void lerp(Vector2 b, double t){
-        X = (int) lerp1(X, b.X, t);
-        Y = (int) lerp1(Y, b.Y, t);
+        X = lerp1(X, b.X, t);
+        Y = lerp1(Y, b.Y, t);
     }
 
     public static Vector2 lerp(Vector2 a, Vector2 b, double t){
@@ -168,10 +178,6 @@ public class Vector2 {
     @Override
     public Vector2 clone(){
         return new Vector2(X, Y);
-    }
-
-    public Vector2Double ToVector2Double(){
-        return new Vector2Double(X, Y);
     }
 
     @Override

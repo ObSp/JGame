@@ -24,8 +24,8 @@ public class Box2D extends Instance {
 
 
         Graphics2D g2 = (Graphics2D) g;
-        int centerX = actualPos.X+(Size.X/2);
-        int centerY = actualPos.Y+(Size.Y/2);
+        int centerX = (int) (actualPos.X+(Size.X/2));
+        int centerY = (int) (actualPos.Y+(Size.Y/2));
 
         AffineTransform previous = g2.getTransform();
         AffineTransform rotated = new AffineTransform();
@@ -35,11 +35,11 @@ public class Box2D extends Instance {
 
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
-            g2.fillRect(actualPos.X+BorderSizePixel, actualPos.Y+BorderSizePixel, Size.X+BorderSizePixel, Size.Y+BorderSizePixel);
+            g2.fillRect((int) (actualPos.X+BorderSizePixel), (int) actualPos.Y+BorderSizePixel, (int) Size.X+BorderSizePixel, (int) Size.Y+BorderSizePixel);
         }
         
         g2.setColor(FillColor);
-        g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
+        g2.fillRect((int) actualPos.X, (int) actualPos.Y, (int) Size.X, (int) Size.Y);
 
         //reset rotation and translation
         g2.setTransform(previous);

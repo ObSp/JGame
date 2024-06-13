@@ -86,7 +86,7 @@ public class Main {
         game.addInstance(progressBackground);
         game.addInstance(bar);
 
-        int sizeIncrement = ((maximizedBoth.X*2)*LOADING_TIME_MULTIPLIER)/maximizedBoth.X;
+        int sizeIncrement = (int) (((maximizedBoth.X*2)*LOADING_TIME_MULTIPLIER)/maximizedBoth.X);
 
         while (bar.Size.X < progressBackground.Size.X) {
             bar.Size.X += sizeIncrement;
@@ -163,10 +163,10 @@ public class Main {
 
 
     static int scaleY(int percentage){
-        return maximizedBoth.Y*percentage;
+        return (int) (maximizedBoth.Y*percentage);
     }
 
     static int scaleX(int percentage){
-        return maximizedBoth.X*percentage;
+        return (int) (maximizedBoth.X*percentage);
     }
 }

@@ -193,11 +193,11 @@ public class Main {
 
     static void zindexManagement(){
         game.OnTick.Connect(dt->{
-            int plrY = plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10;
+            int plrY = (int) (plr.model.GetRenderPosition().Y + plr.model.Size.Y - 10);
             for (Instance inst : game.instances) {
                 if (inst == plr.model || inst==null || inst.hasTag("Prompt") || inst.hasTag("ZStatic"))
                     continue;
-                int xY = inst.GetRenderPosition().Y + inst.Size.Y;
+                int xY = (int) (inst.GetRenderPosition().Y + inst.Size.Y);
                 if (xY > plrY) {
                     inst.ZIndex = 1;
                 } else {

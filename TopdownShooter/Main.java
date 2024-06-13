@@ -6,14 +6,15 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.*;
 import JGamePackage.JGame.Types.*;
-import JGamePackage.lib.task;
 import TopdownShooter.Classes.Bullet;
+import TopdownShooter.Classes.Player;
 
 public class Main {
     static JGame game = new JGame(new StartArgs(true));
     static InputService input = game.Services.InputService;
 
-    static Image2D player = new Image2D();
+    static Player player = new Player(game);
+    static Image2D plrModel = player.model;
 
     //layers
     static int BackgroundLayer = -1;
@@ -23,7 +24,7 @@ public class Main {
     //gun stuff
     static Box2D gun = new Box2D();
     static double gunRotationRadius = 45;
-    static double BulletVelocity = 10;
+    static double BulletVelocity = 11;
 
 
     //healthbar
@@ -39,13 +40,6 @@ public class Main {
 
     public static void main(String[] args) {
         game.BackgroundColor = new Color(50, 58, 79);
-
-        player.FillColor = Color.black;
-        player.AnchorPoint = new Vector2(50);
-        player.CFrame.Position = game.getTotalScreenSize().divide(2, 2);
-        player.Size = new Vector2(50);
-        player.ImagePath = "TopdownShooter\\Media\\Player.png";
-        game.addInstance(player);
 
         gun.FillColor = Color.white;
         gun.AnchorPoint = new Vector2(50);
@@ -66,11 +60,11 @@ public class Main {
         game.addInstance(healthbar);
         
 
-        gun.CFrame.Position = player.CFrame.Position.add(0, -50);
+        gun.CFrame.Position = plrModel.CFrame.Position.add(0, -50);
 
         game.OnTick.Connect(dt->{
             Vector2 mouseLoc = input.GetMouseLocation();
-            Vector2 plrPos = player.CFrame.Position;
+            Vector2 plrPos = plrModel.CFrame.Position;
             gun.CFrame.LookAt(mouseLoc); //rotate gun towards mouse
 
             plrPos.X += input.GetInputHorizontal()*(dt*600);
@@ -79,19 +73,18 @@ public class Main {
 
             double lookAtAngle_rad = CFrame.LookAt(plrPos, mouseLoc).Rotation;
             
-            int gunX = (int) (plrPos.X + gunRotationRadius*Math.cos(lookAtAngle_rad));
-            int gunY = (int) (plrPos.Y + gunRotationRadius*Math.sin(lookAtAngle_rad));
+            double gunX = plrPos.X + gunRotationRadius*Math.cos(lookAtAngle_rad);
+            double gunY = plrPos.Y + gunRotationRadius*Math.sin(lookAtAngle_rad);
 
             if (mouseLoc.X <= plrPos.X){
                 gunX = plrPos.X - (gunX - plrPos.X);
                 gunY = plrPos.Y - (gunY - plrPos.Y);
             }
 
-            
             gun.CFrame.Position.X = gunX;
             gun.CFrame.Position.Y = gunY;
 
-            healthbar.Size.X = (int) lerp(healthbar.Size.X, (Health/MaxHealth)*healthbarBackground.Size.X, .1);
+            healthbar.Size.X = lerp(healthbar.Size.X, (Health/MaxHealth)*healthbarBackground.Size.X, .1);
         });
 
         input.OnMouseClick.Connect(()->{
@@ -99,7 +92,8 @@ public class Main {
         });
 
         while (true) {
-            task.wait(enemySpawnSeconds);
+            game.waitSeconds(enemySpawnSeconds);
+
         }
     }
 

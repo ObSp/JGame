@@ -33,8 +33,8 @@ public class Text2D extends Instance {
             return;
 
         Graphics2D g2 = (Graphics2D) g;
-        int centerX = actualPos.X+(Size.X/2);
-        int centerY = actualPos.Y+(Size.Y/2);
+        int centerX = (int) (actualPos.X+(Size.X/2));
+        int centerY = (int) (actualPos.Y+(Size.Y/2));
 
         AffineTransform previous = g2.getTransform();
         AffineTransform rotated = new AffineTransform();
@@ -47,7 +47,7 @@ public class Text2D extends Instance {
 
         if (!BackgroundTransparent){
             g2.setColor(FillColor);
-            g2.fillRect(actualPos.X, actualPos.Y, Size.X, Size.Y);
+            g2.fillRect((int) actualPos.X, (int) actualPos.Y, (int) Size.X, (int) Size.Y);
         }
 
         FontMetrics fm = g2.getFontMetrics();

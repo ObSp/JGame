@@ -465,7 +465,7 @@ public class Main {
 
     static void setBottomObstacle(Image2D obj){
         Vector2 topLeftofCam = cam.GetTopLeftCorner();
-        int bottomOfScreen = topLeftofCam.Y+game.getScreenHeight();
+        int bottomOfScreen = (int) (topLeftofCam.Y+game.getScreenHeight());
         obj.AnchorPoint.Y = 0;
 
         obj.CFrame.Position.Y = (int) random(bottomOfScreen-200, bottomOfScreen-obj.Size.Y);
@@ -475,7 +475,7 @@ public class Main {
         speedup();
 
         Vector2 topLeftofCam = cam.GetTopLeftCorner();
-        int rightSideOfScreen = topLeftofCam.X+game.getScreenWidth();
+        int rightSideOfScreen = (int) (topLeftofCam.X+game.getScreenWidth());
 
         double scaleFactor = random(1, 1.4);
 

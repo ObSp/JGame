@@ -6,7 +6,6 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Types.CFrame;
 import JGamePackage.JGame.Types.Vector2;
-import JGamePackage.JGame.Types.Vector2Double;
 import JGamePackage.lib.Signal.Connection;
 
 @SuppressWarnings("rawtypes")
@@ -18,7 +17,7 @@ public class Bullet {
     private Connection tickConnection;
     private JGame game;
 
-    public Vector2Double dir;
+    public Vector2 dir;
 
     public Bullet(JGame game, Vector2 size, CFrame cframe){
 
@@ -35,18 +34,13 @@ public class Bullet {
 
         double origMag = target.Magnitude();
 
-        Vector2Double pos = model.CFrame.Position.ToVector2Double();
-
         tickConnection = game.OnTick.Connect(dt->{
-            pos.X += dir.X;
-            pos.Y += dir.Y;
-            model.CFrame.Position.X = (int) pos.X;
-            model.CFrame.Position.Y = (int) pos.Y;
+            model.CFrame.Position.X += dir.X;
+            model.CFrame.Position.Y += dir.Y;
 
             //collision
-            
 
-            if (Math.abs(pos.Magnitude()-origMag) > maxDistance){
+            if (Math.abs(model.CFrame.Position.Magnitude()-origMag) > maxDistance){
                 tickConnection.Disconnect();
                 game.removeInstance(model);
             }
