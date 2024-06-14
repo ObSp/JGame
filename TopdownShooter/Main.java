@@ -23,7 +23,6 @@ public class Main {
 
     //gun stuff
     static Box2D gun = new Box2D();
-    static double gunRotationRadius = 45;
     static double BulletVelocity = 11;
 
 
@@ -58,31 +57,23 @@ public class Main {
         healthbar.FillColor = new Color(237, 28, 70);
         healthbar.ZIndex = healthbarBackground.ZIndex + 1;
         game.addInstance(healthbar);
-        
-
-        gun.CFrame.Position = plrModel.CFrame.Position.add(0, -50);
 
         game.OnTick.Connect(dt->{
             Vector2 mouseLoc = input.GetMouseLocation();
             Vector2 plrPos = plrModel.CFrame.Position;
-            gun.CFrame.LookAt(mouseLoc); //rotate gun towards mouse
+
+            gun.CFrame.Position = plrPos.clone().add(7, 5);
+
+            gun.CFrame.LookAt(mouseLoc);
+
+
+
 
             plrPos.X += input.GetInputHorizontal()*(dt*600);
             plrPos.Y -= input.GetInputVertical()*(dt*600);
 
 
-            double lookAtAngle_rad = CFrame.LookAt(plrPos, mouseLoc).Rotation;
-            
-            double gunX = plrPos.X + gunRotationRadius*Math.cos(lookAtAngle_rad);
-            double gunY = plrPos.Y + gunRotationRadius*Math.sin(lookAtAngle_rad);
-
-            if (mouseLoc.X <= plrPos.X){
-                gunX = plrPos.X - (gunX - plrPos.X);
-                gunY = plrPos.Y - (gunY - plrPos.Y);
-            }
-
-            gun.CFrame.Position.X = gunX;
-            gun.CFrame.Position.Y = gunY;
+           
 
             healthbar.Size.X = lerp(healthbar.Size.X, (Health/MaxHealth)*healthbarBackground.Size.X, .1);
         });

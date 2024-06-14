@@ -35,7 +35,7 @@ public abstract class Instance {
      */
     public Vector2 RenderPosition;
 
-    /**The Anchor Point of the Instance, specifying where the center of the object is located. 
+    /**The Anchor Point of the Instance, specifying where the position pivot of the object is located. 
      * The most common anchor points are listed here: <p>
      * {@code (0,0)} - The top left corner <p>
      * {@code (50,50)} - The middle <p>
@@ -45,6 +45,18 @@ public abstract class Instance {
      * 
      */
     public Vector2 AnchorPoint = new Vector2(0);
+
+    /**The Rotation Anchor Point of the Instance, specifying where the rotation pivot of the object is located. 
+     * The most common anchor points are listed here: <p>
+     * {@code (0,0)} - The top left corner <p>
+     * {@code (50,50)} - The middle <p>
+     * {@code (100,100)} - The bottom right corner <p>
+     * <p>
+     * Note that the X and Y values should usually stay true to {@code 0 <= x <= 100} and {@code 0 <= y <= 100}. 
+     * By default, all instances will rotate around their center point, unless this field is changed.
+     * 
+     */
+    public Vector2 RotationAnchorPoint = new Vector2(50);
 
     /**A non-unique identifier that can be used to access this object through the {@code Parent}.
      * 

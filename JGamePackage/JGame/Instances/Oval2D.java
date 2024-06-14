@@ -22,12 +22,12 @@ public class Oval2D extends Instance {
             return;
 
         Graphics2D g2 = (Graphics2D) g;
-        int centerX = (int) (actualPos.X+(Size.X/2));
-        int centerY = (int) (actualPos.Y+(Size.Y/2));
+        int rotationX = (int) (actualPos.X + (RotationAnchorPoint.X/100.0)*Size.X);
+        int rotationY = (int) (actualPos.Y + (RotationAnchorPoint.Y/100.0)*Size.Y);
 
         AffineTransform previous = g2.getTransform();
         AffineTransform rotated = new AffineTransform();
-        rotated.rotate(CFrame.Rotation, centerX, centerY);
+        rotated.rotate(CFrame.Rotation, rotationX, rotationY);
 
         if (HasOutline){
             g2.setColor(BorderColor);
