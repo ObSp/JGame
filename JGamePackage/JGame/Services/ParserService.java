@@ -38,7 +38,7 @@ public class ParserService extends Service {
     }
 
     private Vector2 JSONObjectToVector2(JSONObject obj){
-        return new Vector2((int)((long) obj.get("X")), (int)((long) obj.get("Y")));
+        return new Vector2((double) obj.get("X"), (double) obj.get("Y"));
     }
 
 
