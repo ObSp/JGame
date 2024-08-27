@@ -70,7 +70,7 @@ public class Main {
 
         for (Instance hitB : hitboxes){
             hitB.Solid = true;
-            hitB.SetTransparency(0);
+            hitB.SetOpacity(0);
             game.addInstance(hitB);
         }
 

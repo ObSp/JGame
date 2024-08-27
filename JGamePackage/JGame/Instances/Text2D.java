@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import JGamePackage.JGame.Types.Tween;
+import JGamePackage.JGame.Types.TweenInfo;
 import JGamePackage.JGame.Types.Vector2;
 
 public class Text2D extends Instance {
@@ -23,13 +25,20 @@ public class Text2D extends Instance {
 
     public double VerticalOffsetPercentage = .5;
 
+    private double textOpacity = 1;
+
+    public Text2D(){
+        this.Name = "Text2D";
+        this.Font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 10);
+    }
+
     @Override
     public void paint(Graphics g) {
-        if (Text == null || Text.equals("")) return;
+        if (Text == null || Text.equals("") || this.Font == null) return;
 
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
             return;
 
         Graphics2D g2 = (Graphics2D) g;
@@ -42,8 +51,7 @@ public class Text2D extends Instance {
 
         g2.transform(rotated);
 
-        if (Font != null)
-            g2.setFont(Font);
+        g2.setFont(Font);
 
         if (!BackgroundTransparent){
             g2.setColor(FillColor);
@@ -76,7 +84,7 @@ public class Text2D extends Instance {
         t.Associate = this.Associate;
         t.MoveWithCamera = this.MoveWithCamera;
         t.Name = new String(this.Name);
-        t.transparency = this.transparency;
+        t.opacity = this.opacity;
         t.Tags = this.Tags.clone();
         t.Solid = this.Solid;
         t.WeightPercentage = this.WeightPercentage;
@@ -90,6 +98,41 @@ public class Text2D extends Instance {
         t.BackgroundTransparent = this.BackgroundTransparent;
 
         return t;
+    }
+
+    @Override
+    public void setInstanceVariableByName(String variable, Object value){
+        if (variable.equals("TextOpacity")) {
+            this.SetTextOpacity((double) value);
+        } else {
+            super.setInstanceVariableByName(variable, value);
+        }
+    }
+
+    @Override
+    public Object getInstanceVariableByName(String variable){
+        if (variable.equals("TextOpacity"))
+            return this.textOpacity;
+
+        return super.getInstanceVariableByName(variable);
+    }
+
+
+    public Tween TweenTextOpacity(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "TextOpacity", goal, tweenInfo, false);
+    }
+
+    public Tween TweenTextOpacityParallel(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "TextOpacity", goal, tweenInfo, true);
+    }
+
+    public void SetTextOpacity(double newOpacity){
+        textOpacity = newOpacity;
+        TextColor = new Color(TextColor.getRed(), TextColor.getGreen(), TextColor.getBlue(), (int) (textOpacity*255.0));
+    }
+
+    public double GetTextOpacity(){
+        return textOpacity;
     }
 
     

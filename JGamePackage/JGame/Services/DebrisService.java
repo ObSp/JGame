@@ -17,7 +17,7 @@ public class DebrisService extends Service {
     public DebrisService(JGame parent) {
         super(parent);
 
-        curTime = (double) System.currentTimeMillis()/1000.0;
+        curTime = Parent.GetElapsedSeconds();
 
         parent.OnTick.Connect(dt->cycle(dt));
     }
@@ -36,7 +36,7 @@ public class DebrisService extends Service {
 
     public void AddItem(Instance inst, double bufferSeconds){
         numRemovalItems++;
-        removalList.add(new DebrisItem(inst, bufferSeconds, (double) System.currentTimeMillis()/1000.0));
+        removalList.add(new DebrisItem(inst, bufferSeconds, Parent.GetElapsedSeconds()));
     }
 
     public void RemoveItem(Instance inst){

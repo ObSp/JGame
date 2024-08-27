@@ -437,12 +437,12 @@ public class Main {
 
         game.addInstance(info);
 
-        info.SetTransparency(0);
-        info.TweenTransparency(1.0, null);
+        info.SetOpacity(0);
+        info.TweenOpacity(1.0, null);
 
         game.waitSeconds(5);
 
-        info.TweenTransparency(0.0, null);
+        info.TweenOpacity(0.0, null);
 
         game.removeInstance(info);
         showMenu();
@@ -513,7 +513,7 @@ public class Main {
             station.Name = "Station";
             station.Solid = true;
             station.FillColor = new Color(3, 111, 252);
-            station.SetTransparency(.5);
+            station.SetOpacity(.5);
             station.ZIndex = 1;
             game.addInstance(station);
             taxiStations.add(station);

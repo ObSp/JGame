@@ -37,14 +37,12 @@ public class Image2D extends Instance{
         Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
         
         
-        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
             return;
 
         if (!ImagePath.equals(RealPath))
-            {
-                this.SetImagePath(ImagePath);
-                System.out.println("changed");
-            }
+            this.SetImagePath(ImagePath);
+        
         
         
         Graphics2D g2 = (Graphics2D) g;
@@ -62,7 +60,14 @@ public class Image2D extends Instance{
             g2.fillRect((int) actualPos.X, (int) actualPos.Y, (int) Size.X, (int) Size.Y);
         }
 
-        g2.drawImage(Image, (int) actualPos.X, (int) actualPos.Y, (int)  (FlipHorizontally ? -Size.X : Size.X), (int) (FlipVertically ? -Size.Y : Size.Y), null);
+        double xSize = Size.X;
+
+        if (FlipHorizontally){
+            xSize = -xSize;
+            actualPos.X += Size.X;
+        }
+
+        g2.drawImage(Image, (int) actualPos.X, (int) actualPos.Y, (int)  xSize, (int) (FlipVertically ? -Size.Y : Size.Y), null);
 
         if (RenderPosition != null){
             RenderPosition = null;
@@ -111,7 +116,7 @@ public class Image2D extends Instance{
         b.Associate = this.Associate;
         b.MoveWithCamera = this.MoveWithCamera;
         b.Name = new String(this.Name);
-        b.transparency = this.transparency;
+        b.opacity = this.opacity;
         b.Tags = this.Tags.clone();
         b.Solid = this.Solid;
         b.WeightPercentage = this.WeightPercentage;

@@ -26,14 +26,14 @@ public class BlackScreen {
     public void Show(){
         if (screen.Size.X == 0)
             screen.Size = game.getTotalScreenSize();
-        screen.SetTransparency(0.0);
+        screen.SetOpacity(0.0);
         game.addInstance(screen);
-        screen.TweenTransparency(1.0, tweenInfo);
+        screen.TweenOpacity(1.0, tweenInfo);
         Visible = true;
     }
 
     public void Hide(){
-        screen.TweenTransparency(0.0, tweenInfo);
+        screen.TweenOpacity(0.0, tweenInfo);
         game.removeInstance(screen);
         Visible = false;
     }

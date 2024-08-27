@@ -141,7 +141,7 @@ public class Vector2 {
         return res;
     }
 
-    /**Make this Vector2Double have a Magnitude of 1.0;
+    /**Make this Vector2 have a Magnitude of 1.0;
      * 
      */
     public void Normalize(){
@@ -149,10 +149,19 @@ public class Vector2 {
         if (mag > 1E-05){
             this.X /= mag;
             this.Y /= mag;
+            
         } else {
             this.X = 0;
             this.Y = 0;
         }
+    }
+
+    /**Returns a negated copy of this Vector2.
+     * 
+     * @return new Vector2(-X, -Y)
+     */
+    public Vector2 neg(){
+        return new Vector2(-X, -Y);
     }
 
     private double lerp1(double a, double b, double t){

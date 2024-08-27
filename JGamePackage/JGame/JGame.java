@@ -32,12 +32,13 @@ import java.awt.Color;
  * 
  */
 public class JGame{
-    Thread x;
     public int TickCount = 0;
 
     public double TickSpeed = .016; //exactly 60 fps
 
     public double tickMult = 1000;
+
+    private double elapsed = 0;
 
     public ArrayDictionary<Object, Object> Globals = new ArrayDictionary<>();
 
@@ -98,8 +99,11 @@ public class JGame{
     }
 
     private void tick(double dtSeconds){
+        elapsed += dtSeconds;
         TickCount++;
+
         ontick.Fire(dtSeconds);
+
         if (this.Services != null && runPhysics)
             Services.PhysicsService.runPhysics(dtSeconds);
 
@@ -108,6 +112,13 @@ public class JGame{
         synchronized (waitMutex){
             waitMutex.notify();
         }
+    }
+
+    /**Returns the number of seconds that have passed since the initialization of this JGame.
+     * 
+     */
+    public double GetElapsedSeconds(){
+        return elapsed;
     }
 
     private double curSeconds(){

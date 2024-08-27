@@ -1,11 +1,13 @@
 package JGamePackage.JGame.Types;
 
-import JGamePackage.lib.BiSignal;
+import JGamePackage.lib.VoidSignal;
 
 public class Tween {
-    public final BiSignal<Void, Void> Ended = new BiSignal<>();
+    public final VoidSignal Ended = new VoidSignal();
     public final Object start;
     public final Object end;
+
+    public boolean Finished = false;
 
     public Tween(Object start, Object end){
         this.start = start;

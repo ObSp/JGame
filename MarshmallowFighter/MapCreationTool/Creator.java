@@ -34,7 +34,7 @@ public class Creator {
         ghost.FillColor = Color.red;
 
         MapLoader.LoadMap(game, "MarshmallowFighter\\Media\\DATA.json");
-        ghost.SetTransparency(.5);
+        ghost.SetOpacity(.5);
 
         init();
     }
@@ -78,7 +78,7 @@ public class Creator {
             if (e.getKeyCode() == KeyEvent.VK_T){
                 Instance cur = game.Services.InputService.GetMouseTarget();
                 if (cur == null) return;
-                cur.SetTransparency(cur.GetTransparency() != 0.0 ? 0.0 : 1);
+                cur.SetOpacity(cur.GetOpacity() != 0.0 ? 0.0 : 1);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){

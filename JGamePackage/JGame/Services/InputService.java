@@ -110,9 +110,12 @@ public class InputService extends Service{
     public Instance GetMouseTarget(){
         Vector2 mouseLoc = GetMouseLocation();
         Instance cur = null;
-        for (Instance i : Parent.instances){
-            if (i.isCoordinateInBounds(mouseLoc) && (cur == null || i.ZIndex > cur.ZIndex)){
-                cur = i;
+        synchronized (Parent.instances){
+            for (Instance i : Parent.instances){
+                if (i== null) continue;
+                if (i.isCoordinateInBounds(mouseLoc) && (cur == null || i.ZIndex > cur.ZIndex)){
+                    cur = i;
+                }
             }
         }
 

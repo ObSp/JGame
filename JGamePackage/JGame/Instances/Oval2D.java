@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import JGamePackage.JGame.Types.Enum;
 import JGamePackage.JGame.Types.Vector2;
 
 public class Oval2D extends Instance {
@@ -18,7 +19,7 @@ public class Oval2D extends Instance {
     public void paint(Graphics g) {
         Vector2 actualPos = GetRenderPosition();
         
-        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
             return;
 
         Graphics2D g2 = (Graphics2D) g;
@@ -45,6 +46,28 @@ public class Oval2D extends Instance {
     @Override
     public Oval2D clone(){
         return null;
+    }
+
+
+    @Override
+    public boolean isCoordinateInBounds(Vector2 coord){
+        if (this.CFrame == null) return false;
+
+        if (coord.equals(CFrame.Position)) return true;
+
+        /*Get the distance between the circle's center and the coord */
+        Vector2 center = this.GetCenterPosition();
+
+        double centerMag = center.Magnitude();
+        double coordMag = coord.Magnitude();
+        
+                        /*First get top, then subtract center.Y from top.Y*/
+        double bottomY = this.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
+        double radius = bottomY-center.Y;
+
+        double diff = Math.abs(centerMag - coordMag);
+
+        return diff <= radius;
     }
     
 }

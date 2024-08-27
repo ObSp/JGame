@@ -13,11 +13,6 @@ import JGamePackage.lib.BiSignal;
  * It contains basic methods, like Instance.Destroy() that are needed when working with basic rendering objects.
  * There is currently only one constructor present, as the instance variables are intended to be set after creating the object.<p>
  * 
- * The {@code Parent} property should only be set once <b><i>all inital properties have been set</i></b>, as events and rendering will start as soon
- * as this object has been added to a JGame's rendering list.<p>
- * In addition, the {@code Parent} property should <b>never</b> be set by the user.
- * Instead, the intended use is to call {@code JGame.addInstance(this)}.
- * 
  */
 public abstract class Instance {
     /**The size of the Instance in 2D space.
@@ -120,7 +115,7 @@ public abstract class Instance {
      */
     public int ZIndex = 0;
 
-    protected double transparency = 1;
+    protected double opacity = 1;
 
     public boolean wasDrawn = false;
 
@@ -408,7 +403,7 @@ public abstract class Instance {
         if (variable.equals("Anchored")) Anchored = (boolean) value;
         if (variable.equals("Rotation")) CFrame.Rotation = (double) value;
         if (variable.equals("Position")) CFrame.Position = (Vector2) value;
-        if (variable.equals("Transparency")) this.SetTransparency((double) value);
+        if (variable.equals("Opacity")) this.SetOpacity((double) value);
     }
 
     public Object getInstanceVariableByName(String variable){
@@ -421,7 +416,7 @@ public abstract class Instance {
         if (variable.equals("Anchored")) return Anchored;
         if (variable.equals("Rotation")) return CFrame.Rotation;
         if (variable.equals("Position")) return CFrame.Position;
-        if (variable.equals("Transparency")) return transparency;
+        if (variable.equals("Opacity")) return opacity;
         return null;
     }
 
@@ -494,29 +489,45 @@ public abstract class Instance {
 
     //--TWEENING--//
     public Tween TweenPosition(Vector2 goal, TweenInfo tweenInfo){
-        return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo);
+        return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo, false);
     }
 
     public Tween TweenSize(Vector2 goal, TweenInfo tweenInfo){
-        return Parent.Services.TweenService.TweenVector2(this, "Size", goal, tweenInfo);
+        return Parent.Services.TweenService.TweenVector2(this, "Size", goal, tweenInfo, false);
     }
 
     public Tween TweenRotation(Double goal, TweenInfo tweenInfo){
-        return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo);
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo, false);
     }
 
-    public Tween TweenTransparency(Double goal, TweenInfo tweenInfo){
-        return Parent.Services.TweenService.TweenDoubleProperty(this, "Transparency", goal, tweenInfo);
+    public Tween TweenOpacity(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Opacity", goal, tweenInfo, false);
+    }
+
+    public Tween TweenPositionParallel(Vector2 goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenVector2(this, "Position", goal, tweenInfo, true);
+    }
+
+    public Tween TweenSizeParallel(Vector2 goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenVector2(this, "Size", goal, tweenInfo, true);
+    }
+
+    public Tween TweenRotationParallel(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Rotation", goal, tweenInfo, true);
+    }
+
+    public Tween TweenOpacityParallel(Double goal, TweenInfo tweenInfo){
+        return Parent.Services.TweenService.TweenDoubleProperty(this, "Opacity", goal, tweenInfo, true);
     }
 
 
-    public void SetTransparency(double Transparency){
-        transparency = Transparency;
-        FillColor = new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), (int) (transparency*255.0));
+    public void SetOpacity(double Opacity){
+        opacity = Opacity;
+        FillColor = new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), (int) (opacity*255.0));
     }
 
-    public double GetTransparency(){
-        return transparency;
+    public double GetOpacity(){
+        return opacity;
     }
 
     @Override

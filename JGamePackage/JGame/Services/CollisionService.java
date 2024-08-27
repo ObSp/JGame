@@ -30,9 +30,12 @@ public class CollisionService extends Service {
     public Instance[] GetInstancesInBox(Vector2 position, Vector2 boxSize, CollisionOptions options){
         ArrayList<Instance> colliding = new ArrayList<>();
 
-        for (Instance inst : Parent.instances){
-            if (inst.overlaps(position, boxSize) && (!options.SolidsOnly || inst.Solid) && !blacklistContains(options.Blacklist, inst)){
-                colliding.add(inst);
+        synchronized (Parent.instances){
+            for (Instance inst : Parent.instances){
+                if (inst == null) continue;
+                if (inst.overlaps(position, boxSize) && (!options.SolidsOnly || inst.Solid) && !blacklistContains(options.Blacklist, inst)){
+                    colliding.add(inst);
+                }
             }
         }
 

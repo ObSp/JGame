@@ -18,7 +18,7 @@ public class Box2D extends Instance {
 
         Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
         
-        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || transparency == 0.0)
+        if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
             return;
 
 
@@ -62,7 +62,7 @@ public class Box2D extends Instance {
         b.Associate = this.Associate;
         b.MoveWithCamera = this.MoveWithCamera;
         b.Name = new String(this.Name);
-        b.transparency = this.transparency;
+        b.opacity = this.opacity;
         b.Tags = this.Tags.clone();
         b.Solid = this.Solid;
         b.WeightPercentage = this.WeightPercentage;

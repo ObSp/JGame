@@ -5,24 +5,50 @@ package JGamePackage.JGame.Types;
  * 
  */
 public class CFrame {
-    /**The rotation, in Radians, of the CFrame
+    /**The rotation of the CFrame in {@code Radians}.
      * 
      */
     public double Rotation;
 
-    /**The position, as a Vector2, of the CFrame
+    /**The translation of the CFrame as a {@code Vector2}.
      * 
      */
     public Vector2 Position;
 
+    /**Creates a CFrame with a translation of {@code Position} and a rotation of {@code Rotation}.
+     * 
+     * @param Position : The translation of the CFrame
+     * @param Rotation : The rotation of the CFrame
+     */
     public CFrame(Vector2 Position, double Rotation){
         this.Rotation = Rotation;
         this.Position = Position;
     }
 
+    /**Creates a blank CFrame with no translation or rotation.
+     * 
+     */
     public CFrame(){
         this.Rotation = 0;
-        this.Position = new Vector2(0);
+        this.Position = new Vector2();
+    }
+
+    /**Creates a new CFrame with a translation of {@code position} and no rotation.
+     * 
+     * @param position : The translation of the {@code CFrame}
+     */
+    public CFrame(Vector2 position){
+        this.Position = position;
+        this.Rotation = 0;
+    }
+
+    /**Creates a new CFrame with a rotation of {@code rotation} and no translation.
+     * 
+     * @param rotation : The rotation of the {@code CFrame}
+     */
+    public CFrame(double rotation){
+        this.Rotation = rotation;
+        this.Position = new Vector2();
     }
 
     /**Modifies this CFrame's rotation to look at the other position

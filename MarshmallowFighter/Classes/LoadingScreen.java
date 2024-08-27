@@ -21,8 +21,8 @@ public class LoadingScreen {
     }
 
     public void ShowWithoutAnimation(){
-        if (background.GetTransparency() != 1.0)
-            background.SetTransparency(1);
+        if (background.GetOpacity() != 1.0)
+            background.SetOpacity(1);
         game.addInstance(background);
     }
 
@@ -32,14 +32,14 @@ public class LoadingScreen {
 
     public void Show(){
         if (background.Parent != null) return; //already shown
-        background.SetTransparency(0);
+        background.SetOpacity(0);
         game.addInstance(background);
-        background.TweenTransparency(1.0, null);
+        background.TweenOpacity(1.0, null);
     }
 
     public void Hide(){
         if (background.Parent == null) return; //already hidden
-        background.TweenTransparency(0.0, null);
+        background.TweenOpacity(0.0, null);
         game.removeInstance(background);
     }
 }
