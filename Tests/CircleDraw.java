@@ -30,7 +30,7 @@ public class CircleDraw {
             game.addInstance(point);
 
             Box2D clone = point.clone();
-            
+            clone.CFrame.Position.Y = (500 - point.CFrame.Position.Y)+500;
             game.addInstance(clone);
         }
     }
