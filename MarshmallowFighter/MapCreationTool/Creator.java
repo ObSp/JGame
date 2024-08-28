@@ -69,10 +69,10 @@ public class Creator {
         game.Services.InputService.OnKeyPress.Connect(e->{
             if (e.getKeyCode() == KeyEvent.VK_U){
                 if (history.size() == 0) return;
-                Instance last = history.getLast();
+                Instance last = history.get(history.size()-1);;
                 game.removeInstance(last);
                 insts.remove(last);
-                history.removeLast();
+                history.remove(history.size()-1);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_T){

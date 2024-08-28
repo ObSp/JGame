@@ -47,8 +47,8 @@ public class InstancePool {
             poolSize += this.expansionSize;
         }
         
-        Instance picked = this.pool.getLast();
-        this.pool.removeLast();
+        Instance picked = this.pool.get(this.pool.size()-1);
+        this.pool.remove(this.pool.size()-1);
         this.inUse.add(picked);
         this.game.addInstance(picked);
 

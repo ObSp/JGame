@@ -122,9 +122,15 @@ public class PhysicsService extends Service {
 
     //formula: 2pixels/secondsInAir^2
 
+    private double clamp(double m, double min, double max){
+        if (m < min) return min;
+        if (m > max) return max;
+        return m;
+    }
+
     private double getPositionShift(Instance inst){
         double grav = inst.timeInAir*(PhysicsSettings.GlobalGravity*inst.WeightPercentage);
-        return Math.clamp(grav, 0, PhysicsSettings.AirResistance);
+        return clamp(grav, 0, PhysicsSettings.AirResistance);
     }
     
 }

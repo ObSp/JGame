@@ -17,16 +17,21 @@ public class CircleDraw {
         return Math.sqrt(1-x*x);
     }
 
+    static double floorToTen(double val) {
+        return Math.floor(val/10)*10;
+    }
+
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++){
-            Box2D b = new Box2D();
-            b.FillColor = Color.black;
-            b.Size = new Vector2(25);
-            double x = 500 + (i*b.Size.X);
-            double y = 500 + getY(x)*b.Size.Y;
-            b.CFrame.Position = new Vector2(x,y);
-            System.out.println(b.CFrame.Position);
-            game.addInstance(b);
+        for (double x = -1; x <= 1; x += .1) {
+            Box2D point = new Box2D();
+            point.FillColor = Color.black;
+            point.Size = new Vector2(10);
+            point.CFrame.Position = new Vector2(500 + x*100, floorToTen(500 + getY(x)*100));
+            game.addInstance(point);
+
+            Box2D clone = point.clone();
+            
+            game.addInstance(clone);
         }
     }
 }
