@@ -18,7 +18,7 @@ public abstract class Ability {
 
     public int ActivationKeyCode;
 
-    @SuppressWarnings("unchecked")
+
     public Ability(JGame game){
         this.game = game;
 

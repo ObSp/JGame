@@ -1,7 +1,6 @@
 package TopdownShooter.Classes.Abilities;
 
 import JGamePackage.JGame.JGame;
-import JGamePackage.JGame.Types.Vector2;
 import JGamePackage.lib.task;
 
 public class StarterEAbility extends EAbility {
@@ -20,7 +19,7 @@ public class StarterEAbility extends EAbility {
         task.spawn(()->{
             for (int i = 0; i < numBullets; i++){
                 player.gun.Shoot(game.Services.InputService.GetMouseLocation(),player.gun.BulletDamage + player.gun.CritBonus);
-                game.waitSeconds(.1);
+                game.Services.TimeService.waitSeconds(.1);
             }
         });
     }

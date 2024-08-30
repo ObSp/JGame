@@ -10,6 +10,7 @@ public class InstancePool {
     private ArrayList<Instance> pool = new ArrayList<>();
     private ArrayList<Instance> inUse = new ArrayList<>();
 
+    @SuppressWarnings("unused")
     private boolean canExpand = true;
     private int intialSize = 50;
     private int expansionSize = 5;

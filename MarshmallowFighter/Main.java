@@ -237,7 +237,7 @@ public class Main {
             return;
         }
         task.spawn(()->{
-            game.waitTicks(15);
+            game.Services.TimeService.waitTicks(15);
             var hitsound = new Sound(knifeHitPath);
             hitsound.SetVolume(1);
             hitsound.Play();

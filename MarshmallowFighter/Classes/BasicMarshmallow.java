@@ -85,7 +85,7 @@ public class BasicMarshmallow extends Entity {
     private void die(){
         isDead = true;
         task.spawn(()->{
-            game.waitTicks(10);
+            game.Services.TimeService.waitTicks(10);
             this.PlayAnimation(Constants.BasicMarshmallowDeath.copy(), true).Finished.Once(()->{
                 game.removeInstance(model);
                 this.Died.Fire();

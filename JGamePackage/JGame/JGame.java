@@ -186,11 +186,13 @@ public class JGame{
         }
     }
 
+    @Deprecated
     public void waitTicks(int ticksToWait){
         for (int t = 0; t < ticksToWait; t++)
             waitForTick();
     }
 
+    @Deprecated
     public void waitSeconds(double seconds){
         double start = (double) System.currentTimeMillis()/1000.0;
         while (true){

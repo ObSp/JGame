@@ -180,7 +180,7 @@ public class Main {
         });
 
         if (blackScreen.Visible){
-            game.waitSeconds(2);
+            game.Services.TimeService.waitSeconds(2);
             blackScreen.Hide();
         }
 
@@ -266,7 +266,7 @@ public class Main {
         cam.Position.Y = plr.CFrame.Position.Y;
 
         if (blackScreen.Visible){
-            game.waitSeconds(2);
+            game.Services.TimeService.waitSeconds(2);
             task.spawn(()->blackScreen.Hide());
         }
 
@@ -364,7 +364,7 @@ public class Main {
 
         task.spawn(()->{
             while (playing){
-                game.waitSeconds(obstacleSpawnBufferSeconds);
+                game.Services.TimeService.waitSeconds(obstacleSpawnBufferSeconds);
                 spawnObstacle();
             }
         });
@@ -440,7 +440,7 @@ public class Main {
         info.SetOpacity(0);
         info.TweenOpacity(1.0, null);
 
-        game.waitSeconds(5);
+        game.Services.TimeService.waitSeconds(5);
 
         info.TweenOpacity(0.0, null);
 

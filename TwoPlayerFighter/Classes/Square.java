@@ -45,7 +45,7 @@ public class Square extends Player {
         hitPlr.stunned = true;
         hitPlr.model.Velocity = Constants.PLAYER_1_AB1_KNOCKBACK.clone().multiply(Math.random()>.5 ? -1 : 1, 1);
         task.spawn(()->{
-            game.waitTicks(Constants.PLAYER_1_AB1_STUN_FRAMES);
+            game.Services.TimeService.waitTicks(Constants.PLAYER_1_AB1_STUN_FRAMES);
             hitPlr.stunned = false;
         });
     }

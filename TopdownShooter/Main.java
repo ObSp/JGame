@@ -47,7 +47,7 @@ public class Main {
         });
 
         while (true) {
-            game.waitSeconds(enemySpawnSeconds);
+            game.Services.TimeService.waitSeconds(enemySpawnSeconds);
             enemyHandler.NewEnemy();
             if (enemySpawnSeconds > .5){
                 enemySpawnSeconds -= .1;

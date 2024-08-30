@@ -44,7 +44,7 @@ public class task {
         return newThread;
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings("deprecation")
     public static void cancel(Thread t){
         t.stop();
     }
