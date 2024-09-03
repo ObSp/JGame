@@ -470,6 +470,10 @@ public abstract class Instance {
         return topLeftCorner().add(Size.X/2, Size.Y/2);
     }
 
+    public void SetCenterPosition(Vector2 pos){
+        CFrame.Position = pos.add(pos);
+    }
+
     public void SetTopLeftCornerPosition(Vector2 pos){
         CFrame.Position.Y = pos.Y-getAnchorPointOffsetY();
         CFrame.Position.X = pos.X-getAnchorPointOffsetX();

@@ -61,5 +61,11 @@ public class Main {
         controlDisplay.ExportRequest.Connect((d,k)->{
             export.ExportInstancesAsJGI();
         });
+
+        game.OnTick.Connect(dt-> {
+            if (controlDisplay.currentSelected == null || !input.IsMouseDown()) return;
+
+            controlDisplay.currentSelected.SetCenterPosition(input.GetMouseLocation());
+        });
     }
 }
