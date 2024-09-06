@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Instances.Box2D;
-import JGamePackage.JGame.Instances.Instance;
 import JGamePackage.JGame.Types.Vector2;
 
 public class Main {
