@@ -471,7 +471,7 @@ public abstract class Instance {
     }
 
     public void SetCenterPosition(Vector2 pos){
-        CFrame.Position = pos.add(pos);
+        CFrame.Position = pos.subtract(new Vector2(Size.X/2, Size.Y/2));
     }
 
     public void SetTopLeftCornerPosition(Vector2 pos){

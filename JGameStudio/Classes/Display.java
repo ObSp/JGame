@@ -271,7 +271,7 @@ public class Display extends JFrame {
 
     public void setCurrentSelected(Instance selected){
         this.currentSelected = selected;
-        this.updateShownProperties();
+        //this.updateShownProperties();
     }
 
     private void updateProps(){
