@@ -178,6 +178,13 @@ public class Display extends JFrame {
             export.setHorizontalAlignment(SwingConstants.CENTER);
             export.setFocusable(false);
             buttonPanel.add(export);
+
+            export.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ExportRequest.Fire(null, null);
+                }
+            });
     
             this.exportButton = export;
     

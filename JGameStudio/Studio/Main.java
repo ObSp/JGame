@@ -5,10 +5,10 @@ import JGamePackage.JGame.*;
 import JGamePackage.JGame.Instances.*;
 import JGamePackage.JGame.Services.InputService;
 import JGamePackage.JGame.Types.*;
-import JGamePackage.lib.*;
 import Classes.*;
 
 import java.awt.Color;
+import java.io.File;
 
 
 public class Main {
@@ -20,7 +20,8 @@ public class Main {
 
     static Exporter export = new Exporter(game);
     public static void main(String[] args) {
-        Promise.await(game.start());
+        for (Instance v : game.Services.ParserService.ParseJSONToInstances(new File("JGameStudio\\Saves\\latestSave.json")))
+            game.addInstance(v);
         
         controlDisplay.init(300,500);
 

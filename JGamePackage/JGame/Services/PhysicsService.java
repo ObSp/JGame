@@ -55,7 +55,7 @@ public class PhysicsService extends Service {
             //                      up  down
             int yDir = vel.Y > -1 ? -1 : 1;
 
-            double posShift = getPositionShift(inst)*(dt*50);
+            double posShift = getPositionShift(inst);
 
             if ((xDir == -1 && inst.collidingLeft()) || (xDir==1 && inst.collidingRight())) vel.X = 0;
             if ((yDir == 1 && inst.collidingTop()) || (yDir==-1 && inst.collidingBottom())) {posShift = 0; vel.Y = 0;} 
@@ -68,13 +68,13 @@ public class PhysicsService extends Service {
 
             vel.Y += posShift;
 
-            inst.CFrame.Position.X += vel.X;
-            inst.CFrame.Position.Y += vel.Y;
+            double mult = dt*60;
+
+            inst.CFrame.Position.X += vel.X * mult;
+            inst.CFrame.Position.Y += vel.Y * mult;
         }
 
     }
-
-    //formula: 2pixels/secondsInAir^2
 
     private double clamp(double m, double min, double max){
         if (m < min) return min;
