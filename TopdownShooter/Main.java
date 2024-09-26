@@ -26,6 +26,9 @@ public class Main {
     //healthbar
     static Healthbar healthbar = new Healthbar(game, UILayer);
 
+    //Level bar
+    static LevelBar levelBar = new LevelBar(game, UILayer);
+
 
     //enemy stuff
     static double enemySpawnSeconds = 4;

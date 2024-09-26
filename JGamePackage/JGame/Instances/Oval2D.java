@@ -48,26 +48,20 @@ public class Oval2D extends Instance {
         return null;
     }
 
-
     @Override
     public boolean isCoordinateInBounds(Vector2 coord){
         if (this.CFrame == null) return false;
 
         if (coord.equals(CFrame.Position)) return true;
 
-        /*Get the distance between the circle's center and the coord */
         Vector2 center = this.GetCenterPosition();
 
-        double centerMag = center.Magnitude();
-        double coordMag = coord.Magnitude();
-        
-                        /*First get top, then subtract center.Y from top.Y*/
-        double bottomY = this.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y;
-        double radius = bottomY-center.Y;
+        double a = (coord.X - center.X);
+        double b = (coord.Y - center.Y);
 
-        double diff = Math.abs(centerMag - coordMag);
+        double radius = this.GetCornerPosition(Enum.InstanceCornerType.BottomLeft).Y-center.Y;
 
-        return diff <= radius;
+        return (a*a)+(b*b) <= radius*radius;
     }
     
 }

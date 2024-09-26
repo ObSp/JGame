@@ -22,6 +22,7 @@ public class Main {
     public static void main(String[] args) {
         for (Instance v : game.Services.ParserService.ParseJSONToInstances(new File("JGameStudio\\Saves\\latestSave.json")))
             game.addInstance(v);
+
         
         controlDisplay.init(300,500);
 

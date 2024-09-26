@@ -15,13 +15,14 @@ public class Box2D extends Instance {
 
     
     public void paint(Graphics g) {
-
         Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
+
+        if (this.CFrame.Position.UseScale && RenderPosition == null) {
+            actualPos = actualPos.ToScreenspacePixels(Parent.getTotalScreenSize());
+        }
         
         if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
             return;
-
-
 
         Graphics2D g2 = (Graphics2D) g;
         int rotationX = (int) (actualPos.X + (RotationAnchorPoint.X/100.0)*Size.X);

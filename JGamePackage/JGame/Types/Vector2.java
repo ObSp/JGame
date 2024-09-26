@@ -8,6 +8,12 @@ public class Vector2 {
     public double X;
     public double Y;
 
+    /* Whether the {@code Vector2} should be interpreted as a percentage of the total
+     * screen size instead of pixel positions.
+     * 
+     */
+    public boolean UseScale = false;
+
 
     //static stuff
 
@@ -36,7 +42,6 @@ public class Vector2 {
         double xCoord = Double.parseDouble(split[0]);
         double yCoord = Double.parseDouble(split[1]);
 
-
         return new Vector2(xCoord, yCoord);
     }
 
@@ -49,6 +54,7 @@ public class Vector2 {
     public Vector2(int x, int y){
         X=x;
         Y=y;
+        
     }
 
     /**Creates a new Vector2 with the specified X and Y coordinate points.
@@ -177,6 +183,14 @@ public class Vector2 {
         Vector2 n = a.clone();
         n.lerp(b, t);
         return n;
+    }
+
+    /* Converts the X and Y scale components into pixels.
+     * NOTE: this only has an effect if UseScale is set to true.
+     * 
+     */
+    public Vector2 ToScreenspacePixels(Vector2 screenSize){
+        return new Vector2(this.X * screenSize.X, this.Y * screenSize.Y);
     }
 
     @Override

@@ -66,6 +66,8 @@ public class JGame{
 
     public Camera Camera;
 
+    private Vector2 screenSize;
+
 
     public ServiceContainer Services;
 
@@ -129,12 +131,15 @@ public class JGame{
         render();
         double lastTick = curSeconds();
 
+        screenSize = new Vector2(getScreenWidth(), getScreenHeight());
+
         while (true) {
             double curSecs = curSeconds();
             if (curSecs-lastTick>=TickSpeed){
                 var temp = curSecs-lastTick;
                 lastTick = curSecs;
                 tick(temp);
+                screenSize = new Vector2(getScreenWidth(), getScreenHeight());
             }
         }
     }
@@ -246,7 +251,7 @@ public class JGame{
      * @return : The current size of the {@code JFrame window} as a {@code Vector2}
      */
     public Vector2 getTotalScreenSize(){
-        return new Vector2(getScreenWidth(), getScreenHeight());
+        return screenSize != null ? screenSize : new Vector2(getScreenWidth(), getScreenHeight());
     }
 
     public int getScreenHeight(){
