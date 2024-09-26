@@ -440,6 +440,13 @@ public abstract class Instance {
         return CFrame.Position.subtract(getAnchorPointOffset());
     }
 
+    public Vector2 GetRenderPosition(Vector2 pos){
+        if (MoveWithCamera && this.Parent != null){
+            return Parent.Camera.GetInstancePositionRelativeToCameraPosition(this).subtract(getAnchorPointOffset());
+        }
+        return pos.subtract(getAnchorPointOffset());
+    }
+
     //cornerstuff
 
     protected Vector2 topLeftCorner(){

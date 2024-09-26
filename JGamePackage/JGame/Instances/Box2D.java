@@ -16,9 +16,11 @@ public class Box2D extends Instance {
     
     public void paint(Graphics g) {
         Vector2 actualPos = RenderPosition != null ? RenderPosition : GetRenderPosition();
+        Vector2 screenSize = Parent.getTotalScreenSize();
+
 
         if (this.CFrame.Position.UseScale && RenderPosition == null) {
-            actualPos = actualPos.ToScreenspacePixels(Parent.getTotalScreenSize());
+            actualPos = GetRenderPosition(CFrame.Position.ToScreenspacePixels(screenSize));
         }
         
         if (!Parent.Camera.areBoundsInViewport(this, actualPos) || opacity == 0.0)
@@ -34,13 +36,15 @@ public class Box2D extends Instance {
 
         g2.transform(rotated);
 
+        Vector2 realSize = Size.ToScreenspacePixels(screenSize);
+
         if (BorderSizePixel>0){
             g2.setColor(BorderColor);
             g2.fillRect((int) (actualPos.X+BorderSizePixel), (int) actualPos.Y+BorderSizePixel, (int) Size.X+BorderSizePixel, (int) Size.Y+BorderSizePixel);
         }
         
         g2.setColor(FillColor);
-        g2.fillRect((int) actualPos.X, (int) actualPos.Y, (int) Size.X, (int) Size.Y);
+        g2.fillRect((int) actualPos.X, (int) actualPos.Y, (int) realSize.X, (int) realSize.Y);
 
         //reset rotation and translation
         g2.setTransform(previous);

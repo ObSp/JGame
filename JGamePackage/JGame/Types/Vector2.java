@@ -190,6 +190,8 @@ public class Vector2 {
      * 
      */
     public Vector2 ToScreenspacePixels(Vector2 screenSize){
+        if (!this.UseScale) return this;
+        
         return new Vector2(this.X * screenSize.X, this.Y * screenSize.Y);
     }
 
