@@ -32,6 +32,8 @@ import java.awt.Color;
  * 
  */
 public class JGame{
+    public static JGame CurrentGame;
+
     public int TickCount = 0;
 
     public double TickSpeed = .016; //exactly 60 fps
@@ -74,6 +76,7 @@ public class JGame{
     private final Object waitMutex = new Object();
 
     private void staticConstruct(){
+        CurrentGame = this;
         Promise.await(this.start());
         Camera = new Camera(this);
         task.spawn(()->Services = new ServiceContainer(this));
