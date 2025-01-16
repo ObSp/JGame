@@ -10,11 +10,8 @@ public class test {
     public static void main(String[] args) {
         Box2D b = new Box2D();
         b.FillColor = Color.red;
-        b.CFrame.Position.UseScale = true;
-        b.AnchorPoint = new Vector2(50);
-        b.CFrame.Position.X = .5;
-        b.CFrame.Position.Y = .5;
-
         game.addInstance(b);
+
+        b.Anchored = false;
     }
 }

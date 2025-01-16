@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Types.Vector2;
 
 public class Box2D extends Instance {
